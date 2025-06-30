@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Center - Blue Mountain Bank</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="https://via.placeholder.com/40x40/1e40af/ffffff?text=BMB" alt="Blue Mountain Bank Logo">
+                    <span>Blue Mountain Bank</span>
+                </div>
+                <div class="nav-menu" id="nav-menu">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="index.html#services" class="nav-link">Services</a>
+                    <a href="index.html#about" class="nav-link">About</a>
+                    <a href="index.html#locations" class="nav-link">Locations</a>
+                    <a href="index.html#contact" class="nav-link">Contact</a>
+                    <a href="login.html" class="nav-link login-btn">Online Banking</a>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section style="margin-top: 80px; background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); color: white; padding: 80px 0; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://via.placeholder.com/1920x600/dc2626/ffffff?text=Security+Shield'); background-size: cover; background-position: center; opacity: 0.2;"></div>
+        <div class="container" style="position: relative; z-index: 2; text-align: center;">
+            <h1 style="font-size: 3rem; font-weight: 700; margin-bottom: 20px;">
+                <i class="fas fa-shield-alt"></i>
+                Security Center
+            </h1>
+            <p style="font-size: 1.3rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Your financial security is our top priority. Learn how we protect your information and accounts.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main style="padding: 60px 0; background: #f8fafc; position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://via.placeholder.com/1920x1080/f8fafc/e2e8f0?text=Security+Background'); background-size: cover; background-position: center; opacity: 0.1; background-attachment: fixed;"></div>
+        
+        <div class="container" style="position: relative; z-index: 2;">
+            <!-- Security Measures -->
+            <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-bottom: 40px; border: 1px solid #e2e8f0;">
+                <h2 style="color: #1e40af; margin-bottom: 30px; font-size: 2rem;">How We Protect You</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; color: white;">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 style="color: #1e40af; margin-bottom: 15px;">Bank-Level Encryption</h3>
+                        <p style="color: #64748b; line-height: 1.6;">All data is protected with 256-bit SSL encryption, the same level used by major financial institutions worldwide.</p>
+                    </div>
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; color: white;">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 style="color: #1e40af; margin-bottom: 15px;">Multi-Factor Authentication</h3>
+                        <p style="color: #64748b; line-height: 1.6;">Additional security layers including SMS codes, email verification, and biometric authentication options.</p>
+                    </div>
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; color: white;">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3 style="color: #1e40af; margin-bottom: 15px;">24/7 Fraud Monitoring</h3>
+                        <p style="color: #64748b; line-height: 1.6;">Advanced AI-powered systems monitor your accounts around the clock for suspicious activity.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Tips -->
+            <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-bottom: 40px; border: 1px solid #e2e8f0;">
+                <h2 style="color: #1e40af; margin-bottom: 30px; font-size: 2rem;">Security Best Practices</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+                    <div style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px;">
+                        <h4 style="color: #dc2626; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-key"></i>
+                            Strong Passwords
+                        </h4>
+                        <ul style="color: #64748b; line-height: 1.8; margin: 0; padding-left: 20px;">
+                            <li>Use at least 12 characters</li>
+                            <li>Include uppercase, lowercase, numbers, and symbols</li>
+                            <li>Avoid personal information</li>
+                            <li>Use unique passwords for each account</li>
+                        </ul>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px;">
+                        <h4 style="color: #dc2626; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-wifi"></i>
+                            Safe Internet Practices
+                        </h4>
+                        <ul style="color: #64748b; line-height: 1.8; margin: 0; padding-left: 20px;">
+                            <li>Avoid public Wi-Fi for banking</li>
+                            <li>Always log out completely</li>
+                            <li>Check for "https://" in the URL</li>
+                            <li>Keep your browser updated</li>
+                        </ul>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px;">
+                        <h4 style="color: #dc2626; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Phishing Awareness
+                        </h4>
+                        <ul style="color: #64748b; line-height: 1.8; margin: 0; padding-left: 20px;">
+                            <li>We never ask for passwords via email</li>
+                            <li>Verify suspicious calls by calling us directly</li>
+                            <li>Check sender email addresses carefully</li>
+                            <li>Don't click suspicious links</li>
+                        </ul>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px;">
+                        <h4 style="color: #dc2626; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-mobile-alt"></i>
+                            Mobile Security
+                        </h4>
+                        <ul style="color: #64748b; line-height: 1.8; margin: 0; padding-left: 20px;">
+                            <li>Use official app store downloads only</li>
+                            <li>Enable screen locks and biometrics</li>
+                            <li>Log out when finished</li>
+                            <li>Keep your app updated</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Alerts -->
+            <div style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 12px; padding: 30px; margin-bottom: 40px;">
+                <h3 style="color: #92400e; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-bell"></i>
+                    Current Security Alerts
+                </h3>
+                <div style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 15px;">
+                    <h4 style="color: #dc2626; margin-bottom: 10px;">Phishing Email Campaign Alert</h4>
+                    <p style="color: #64748b; line-height: 1.6; margin-bottom: 10px;">
+                        We've identified fraudulent emails claiming to be from Blue Mountain Bank asking customers to "verify their account information." These emails are NOT from us.
+                    </p>
+                    <p style="color: #64748b; line-height: 1.6; margin: 0;">
+                        <strong>What to do:</strong> Delete the email immediately. If you've already clicked on links or provided information, contact us immediately at <a href="tel:1-800-262-2265" style="color: #dc2626;">1-800-BMB-BANK</a>.
+                    </p>
+                </div>
+                <div style="background: white; border-radius: 8px; padding: 20px;">
+                    <h4 style="color: #dc2626; margin-bottom: 10px;">Fraudulent Text Messages</h4>
+                    <p style="color: #64748b; line-height: 1.6; margin-bottom: 10px;">
+                        Scammers are sending text messages claiming your account has been compromised and asking you to call a fake number.
+                    </p>
+                    <p style="color: #64748b; line-height: 1.6; margin: 0;">
+                        <strong>Remember:</strong> We will never ask you to provide personal information via text message. Always call our official number to verify any suspicious communications.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Report Security Issues -->
+            <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-bottom: 40px; border: 1px solid #e2e8f0;">
+                <h2 style="color: #1e40af; margin-bottom: 30px; font-size: 2rem;">Report Security Concerns</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                    <div style="text-align: center; padding: 20px; border: 2px solid #dc2626; border-radius: 12px;">
+                        <div style="width: 80px; height: 80px; background: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; color: white;">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3 style="color: #dc2626; margin-bottom: 15px;">Emergency Fraud Hotline</h3>
+                        <p style="color: #64748b; line-height: 1.6; margin-bottom: 15px;">If you suspect fraud on your account, call immediately:</p>
+                        <a href="tel:1-800-262-2265" style="color: #dc2626; font-weight: 600; font-size: 1.2rem; text-decoration: none;">1-800-BMB-BANK</a>
+                        <p style="color: #64748b; font-size: 0.9rem; margin-top: 10px;">Available 24/7</p>
+                    </div>
+                    <div style="text-align: center; padding: 20px; border: 2px solid #3b82f6; border-radius: 12px;">
+                        <div style="width: 80px; height: 80px; background: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; color: white;">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 style="color: #3b82f6; margin-bottom: 15px;">Security Email</h3>
+                        <p style="color: #64748b; line-height: 1.6; margin-bottom: 15px;">Report phishing emails or suspicious communications:</p>
+                        <a href="mailto:security@bluemountainbank.com" style="color: #3b82f6; font-weight: 600; text-decoration: none;">security@bluemountainbank.com</a>
+                        <p style="color: #64748b; font-size: 0.9rem; margin-top: 10px;">Response within 24 hours</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Resources -->
+            <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0;">
+                <h2 style="color: #1e40af; margin-bottom: 30px; font-size: 2rem;">Security Resources</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <a href="#" onclick="alert('This would link to a detailed security guide')" style="display: block; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.borderColor='#3b82f6'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateY(0)'">
+                        <h4 style="color: #1e40af; margin-bottom: 10px;">
+                            <i class="fas fa-book"></i>
+                            Security Guide
+                        </h4>
+                        <p style="color: #64748b; line-height: 1.6; margin: 0;">Complete guide to protecting your financial information online</p>
+                    </a>
+                    <a href="#" onclick="alert('This would link to fraud prevention tips')" style="display: block; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.borderColor='#3b82f6'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateY(0)'">
+                        <h4 style="color: #1e40af; margin-bottom: 10px;">
+                            <i class="fas fa-shield-alt"></i>
+                            Fraud Prevention
+                        </h4>
+                        <p style="color: #64748b; line-height: 1.6; margin: 0;">Learn how to identify and avoid common scams and fraud attempts</p>
+                    </a>
+                    <a href="#" onclick="alert('This would link to privacy policy')" style="display: block; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.borderColor='#3b82f6'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateY(0)'">
+                        <h4 style="color: #1e40af; margin-bottom: 10px;">
+                            <i class="fas fa-user-secret"></i>
+                            Privacy Policy
+                        </h4>
+                        <p style="color: #64748b; line-height: 1.6; margin: 0;">Learn how we collect, use, and protect your personal information</p>
+                    </a>
+                    <a href="#" onclick="alert('This would link to mobile app security')" style="display: block; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.borderColor='#3b82f6'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateY(0)'">
+                        <h4 style="color: #1e40af; margin-bottom: 10px;">
+                            <i class="fas fa-mobile-alt"></i>
+                            Mobile Security
+                        </h4>
+                        <p style="color: #64748b; line-height: 1.6; margin: 0;">Best practices for secure mobile banking and app usage</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="https://via.placeholder.com/40x40/ffffff/1e40af?text=BMB" alt="Blue Mountain Bank Logo">
+                        <span>Blue Mountain Bank</span>
+                    </div>
+                    <p>Your trusted financial partner across 15 states, committed to providing exceptional banking services and personalized solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="login.html">Online Banking</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="rates.html">Interest Rates</a></li>
+                        <li><a href="index.html#locations">Locations</a></li>
+                        <li><a href="careers.html">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="index.html#contact">Contact Us</a></li>
+                        <li><a href="help.html">Help & Support</a></li>
+                        <li><a href="security.html">Security Center</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Blue Mountain Bank. All rights reserved. Member FDIC. Equal Housing Lender.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

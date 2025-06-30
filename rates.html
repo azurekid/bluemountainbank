@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Rates - Blue Mountain Bank</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="https://via.placeholder.com/40x40/1e40af/ffffff?text=BMB" alt="Blue Mountain Bank Logo">
+                    <span>Blue Mountain Bank</span>
+                </div>
+                <div class="nav-menu" id="nav-menu">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="index.html#services" class="nav-link">Services</a>
+                    <a href="index.html#about" class="nav-link">About</a>
+                    <a href="index.html#locations" class="nav-link">Locations</a>
+                    <a href="index.html#contact" class="nav-link">Contact</a>
+                    <a href="login.html" class="nav-link login-btn">Online Banking</a>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main style="margin-top: 80px; padding: 60px 0; background: #f8fafc; position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://via.placeholder.com/1920x1080/f8fafc/e2e8f0?text=Rates+Background'); background-size: cover; background-position: center; opacity: 0.1; background-attachment: fixed;"></div>
+        
+        <div class="container" style="position: relative; z-index: 2;">
+            <div class="section-header">
+                <h1>Current Interest Rates</h1>
+                <p>Competitive rates designed to help your money grow</p>
+                <p style="font-size: 0.9rem; color: #64748b; margin-top: 10px;">
+                    <i class="fas fa-calendar-alt"></i>
+                    Rates effective as of December 21, 2024 | Subject to change without notice
+                </p>
+            </div>
+
+            <!-- Deposit Rates -->
+            <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-bottom: 30px; border: 1px solid #e2e8f0;">
+                <h2 style="color: #1e40af; margin-bottom: 30px; font-size: 1.8rem;">
+                    <i class="fas fa-piggy-bank"></i>
+                    Deposit Account Rates
+                </h2>
+                
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">Account Type</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">Minimum Balance</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">APY</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">Features</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">Premium Savings</td>
+                                <td style="padding: 20px; color: #64748b;">$10,000</td>
+                                <td style="padding: 20px; color: #10b981; font-weight: 600; font-size: 1.1rem;">2.75%</td>
+                                <td style="padding: 20px; color: #64748b;">No monthly fees, online banking</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">Regular Savings</td>
+                                <td style="padding: 20px; color: #64748b;">$500</td>
+                                <td style="padding: 20px; color: #10b981; font-weight: 600; font-size: 1.1rem;">2.25%</td>
+                                <td style="padding: 20px; color: #64748b;">$5 monthly fee if balance below $500</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">Money Market</td>
+                                <td style="padding: 20px; color: #64748b;">$25,000</td>
+                                <td style="padding: 20px; color: #10b981; font-weight: 600; font-size: 1.1rem;">3.25%</td>
+                                <td style="padding: 20px; color: #64748b;">Limited transactions, check writing</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">Basic Checking</td>
+                                <td style="padding: 20px; color: #64748b;">$100</td>
+                                <td style="padding: 20px; color: #10b981; font-weight: 600; font-size: 1.1rem;">0.15%</td>
+                                <td style="padding: 20px; color: #64748b;">Free debit card, mobile banking</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Certificate of Deposit Rates -->
+            <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-bottom: 30px; border: 1px solid #e2e8f0;">
+                <h2 style="color: #1e40af; margin-bottom: 30px; font-size: 1.8rem;">
+                    <i class="fas fa-certificate"></i>
+                    Certificate of Deposit (CD) Rates
+                </h2>
+                
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">Term Length</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">Minimum Deposit</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">APY</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">Early Withdrawal Penalty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">6 Months</td>
+                                <td style="padding: 20px; color: #64748b;">$1,000</td>
+                                <td style="padding: 20px; color: #10b981; font-weight: 600; font-size: 1.1rem;">3.50%</td>
+                                <td style="padding: 20px; color: #64748b;">90 days interest</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">12 Months</td>
+                                <td style="padding: 20px; color: #64748b;">$1,000</td>
+                                <td style="padding: 20px; color: #10b981; font-weight: 600; font-size: 1.1rem;">4.25%</td>
+                                <td style="padding: 20px; color: #64748b;">180 days interest</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">24 Months</td>
+                                <td style="padding: 20px; color: #64748b;">$1,000</td>
+                                <td style="padding: 20px; color: #10b981; font-weight: 600; font-size: 1.1rem;">4.75%</td>
+                                <td style="padding: 20px; color: #64748b;">180 days interest</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">36 Months</td>
+                                <td style="padding: 20px; color: #64748b;">$1,000</td>
+                                <td style="padding: 20px; color: #10b981; font-weight: 600; font-size: 1.1rem;">5.15%</td>
+                                <td style="padding: 20px; color: #64748b;">365 days interest</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">60 Months</td>
+                                <td style="padding: 20px; color: #64748b;">$1,000</td>
+                                <td style="padding: 20px; color: #10b981; font-weight: 600; font-size: 1.1rem;">5.50%</td>
+                                <td style="padding: 20px; color: #64748b;">365 days interest</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Loan Rates -->
+            <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-bottom: 30px; border: 1px solid #e2e8f0;">
+                <h2 style="color: #1e40af; margin-bottom: 30px; font-size: 1.8rem;">
+                    <i class="fas fa-home"></i>
+                    Loan Rates
+                </h2>
+                
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">Loan Type</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">Term</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">APR (Starting)</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1e40af;">Requirements</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">30-Year Fixed Mortgage</td>
+                                <td style="padding: 20px; color: #64748b;">360 months</td>
+                                <td style="padding: 20px; color: #3b82f6; font-weight: 600; font-size: 1.1rem;">6.75%</td>
+                                <td style="padding: 20px; color: #64748b;">20% down payment</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">15-Year Fixed Mortgage</td>
+                                <td style="padding: 20px; color: #64748b;">180 months</td>
+                                <td style="padding: 20px; color: #3b82f6; font-weight: 600; font-size: 1.1rem;">6.25%</td>
+                                <td style="padding: 20px; color: #64748b;">20% down payment</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">Personal Loan</td>
+                                <td style="padding: 20px; color: #64748b;">24-84 months</td>
+                                <td style="padding: 20px; color: #3b82f6; font-weight: 600; font-size: 1.1rem;">8.99%</td>
+                                <td style="padding: 20px; color: #64748b;">Good credit required</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">Auto Loan (New)</td>
+                                <td style="padding: 20px; color: #64748b;">36-84 months</td>
+                                <td style="padding: 20px; color: #3b82f6; font-weight: 600; font-size: 1.1rem;">5.49%</td>
+                                <td style="padding: 20px; color: #64748b;">Qualified buyers</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 20px; font-weight: 500;">Home Equity Line</td>
+                                <td style="padding: 20px; color: #64748b;">10-20 years</td>
+                                <td style="padding: 20px; color: #3b82f6; font-weight: 600; font-size: 1.1rem;">7.25%</td>
+                                <td style="padding: 20px; color: #64748b;">80% LTV maximum</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 12px; padding: 20px; margin-top: 30px;">
+                <h3 style="color: #92400e; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Important Disclosure
+                </h3>
+                <p style="color: #92400e; font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px;">
+                    Annual Percentage Yields (APY) and Annual Percentage Rates (APR) are accurate as of the date shown above and are subject to change without notice. Minimum balance requirements apply. Fees may reduce earnings on deposit accounts.
+                </p>
+                <p style="color: #92400e; font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px;">
+                    Loan rates shown are our best available rates and are subject to credit approval. Your actual rate may differ based on creditworthiness, loan amount, and other factors. All loans subject to credit approval and verification.
+                </p>
+                <p style="color: #92400e; font-size: 0.9rem; line-height: 1.6; margin: 0;">
+                    Member FDIC. Equal Housing Lender. Contact us for complete terms and conditions.
+                </p>
+            </div>
+
+            <!-- Contact Section -->
+            <div style="text-align: center; margin-top: 40px;">
+                <h3 style="color: #1e40af; margin-bottom: 20px;">Ready to Get Started?</h3>
+                <p style="color: #64748b; margin-bottom: 30px;">Contact us today to learn more about our competitive rates and how we can help you achieve your financial goals.</p>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <a href="index.html#contact" class="btn btn-primary">Contact Us</a>
+                    <a href="login.html" class="btn btn-secondary">Open Account Online</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="https://via.placeholder.com/40x40/ffffff/1e40af?text=BMB" alt="Blue Mountain Bank Logo">
+                        <span>Blue Mountain Bank</span>
+                    </div>
+                    <p>Your trusted financial partner across 15 states, committed to providing exceptional banking services and personalized solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="login.html">Online Banking</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="rates.html">Interest Rates</a></li>
+                        <li><a href="index.html#locations">Locations</a></li>
+                        <li><a href="careers.html">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="index.html#contact">Contact Us</a></li>
+                        <li><a href="help.html">Help & Support</a></li>
+                        <li><a href="security.html">Security Center</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Blue Mountain Bank. All rights reserved. Member FDIC. Equal Housing Lender.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

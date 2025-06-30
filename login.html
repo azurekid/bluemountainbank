@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Banking Login - Blue Mountain Bank</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .login-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://via.placeholder.com/1920x1080/1e40af/ffffff?text=Secure+Banking+Background');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            animation: parallaxFloat 15s ease-in-out infinite;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .login-logo img {
+            border-radius: 8px;
+        }
+
+        .login-logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 50px 15px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1.2rem;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            color: #3b82f6;
+        }
+
+        .password-toggle:hover {
+            color: #1e40af;
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .forgot-password {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            color: #1e40af;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .security-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #10b981;
+        }
+
+        .security-info h4 {
+            color: #10b981;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .security-info p {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .back-to-home:hover {
+            transform: translateX(-5px);
+            color: #93c5fd;
+        }
+
+        .demo-credentials {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fef3c7;
+            border-radius: 12px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .demo-credentials h4 {
+            color: #f59e0b;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .demo-credentials p {
+            color: #92400e;
+            font-size: 0.8rem;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            .login-title {
+                font-size: 1.5rem;
+            }
+
+            .back-to-home {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 20px;
+                justify-content: center;
+                color: #1e40af;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <a href="index.html" class="back-to-home">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+        
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">
+                    <img src="https://via.placeholder.com/50x50/1e40af/ffffff?text=BMB" alt="Blue Mountain Bank Logo">
+                    <span>Blue Mountain Bank</span>
+                </div>
+                <h1 class="login-title">Online Banking</h1>
+                <p class="login-subtitle">Secure access to your accounts</p>
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <input type="text" id="username" name="username" placeholder="Username or Email" required>
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <i class="fas fa-eye password-toggle input-icon" id="passwordToggle"></i>
+                </div>
+
+                <div class="login-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-lock"></i>
+                    Secure Login
+                </button>
+            </form>
+
+            <div class="demo-credentials">
+                <h4>
+                    <i class="fas fa-info-circle"></i>
+                    Demo Credentials
+                </h4>
+                <p><strong>Username:</strong> demo@bluemountainbank.com</p>
+                <p><strong>Password:</strong> Demo123!</p>
+                <p style="margin-top: 10px; font-style: italic;">This is a demonstration website. Use the credentials above to explore the banking dashboard.</p>
+            </div>
+
+            <div class="security-info">
+                <h4>
+                    <i class="fas fa-shield-alt"></i>
+                    Your Security is Our Priority
+                </h4>
+                <p>We use bank-level encryption and multi-factor authentication to protect your financial information. Never share your login credentials with anyone.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password toggle functionality
+        document.getElementById('passwordToggle').addEventListener('click', function() {
+            const password = document.getElementById('password');
+            const icon = this;
+            
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Login form handling
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Demo authentication
+            if (username === 'demo@bluemountainbank.com' && password === 'Demo123!') {
+                // Show loading state
+                const loginBtn = document.querySelector('.login-btn');
+                const originalText = loginBtn.innerHTML;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+                loginBtn.disabled = true;
+                
+                // Simulate authentication delay
+                setTimeout(() => {
+                    alert('Login successful! Redirecting to banking dashboard...');
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+            } else {
+                // Show error message
+                showLoginError('Invalid username or password. Please try again or use the demo credentials provided.');
+            }
+        });
+
+        function showLoginError(message) {
+            // Remove existing error
+            const existingError = document.querySelector('.login-error');
+            if (existingError) {
+                existingError.remove();
+            }
+
+            // Create error element
+            const error = document.createElement('div');
+            error.className = 'login-error';
+            error.style.cssText = `
+                background: #fef2f2;
+                border: 1px solid #fecaca;
+                border-radius: 8px;
+                padding: 12px;
+                margin-top: 15px;
+                color: #dc2626;
+                font-size: 0.9rem;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            `;
+            error.innerHTML = `<i class="fas fa-exclamation-triangle"></i>${message}`;
+
+            // Insert after form
+            const form = document.querySelector('.login-form');
+            form.appendChild(error);
+
+            // Remove error after 5 seconds
+            setTimeout(() => {
+                if (error.parentNode) {
+                    error.parentNode.removeChild(error);
+                }
+            }, 5000);
+        }
+
+        // Enhance form validation
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    this.style.borderColor = '#ef4444';
+                } else {
+                    this.style.borderColor = '#10b981';
+                }
+            });
+
+            input.addEventListener('focus', function() {
+                this.style.borderColor = '#3b82f6';
+            });
+        });
+    </script>
+</body>
+</html>
