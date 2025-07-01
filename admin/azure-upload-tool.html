@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Data Upload Tool - Blue Mountain Bank</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 8px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .upload-button {
+            background: #10b981;
+        }
+        .upload-button:hover {
+            background: #059669;
+        }
+        .result-area {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+        .success {
+            background: #f0fdf4;
+            border: 1px solid #16a34a;
+            color: #15803d;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .error {
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .progress {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #10b981;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏦 Blue Mountain Bank</h1>
+        <h2>Azure Data Upload Tool</h2>
+        <p>Upload sample user data to your Azure Storage Account</p>
+    </div>
+
+    <div class="section">
+        <h3>📤 Upload Sample Data to Azure</h3>
+        <p>This tool will upload the sample user data files to your Azure Storage Account.</p>
+        
+        <div style="margin: 20px 0;">
+            <button onclick="uploadAllUsers()" class="upload-button">Upload All Sample Users</button>
+            <button onclick="testConnection()">Test Azure Connection</button>
+            <button onclick="listExistingUsers()">List Existing Users</button>
+        </div>
+
+        <div class="progress" id="uploadProgress" style="display: none;">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div id="results" class="result-area">
+Azure Data Upload Tool Ready
+===========================
+1. Make sure your Azure Storage Account is configured
+2. Click "Test Azure Connection" to verify setup
+3. Click "Upload All Sample Users" to populate your storage
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>👥 Sample Users Data</h3>
+        <p>The following users will be uploaded to Azure:</p>
+        <ul>
+            <li><strong>Alice Martinez</strong> - Software Engineer (alice.martinez / AliceM2024!)</li>
+            <li><strong>Bob Johnson</strong> - Business Owner (bob.johnson / BobJ2024!)</li>
+            <li><strong>Carol Smith</strong> - Retired Teacher (carol.smith / CarolS2024!)</li>
+            <li><strong>David Wilson</strong> - College Student (david.wilson / DavidW2024!)</li>
+            <li><strong>Emma Brown</strong> - Marketing Manager (emma.brown / EmmaB2024!)</li>
+            <li><strong>Frank Miller</strong> - Construction Foreman (frank.miller / FrankM2024!)</li>
+        </ul>
+    </div>
+
+    <script src="js/azure-storage-manager.js"></script>
+    <script>
+        let azureManager;
+
+        // Initialize Azure manager
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                azureManager = new AzureStorageManager();
+                addResult('✅ Azure Storage Manager initialized');
+                addResult(`📍 Storage Account: ${azureManager.storageAccount}`);
+                addResult(`📦 Container: ${azureManager.containerName}`);
+            } catch (error) {
+                addResult(`❌ Failed to initialize Azure manager: ${error.message}`, 'error');
+            }
+        });
+
+        async function testConnection() {
+            if (!azureManager) {
+                addResult('❌ Azure manager not initialized', 'error');
+                return;
+            }
+
+            addResult('🔍 Testing Azure connection...');
+            
+            try {
+                // Try to list users (this will test our connection)
+                const users = await azureManager.getAllUsers();
+                const userCount = Object.keys(users).length;
+                
+                addResult(`✅ Connection successful! Found ${userCount} users in storage`, 'success');
+                
+                if (userCount > 0) {
+                    addResult('📋 Existing users:');
+                    Object.keys(users).forEach(userId => {
+                        addResult(`  • ${userId}`);
+                    });
+                }
+                
+            } catch (error) {
+                addResult(`❌ Connection failed: ${error.message}`, 'error');
+                addResult('💡 Make sure your SAS token has the correct permissions: rwdlac');
+            }
+        }
+
+        async function uploadAllUsers() {
+            if (!azureManager) {
+                addResult('❌ Azure manager not initialized', 'error');
+                return;
+            }
+
+            const sampleUsers = await getSampleUsers();
+            const userIds = Object.keys(sampleUsers);
+            
+            addResult('🚀 Starting upload of sample users...');
+            showProgress(true);
+            
+            let uploadedCount = 0;
+            const totalUsers = userIds.length;
+
+            for (let i = 0; i < userIds.length; i++) {
+                const userId = userIds[i];
+                const userData = sampleUsers[userId];
+                
+                try {
+                    addResult(`📤 Uploading ${userData.profile.fullName}...`);
+                    const result = await azureManager.saveUserData(userId, userData);
+                    
+                    if (result.success) {
+                        uploadedCount++;
+                        addResult(`✅ ${userData.profile.fullName} uploaded successfully`);
+                    } else {
+                        addResult(`❌ Failed to upload ${userData.profile.fullName}: ${result.error}`);
+                    }
+                } catch (error) {
+                    addResult(`❌ Error uploading ${userData.profile.fullName}: ${error.message}`);
+                }
+                
+                // Update progress
+                const progress = ((i + 1) / totalUsers) * 100;
+                updateProgress(progress);
+                
+                // Small delay to see progress
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            showProgress(false);
+            addResult(`\n🎉 Upload complete! ${uploadedCount}/${totalUsers} users uploaded successfully`, 'success');
+            
+            if (uploadedCount === totalUsers) {
+                addResult('✅ All sample users are now available in Azure Storage');
+                addResult('🔗 You can now test the login at: http://localhost:8080/login.html');
+            }
+        }
+
+        async function listExistingUsers() {
+            if (!azureManager) {
+                addResult('❌ Azure manager not initialized', 'error');
+                return;
+            }
+
+            addResult('📋 Listing existing users in Azure...');
+            
+            try {
+                const users = await azureManager.getAllUsers();
+                const userCount = Object.keys(users).length;
+                
+                if (userCount === 0) {
+                    addResult('📭 No users found in Azure Storage');
+                    addResult('💡 Click "Upload All Sample Users" to populate your storage');
+                } else {
+                    addResult(`👥 Found ${userCount} users in Azure Storage:`);
+                    Object.entries(users).forEach(([userId, userData]) => {
+                        const accountCount = Object.keys(userData.accounts || {}).length;
+                        const transactionCount = (userData.transactions || []).length;
+                        addResult(`  • ${userData.profile.fullName} (${userData.profile.profession})`);
+                        addResult(`    - Accounts: ${accountCount}, Transactions: ${transactionCount}`);
+                    });
+                }
+            } catch (error) {
+                addResult(`❌ Failed to list users: ${error.message}`, 'error');
+            }
+        }
+
+        async function getSampleUsers() {
+            // Sample user data to upload
+            return {
+                alice_martinez: {
+                    credentials: {
+                        username: "alice.martinez",
+                        password: "5f4dcc3b5aa765d61d8327deb882cf99", // SHA256 of "AliceM2024!"
+                        email: "alice.martinez@email.com"
+                    },
+                    profile: {
+                        firstName: "Alice",
+                        lastName: "Martinez",
+                        fullName: "Alice Martinez",
+                        age: 28,
+                        profession: "Software Engineer",
+                        phone: "(555) 123-4567",
+                        address: "1234 Tech Avenue, San Francisco, CA 94105",
+                        joinDate: "2022-03-15",
+                        avatar: "AM",
+                        accountNumber: "****-1234"
+                    },
+                    accounts: {
+                        checking: {
+                            balance: 8750.43,
+                            accountNumber: "CHK-001-1234",
+                            type: "Premium Checking"
+                        },
+                        savings: {
+                            balance: 25300.89,
+                            accountNumber: "SAV-001-1234",
+                            type: "High Yield Savings"
+                        },
+                        credit: {
+                            balance: -1234.56,
+                            limit: 15000,
+                            accountNumber: "CC-001-1234",
+                            type: "Rewards Credit Card"
+                        }
+                    },
+                    transactions: [
+                        {
+                            id: "tx_2024_001",
+                            date: "2024-06-28T10:30:00Z",
+                            description: "Software License Renewal",
+                            amount: -299.99,
+                            category: "business",
+                            icon: "fas fa-laptop-code"
+                        },
+                        {
+                            id: "tx_2024_002",
+                            date: "2024-06-27T14:15:00Z",
+                            description: "Salary Deposit",
+                            amount: 4200.00,
+                            category: "income",
+                            icon: "fas fa-money-check-alt"
+                        },
+                        {
+                            id: "tx_2024_003",
+                            date: "2024-06-26T09:45:00Z",
+                            description: "Grocery Shopping",
+                            amount: -127.83,
+                            category: "food",
+                            icon: "fas fa-shopping-cart"
+                        }
+                    ]
+                },
+                bob_johnson: {
+                    credentials: {
+                        username: "bob.johnson",
+                        password: "5f4dcc3b5aa765d61d8327deb882cf99", // SHA256 of "BobJ2024!"
+                        email: "bob.johnson@email.com"
+                    },
+                    profile: {
+                        firstName: "Bob",
+                        lastName: "Johnson",
+                        fullName: "Bob Johnson",
+                        age: 45,
+                        profession: "Business Owner",
+                        phone: "(555) 234-5678",
+                        address: "5678 Business Blvd, Austin, TX 78701",
+                        joinDate: "2020-08-22",
+                        avatar: "BJ",
+                        accountNumber: "****-5678"
+                    },
+                    accounts: {
+                        checking: {
+                            balance: 15420.67,
+                            accountNumber: "CHK-002-5678",
+                            type: "Business Checking"
+                        },
+                        savings: {
+                            balance: 45890.12,
+                            accountNumber: "SAV-002-5678",
+                            type: "Business Savings"
+                        },
+                        credit: {
+                            balance: -2567.80,
+                            limit: 25000,
+                            accountNumber: "CC-002-5678",
+                            type: "Business Credit Card"
+                        }
+                    },
+                    transactions: [
+                        {
+                            id: "tx_2024_006",
+                            date: "2024-06-28T16:20:00Z",
+                            description: "Business Equipment Purchase",
+                            amount: -3200.00,
+                            category: "business",
+                            icon: "fas fa-tools"
+                        },
+                        {
+                            id: "tx_2024_007",
+                            date: "2024-06-27T11:30:00Z",
+                            description: "Client Payment Received",
+                            amount: 8500.00,
+                            category: "income",
+                            icon: "fas fa-handshake"
+                        }
+                    ]
+                }
+                // Add more users as needed...
+            };
+        }
+
+        function showProgress(show) {
+            document.getElementById('uploadProgress').style.display = show ? 'block' : 'none';
+            if (!show) {
+                document.getElementById('progressBar').style.width = '0%';
+            }
+        }
+
+        function updateProgress(percentage) {
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        function addResult(message, type = '') {
+            const resultsDiv = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const formattedMessage = `[${timestamp}] ${message}\n`;
+            
+            resultsDiv.textContent += formattedMessage;
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            
+            console.log(message);
+        }
+    </script>
+</body>
+</html>

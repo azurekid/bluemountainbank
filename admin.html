@@ -96,131 +96,7 @@
                         User Management
                     </h3>
                     <div class="user-management-grid">
-                        <div class="user-card" onclick="openUserDashboard('alice_martinez')">
-                            <div class="user-card-header">
-                                <div class="user-avatar">AM</div>
-                                <div class="user-card-info">
-                                    <h4>Alice Martinez</h4>
-                                    <p>Software Engineer</p>
-                                    <span class="user-status active">Active</span>
-                                </div>
-                            </div>
-                            <div class="user-card-stats">
-                                <div class="stat-item">
-                                    <span class="stat-label">Total Balance</span>
-                                    <span class="stat-value">$32,816.76</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Last Login</span>
-                                    <span class="stat-value">Today</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="user-card" onclick="openUserDashboard('bob_johnson')">
-                            <div class="user-card-header">
-                                <div class="user-avatar">BJ</div>
-                                <div class="user-card-info">
-                                    <h4>Bob Johnson</h4>
-                                    <p>Business Owner</p>
-                                    <span class="user-status active">Active</span>
-                                </div>
-                            </div>
-                            <div class="user-card-stats">
-                                <div class="stat-item">
-                                    <span class="stat-label">Total Balance</span>
-                                    <span class="stat-value">$69,753.09</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Last Login</span>
-                                    <span class="stat-value">Yesterday</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="user-card" onclick="openUserDashboard('carol_smith')">
-                            <div class="user-card-header">
-                                <div class="user-avatar">CS</div>
-                                <div class="user-card-info">
-                                    <h4>Carol Smith</h4>
-                                    <p>Retired Teacher</p>
-                                    <span class="user-status active">Active</span>
-                                </div>
-                            </div>
-                            <div class="user-card-stats">
-                                <div class="stat-item">
-                                    <span class="stat-label">Total Balance</span>
-                                    <span class="stat-value">$91,740.79</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Last Login</span>
-                                    <span class="stat-value">2 days ago</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="user-card" onclick="openUserDashboard('david_wilson')">
-                            <div class="user-card-header">
-                                <div class="user-avatar">DW</div>
-                                <div class="user-card-info">
-                                    <h4>David Wilson</h4>
-                                    <p>College Student</p>
-                                    <span class="user-status active">Active</span>
-                                </div>
-                            </div>
-                            <div class="user-card-stats">
-                                <div class="stat-item">
-                                    <span class="stat-label">Total Balance</span>
-                                    <span class="stat-value">$4,568.56</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Last Login</span>
-                                    <span class="stat-value">Today</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="user-card" onclick="openUserDashboard('emma_brown')">
-                            <div class="user-card-header">
-                                <div class="user-avatar">EB</div>
-                                <div class="user-card-info">
-                                    <h4>Emma Brown</h4>
-                                    <p>Marketing Manager</p>
-                                    <span class="user-status active">Active</span>
-                                </div>
-                            </div>
-                            <div class="user-card-stats">
-                                <div class="stat-item">
-                                    <span class="stat-label">Total Balance</span>
-                                    <span class="stat-value">$56,215.67</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Last Login</span>
-                                    <span class="stat-value">Today</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="user-card" onclick="openUserDashboard('frank_miller')">
-                            <div class="user-card-header">
-                                <div class="user-avatar">FM</div>
-                                <div class="user-card-info">
-                                    <h4>Frank Miller</h4>
-                                    <p>Construction Foreman</p>
-                                    <span class="user-status active">Active</span>
-                                </div>
-                            </div>
-                            <div class="user-card-stats">
-                                <div class="stat-item">
-                                    <span class="stat-label">Total Balance</span>
-                                    <span class="stat-value">$23,359.56</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Last Login</span>
-                                    <span class="stat-value">Yesterday</span>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- User cards will be populated dynamically -->
                     </div>
                 </div>
 
@@ -286,9 +162,96 @@
         </div>
     </div>
 
+    <script src="js/local-storage-manager.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/users-data.js"></script>
     <script>
+        // Initialize admin dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdminDashboard();
+        });
+
+        function loadAdminDashboard() {
+            const storageManager = new LocalStorageManager();
+            const allUsers = storageManager.getAllUsers();
+            
+            // Update statistics
+            updateStatistics(allUsers);
+            
+            // Load user cards dynamically
+            loadUserCards(allUsers);
+        }
+
+        function updateStatistics(users) {
+            const totalUsers = Object.keys(users).length;
+            const totalDeposits = Object.values(users).reduce((total, user) => {
+                return total + Object.values(user.accounts).reduce((sum, account) => sum + Math.max(0, account.balance), 0);
+            }, 0);
+            
+            const totalTransactions = Object.values(users).reduce((total, user) => {
+                return total + user.transactions.length;
+            }, 0);
+
+            // Update stat cards
+            document.querySelector('.stat-card:nth-child(1) .stat-value').textContent = totalUsers;
+            document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = formatCurrency(totalDeposits);
+            document.querySelector('.stat-card:nth-child(4) .stat-value').textContent = totalTransactions;
+        }
+
+        function loadUserCards(users) {
+            const userManagementGrid = document.querySelector('.user-management-grid');
+            userManagementGrid.innerHTML = '';
+
+            Object.entries(users).forEach(([userId, userData]) => {
+                const userCard = createUserCard(userId, userData);
+                userManagementGrid.appendChild(userCard);
+            });
+        }
+
+        function createUserCard(userId, userData) {
+            const card = document.createElement('div');
+            card.className = 'user-card';
+            card.onclick = () => openUserDashboard(userId);
+
+            const totalBalance = Object.values(userData.accounts).reduce((sum, account) => sum + account.balance, 0);
+            const lastTransaction = userData.transactions.length > 0 ? 
+                new Date(Math.max(...userData.transactions.map(t => new Date(t.date)))) : 
+                new Date();
+            const daysSinceLastActivity = Math.floor((new Date() - lastTransaction) / (1000 * 60 * 60 * 24));
+            const lastLoginText = daysSinceLastActivity === 0 ? 'Today' : 
+                                 daysSinceLastActivity === 1 ? 'Yesterday' : 
+                                 `${daysSinceLastActivity} days ago`;
+
+            card.innerHTML = `
+                <div class="user-card-header">
+                    <div class="user-avatar">${userData.profile.avatar}</div>
+                    <div class="user-card-info">
+                        <h4>${userData.profile.fullName}</h4>
+                        <p>${userData.profile.profession}</p>
+                        <span class="user-status active">Active</span>
+                    </div>
+                </div>
+                <div class="user-card-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Balance</span>
+                        <span class="stat-value">${formatCurrency(totalBalance)}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Last Activity</span>
+                        <span class="stat-value">${lastLoginText}</span>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 window.location.href = 'login.html';
@@ -303,15 +266,69 @@
         }
 
         function exportUserData() {
-            alert('User data export functionality would be implemented here.');
+            const storageManager = new LocalStorageManager();
+            const allUsers = storageManager.getAllUsers();
+            
+            // Create downloadable JSON file
+            const dataStr = JSON.stringify(allUsers, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `blue-mountain-bank-users-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('User data exported successfully!');
         }
 
         function generateReport() {
-            alert('Report generation functionality would be implemented here.');
+            const storageManager = new LocalStorageManager();
+            const allUsers = storageManager.getAllUsers();
+            
+            // Generate a simple report
+            const report = {
+                generatedAt: new Date().toISOString(),
+                totalUsers: Object.keys(allUsers).length,
+                totalAccounts: Object.values(allUsers).reduce((total, user) => total + Object.keys(user.accounts).length, 0),
+                totalTransactions: Object.values(allUsers).reduce((total, user) => total + user.transactions.length, 0),
+                totalDeposits: Object.values(allUsers).reduce((total, user) => {
+                    return total + Object.values(user.accounts).reduce((sum, account) => sum + Math.max(0, account.balance), 0);
+                }, 0),
+                usersSummary: Object.entries(allUsers).map(([userId, userData]) => ({
+                    userId,
+                    name: userData.profile.fullName,
+                    profession: userData.profile.profession,
+                    totalBalance: Object.values(userData.accounts).reduce((sum, account) => sum + account.balance, 0),
+                    accountCount: Object.keys(userData.accounts).length,
+                    transactionCount: userData.transactions.length
+                }))
+            };
+            
+            // Create downloadable report
+            const reportStr = JSON.stringify(report, null, 2);
+            const reportBlob = new Blob([reportStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(reportBlob);
+            link.download = `blue-mountain-bank-report-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('System report generated and downloaded successfully!');
         }
 
         function systemMaintenance() {
-            alert('System maintenance panel would be implemented here.');
+            const storageManager = new LocalStorageManager();
+            
+            if (confirm('This will reset all user data to default values. Are you sure?')) {
+                storageManager.resetToDefaults();
+                alert('System has been reset to default values. The page will reload.');
+                location.reload();
+            }
         }
     </script>
 </body>

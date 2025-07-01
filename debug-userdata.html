@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug User Data - Blue Mountain Bank</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        pre { background: #f8f9fa; padding: 10px; overflow-x: auto; white-space: pre-wrap; }
+        button { margin: 5px; padding: 10px 15px; cursor: pointer; }
+        .credentials { background: #fff3cd; padding: 10px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Debug User Data - Blue Mountain Bank</h1>
+        
+        <!-- Data Source Status Indicator -->
+        <div class="section info" id="dataSourceStatus">
+            <h3>📊 Data Source Status</h3>
+            <div id="currentDataSource">Checking data source...</div>
+        </div>
+        
+        <div class="credentials">
+            <h3>Test Credentials:</h3>
+            <p><strong>Username:</strong> alice.martinez | <strong>Password:</strong> AliceM2024!</p>
+        </div>
+
+        <div class="section">
+            <h2>1. Test Azure Storage Manager</h2>
+            <button onclick="testStorageManager()">Test Storage Manager</button>
+            <button onclick="resetFallbackMode()">Reset Fallback Mode</button>
+            <div id="storageResults"></div>
+        </div>
+
+        <div class="section">
+            <h2>2. Test Authentication</h2>
+            <button onclick="testAuth()">Test Authentication</button>
+            <div id="authResults"></div>
+        </div>
+
+        <div class="section">
+            <h2>3. Test User Data Loading</h2>
+            <button onclick="testUserData()">Test User Data Loading</button>
+            <div id="userDataResults"></div>
+        </div>
+
+        <div class="section">
+            <h2>4. Data Source Test</h2>
+            <button onclick="testDataSource()">Test Data Source</button>
+            <div id="dataSourceResults"></div>
+        </div>
+
+        <div class="section">
+            <h2>5. Session Information</h2>
+            <button onclick="showSession()">Show Session Info</button>
+            <div id="sessionResults"></div>
+        </div>
+    </div>
+
+    <script src="js/azure-storage-manager.js"></script>
+    <script>
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `section ${type}`;
+            div.innerHTML = message;
+            container.appendChild(div);
+        }
+
+        async function testStorageManager() {
+            const container = document.getElementById('storageResults');
+            container.innerHTML = '';
+            
+            try {
+                addResult('storageResults', 'Creating Azure Storage Manager...', 'info');
+                const manager = new AzureStorageManager();
+                
+                addResult('storageResults', 'Initializing manager...', 'info');
+                await manager.initialize();
+                
+                addResult('storageResults', '✅ Azure Storage Manager initialized successfully', 'success');
+                addResult('storageResults', `<pre>Storage Account: ${manager.storageAccount}\nContainer: ${manager.containerName}\nUse Local Fallback: ${manager.useLocalFallback}</pre>`, 'info');
+                
+                // Test local users
+                addResult('storageResults', `Local users available: ${Object.keys(manager.localUsers).join(', ')}`, 'info');
+                
+            } catch (error) {
+                addResult('storageResults', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAuth() {
+            const container = document.getElementById('authResults');
+            container.innerHTML = '';
+            
+            const username = 'alice.martinez';
+            const password = 'AliceM2024!';
+            
+            try {
+                addResult('authResults', `Testing authentication for ${username}...`, 'info');
+                const manager = new AzureStorageManager();
+                await manager.initialize();
+                
+                const result = await manager.authenticateUser(username, password);
+                
+                if (result.success) {
+                    addResult('authResults', '✅ Authentication successful!', 'success');
+                    addResult('authResults', `<pre>User ID: ${result.userId}\nUser Data Keys: ${Object.keys(result.user).join(', ')}\nData Source: ${result.dataSource || 'Unknown'}</pre>`, 'info');
+                } else {
+                    addResult('authResults', `❌ Authentication failed: ${result.message}`, 'error');
+                }
+                
+            } catch (error) {
+                addResult('authResults', `❌ Error during authentication: ${error.message}`, 'error');
+            }
+        }
+
+        async function testUserData() {
+            const container = document.getElementById('userDataResults');
+            container.innerHTML = '';
+            
+            const userId = 'alice_martinez';
+            
+            try {
+                addResult('userDataResults', `Loading user data for ${userId}...`, 'info');
+                const manager = new AzureStorageManager();
+                await manager.initialize();
+                
+                const userData = await manager.getUserData(userId);
+                
+                if (userData) {
+                    addResult('userDataResults', '✅ User data loaded successfully!', 'success');
+                    
+                    // Show data source information
+                    const dataSource = userData._dataSource || 'Unknown';
+                    addResult('userDataResults', `📊 Data Source: ${dataSource}`, dataSource === 'Azure' ? 'success' : 'info');
+                    
+                    // Check transaction data specifically
+                    const transactions = userData.transactions || userData.recentTransactions || [];
+                    addResult('userDataResults', `Transaction count: ${transactions.length}`, transactions.length > 0 ? 'success' : 'error');
+                    
+                    addResult('userDataResults', `<pre>${JSON.stringify(userData, null, 2)}</pre>`, 'info');
+                    
+                } else {
+                    addResult('userDataResults', '❌ No user data returned', 'error');
+                }
+                
+            } catch (error) {
+                addResult('userDataResults', `❌ Error loading user data: ${error.message}`, 'error');
+            }
+        }
+
+        async function testDataSource() {
+            const container = document.getElementById('dataSourceResults');
+            container.innerHTML = '';
+            
+            try {
+                addResult('dataSourceResults', 'Testing data source connectivity...', 'info');
+                const manager = new AzureStorageManager();
+                await manager.initialize();
+                
+                // Test Azure connectivity
+                addResult('dataSourceResults', `Using Azure fallback: ${manager.useLocalFallback}`, 'info');
+                
+                // Try to fetch a specific file from Azure
+                const testUrl = `https://${manager.storageAccount}.blob.core.windows.net/${manager.containerName}/userdata/users/alice_martinez.json?${manager.sasToken}`;
+                
+                try {
+                    const response = await fetch(testUrl);
+                    if (response.ok) {
+                        const data = await response.json();
+                        addResult('dataSourceResults', '✅ Azure Blob Storage: Connected and accessible', 'success');
+                        addResult('dataSourceResults', `Azure test file size: ${JSON.stringify(data).length} characters`, 'info');
+                        addResult('dataSourceResults', '📊 Primary Data Source: Azure Blob Storage', 'success');
+                    } else {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                } catch (azureError) {
+                    addResult('dataSourceResults', `❌ Azure Blob Storage: ${azureError.message}`, 'error');
+                    addResult('dataSourceResults', '📊 Fallback Data Source: Local JavaScript Objects', 'info');
+                }
+                
+                // Test local fallback
+                const localUsers = Object.keys(manager.localUsers);
+                addResult('dataSourceResults', `Local fallback users: ${localUsers.join(', ')}`, 'info');
+                
+            } catch (error) {
+                addResult('dataSourceResults', `❌ Error testing data source: ${error.message}`, 'error');
+            }
+        }
+
+        async function resetFallbackMode() {
+            const container = document.getElementById('storageResults');
+            
+            try {
+                const manager = new AzureStorageManager();
+                await manager.initialize();
+                manager.resetFallbackMode();
+                
+                addResult('storageResults', '🔄 Fallback mode reset - will try Azure again on next authentication', 'success');
+                addResult('storageResults', `Current fallback status: ${manager.isUsingLocalFallback()}`, 'info');
+                
+            } catch (error) {
+                addResult('storageResults', `❌ Error resetting fallback mode: ${error.message}`, 'error');
+            }
+        }
+
+        function showSession() {
+            const container = document.getElementById('sessionResults');
+            container.innerHTML = '';
+            
+            const currentUser = sessionStorage.getItem('currentUser');
+            const loginTime = sessionStorage.getItem('loginTime');
+            const storageType = sessionStorage.getItem('storageType');
+            const dataSource = sessionStorage.getItem('dataSource');
+            
+            addResult('sessionResults', `<pre>Current User: ${currentUser || 'Not logged in'}\nLogin Time: ${loginTime || 'N/A'}\nStorage Type: ${storageType || 'N/A'}\nData Source: ${dataSource || 'N/A'}</pre>`, currentUser ? 'success' : 'error');
+            
+            if (dataSource) {
+                const sourceEmoji = dataSource === 'Azure' ? '☁️' : '💾';
+                addResult('sessionResults', `${sourceEmoji} Session Data Source: ${dataSource}`, dataSource === 'Azure' ? 'success' : 'info');
+            }
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            updateDataSourceStatus();
+            testStorageManager();
+        });
+
+        function updateDataSourceStatus() {
+            const container = document.getElementById('currentDataSource');
+            const sessionDataSource = sessionStorage.getItem('dataSource');
+            
+            if (sessionDataSource) {
+                const emoji = sessionDataSource === 'Azure' ? '☁️' : '💾';
+                const color = sessionDataSource === 'Azure' ? '#28a745' : '#007bff';
+                container.innerHTML = `<strong style="color: ${color};">${emoji} ${sessionDataSource}</strong> - Data loaded from ${sessionDataSource === 'Azure' ? 'Azure Blob Storage' : 'Local JavaScript fallback'}`;
+            } else {
+                container.innerHTML = '<span style="color: #666;">No active session - data source will be determined on login</span>';
+            }
+        }
+    </script>
+</body>
+</html>

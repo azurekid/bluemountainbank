@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Azure Blob Storage Uploader</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .file-item { margin: 10px 0; padding: 10px; border: 1px solid #ddd; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        button { margin: 5px; padding: 10px 15px; }
+        pre { background: #f8f9fa; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Azure Blob Storage Uploader</h1>
+        <p>This tool will upload sample user data to your Azure Blob Storage container.</p>
+        
+        <h2>Configuration</h2>
+        <div>
+            <label>Storage Account: <input type="text" id="storageAccount" value="bluemountaindata" style="width: 200px;"></label><br><br>
+            <label>Container: <input type="text" id="containerName" value="userdata" style="width: 200px;"></label><br><br>
+            <label>SAS Token: <input type="text" id="sasToken" value="sv=2024-11-04&ss=bfqt&srt=sco&sp=rlptfx&se=2028-07-01T21:22:53Z&st=2025-07-01T13:22:53Z&spr=https&sig=pH34OTj9l29ovANxyjOWAgiShFQ6A3qY0sspcDNp4VE%3D" style="width: 400px;"></label>
+        </div>
+        
+        <h2>Actions</h2>
+        <button onclick="testConnection()">Test Connection</button>
+        <button onclick="uploadAllUsers()">Upload All User Data</button>
+        <button onclick="listBlobs()">List Existing Blobs</button>
+        
+        <h2>Results</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        function getConfig() {
+            const storageAccount = document.getElementById('storageAccount').value;
+            const containerName = document.getElementById('containerName').value;
+            const sasToken = document.getElementById('sasToken').value;
+            const baseUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}`;
+            return { storageAccount, containerName, sasToken, baseUrl };
+        }
+
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `file-item ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+
+        async function testConnection() {
+            const config = getConfig();
+            const testUrl = `${config.baseUrl}?restype=container&comp=list&${config.sasToken}`;
+            
+            addResult('Testing connection to Azure Blob Storage...');
+            
+            try {
+                const response = await fetch(testUrl);
+                if (response.ok) {
+                    addResult('✅ Connection successful!', 'success');
+                    const xmlText = await response.text();
+                    addResult(`Response preview: ${xmlText.substring(0, 200)}...`);
+                } else {
+                    addResult(`❌ Connection failed: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        async function listBlobs() {
+            const config = getConfig();
+            const listUrl = `${config.baseUrl}?restype=container&comp=list&prefix=users/&${config.sasToken}`;
+            
+            addResult('Listing existing blobs...');
+            
+            try {
+                const response = await fetch(listUrl);
+                if (response.ok) {
+                    const xmlText = await response.text();
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                    const blobs = xmlDoc.getElementsByTagName('Blob');
+                    
+                    if (blobs.length === 0) {
+                        addResult('No user data files found in Azure Storage');
+                    } else {
+                        addResult(`Found ${blobs.length} user data files:`);
+                        for (let blob of blobs) {
+                            const name = blob.getElementsByTagName('Name')[0].textContent;
+                            const size = blob.getElementsByTagName('Content-Length')[0].textContent;
+                            addResult(`- ${name} (${size} bytes)`);
+                        }
+                    }
+                } else {
+                    addResult(`❌ Failed to list blobs: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Error listing blobs: ${error.message}`, 'error');
+            }
+        }
+
+        async function uploadUserData(userId, userData) {
+            const config = getConfig();
+            const blobName = `users/${userId}.json`;
+            const url = `${config.baseUrl}/${blobName}?${config.sasToken}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'x-ms-blob-type': 'BlockBlob',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData, null, 2)
+                });
+
+                if (response.ok) {
+                    addResult(`✅ Uploaded ${userId}.json`, 'success');
+                } else {
+                    addResult(`❌ Failed to upload ${userId}.json: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Error uploading ${userId}.json: ${error.message}`, 'error');
+            }
+        }
+
+        async function uploadAllUsers() {
+            addResult('Starting upload of all user data...');
+            
+            // Sample user data with proper structure
+            const users = {
+                'alice_martinez': {
+                    credentials: {
+                        username: 'alice.martinez',
+                        password: 'ec4874af59fe23a3f555276a4ebfa20a3e3ccaa5cd535065d6052db5e7bf5d01',
+                        email: 'alice.martinez@email.com'
+                    },
+                    profile: {
+                        firstName: 'Alice',
+                        lastName: 'Martinez',
+                        fullName: 'Alice Martinez',
+                        age: 28,
+                        profession: 'Software Engineer',
+                        phone: '(555) 123-4567',
+                        address: '1234 Tech Avenue, San Francisco, CA 94105',
+                        joinDate: '2022-03-15',
+                        avatar: 'AM',
+                        accountNumber: '****-1234'
+                    },
+                    accounts: {
+                        checking: {
+                            balance: 8750.43,
+                            accountNumber: 'CHK-001-1234',
+                            type: 'Premium Checking'
+                        },
+                        savings: {
+                            balance: 25300.89,
+                            accountNumber: 'SAV-001-1234',
+                            type: 'High Yield Savings'
+                        }
+                    },
+                    recentTransactions: [
+                        {
+                            id: 'tx_001_001',
+                            date: '2024-12-28',
+                            description: 'Salary Deposit',
+                            amount: 5200.00,
+                            type: 'deposit',
+                            account: 'checking'
+                        },
+                        {
+                            id: 'tx_001_002',
+                            date: '2024-12-27',
+                            description: 'Online Purchase',
+                            amount: -89.99,
+                            type: 'withdrawal',
+                            account: 'checking'
+                        },
+                        {
+                            id: 'tx_001_003',
+                            date: '2024-12-26',
+                            description: 'Coffee Shop',
+                            amount: -12.45,
+                            type: 'withdrawal',
+                            account: 'checking'
+                        }
+                    ],
+                    preferences: {
+                        theme: 'dark',
+                        notifications: true,
+                        language: 'en'
+                    }
+                }
+                // Add more users as needed...
+            };
+
+            for (const [userId, userData] of Object.entries(users)) {
+                await uploadUserData(userId, userData);
+            }
+            
+            addResult('Upload complete! Now test the login.');
+        }
+    </script>
+</body>
+</html>

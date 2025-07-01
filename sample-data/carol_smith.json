@@ -1,0 +1,244 @@
+{
+  "credentials": {
+    "username": "carol.smith",
+    "password": "6320030ac57ad4df03baed0b99b0babf534af7cfb2c601eba9d933f144e9b643",
+    "email": "carol.smith@email.com"
+  },
+  "profile": {
+    "firstName": "Carol",
+    "lastName": "Smith",
+    "fullName": "Carol Smith",
+    "age": 67,
+    "profession": "Retired Teacher",
+    "phone": "(555) 345-6789",
+    "address": "9101 Elm Street, Austin, TX 78701",
+    "joinDate": "2015-05-10",
+    "avatar": "CS",
+    "accountNumber": "****-9101"
+  },
+  "accounts": {
+    "checking": {
+      "balance": 4325.12,
+      "accountNumber": "CHK-003-9101",
+      "type": "Senior Checking"
+    },
+    "savings": {
+      "balance": 87650.45,
+      "accountNumber": "SAV-003-9101",
+      "type": "High Interest Savings"
+    },
+    "credit": {
+      "balance": -234.78,
+      "limit": 5000,
+      "accountNumber": "CC-003-9101",
+      "type": "Classic Credit Card"
+    }
+  },
+  "recentTransactions": [
+    {
+      "id": "tx_003_001",
+      "date": "2025-07-01",
+      "description": "Pension Deposit - Teachers Retirement",
+      "amount": 2780.50,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-university"
+    },
+    {
+      "id": "tx_003_002",
+      "date": "2025-06-30",
+      "description": "Pharmacy - CVS",
+      "amount": -45.67,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "healthcare",
+      "icon": "fas fa-pills"
+    },
+    {
+      "id": "tx_003_003",
+      "date": "2025-06-29",
+      "description": "Grocery Store - Kroger",
+      "amount": -89.23,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "groceries",
+      "icon": "fas fa-shopping-cart"
+    },
+    {
+      "id": "tx_003_004",
+      "date": "2025-06-28",
+      "description": "Doctor Visit Copay",
+      "amount": -25.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "healthcare",
+      "icon": "fas fa-stethoscope"
+    },
+    {
+      "id": "tx_003_005",
+      "date": "2025-06-27",
+      "description": "Donation - Local Library",
+      "amount": -100.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "charity",
+      "icon": "fas fa-heart"
+    },
+    {
+      "id": "tx_003_006",
+      "date": "2025-06-26",
+      "description": "Social Security Deposit",
+      "amount": 1456.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-coins"
+    },
+    {
+      "id": "tx_003_007",
+      "date": "2025-06-25",
+      "description": "Electric Bill - Austin Energy",
+      "amount": -78.45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-bolt"
+    },
+    {
+      "id": "tx_003_008",
+      "date": "2025-06-24",
+      "description": "Book Store - Barnes & Noble",
+      "amount": -34.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-book"
+    },
+    {
+      "id": "tx_003_009",
+      "date": "2025-06-23",
+      "description": "Gas Station - Texaco",
+      "amount": -42.18,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-gas-pump"
+    },
+    {
+      "id": "tx_003_010",
+      "date": "2025-06-22",
+      "description": "Garden Center - Plants & More",
+      "amount": -56.78,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "home",
+      "icon": "fas fa-seedling"
+    },
+    {
+      "id": "tx_003_011",
+      "date": "2025-06-21",
+      "description": "Lunch - Corner Cafe",
+      "amount": -18.95,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-coffee"
+    },
+    {
+      "id": "tx_003_012",
+      "date": "2025-06-20",
+      "description": "Medicare Supplement",
+      "amount": -145.50,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-shield-alt"
+    },
+    {
+      "id": "tx_003_013",
+      "date": "2025-06-19",
+      "description": "Water Bill - City of Austin",
+      "amount": -34.78,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-tint"
+    },
+    {
+      "id": "tx_003_014",
+      "date": "2025-06-18",
+      "description": "Charity - Red Cross",
+      "amount": -50.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "charity",
+      "icon": "fas fa-heart"
+    },
+    {
+      "id": "tx_003_015",
+      "date": "2025-06-17",
+      "description": "Dental Checkup Copay",
+      "amount": -30.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "healthcare",
+      "icon": "fas fa-tooth"
+    },
+    {
+      "id": "tx_003_016",
+      "date": "2025-06-16",
+      "description": "Grocery Store - H-E-B",
+      "amount": -76.45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "groceries",
+      "icon": "fas fa-shopping-cart"
+    },
+    {
+      "id": "tx_003_017",
+      "date": "2025-06-15",
+      "description": "Pension Deposit - Teachers Retirement",
+      "amount": 2780.50,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-university"
+    },
+    {
+      "id": "tx_003_018",
+      "date": "2025-06-14",
+      "description": "Senior Center - Yoga Class",
+      "amount": -15.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "health",
+      "icon": "fas fa-spa"
+    },
+    {
+      "id": "tx_003_019",
+      "date": "2025-06-13",
+      "description": "Netflix Subscription",
+      "amount": -8.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-tv"
+    },
+    {
+      "id": "tx_003_020",
+      "date": "2025-06-12",
+      "description": "Dinner - Hometown Buffet",
+      "amount": -24.85,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-utensils"
+    }
+  ],
+  "preferences": {
+    "theme": "dark",
+    "notifications": true,
+    "language": "en"
+  }
+}

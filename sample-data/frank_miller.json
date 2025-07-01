@@ -1,0 +1,244 @@
+{
+  "credentials": {
+    "username": "frank.miller",
+    "password": "5e3c0a612afee08a6a8a1c395c962dceb069a56ef988a36ab71f87dc2bade904",
+    "email": "frank.miller@arizonapipelines.com"
+  },
+  "profile": {
+    "firstName": "Frank",
+    "lastName": "Miller",
+    "fullName": "Frank Miller",
+    "age": 38,
+    "profession": "Construction Foreman",
+    "phone": "(555) 678-9012",
+    "address": "8642 Industrial Blvd, Phoenix, AZ 85034",
+    "joinDate": "2018-02-28",
+    "avatar": "FM",
+    "accountNumber": "****-8642"
+  },
+  "accounts": {
+    "checking": {
+      "balance": 6785.32,
+      "accountNumber": "CHK-006-8642",
+      "type": "Working Man's Checking"
+    },
+    "savings": {
+      "balance": 18450.78,
+      "accountNumber": "SAV-006-8642",
+      "type": "Goal Saver Account"
+    },
+    "credit": {
+      "balance": -1876.54,
+      "limit": 8000,
+      "accountNumber": "CC-006-8642",
+      "type": "Tools & Equipment Card"
+    }
+  },
+  "recentTransactions": [
+    {
+      "id": "tx_006_001",
+      "date": "2025-07-01",
+      "description": "Paycheck - Arizona Construction Co",
+      "amount": 1890.75,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "tx_006_002",
+      "date": "2025-06-30",
+      "description": "Mortgage Payment",
+      "amount": -1245.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "housing",
+      "icon": "fas fa-home"
+    },
+    {
+      "id": "tx_006_003",
+      "date": "2025-06-29",
+      "description": "Work Boots - Red Wing",
+      "amount": -189.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "work",
+      "icon": "fas fa-hard-hat"
+    },
+    {
+      "id": "tx_006_004",
+      "date": "2025-06-28",
+      "description": "Truck Fuel - Circle K",
+      "amount": -85.43,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-gas-pump"
+    },
+    {
+      "id": "tx_006_005",
+      "date": "2025-06-27",
+      "description": "Grocery Store - Fry's",
+      "amount": -156.78,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "groceries",
+      "icon": "fas fa-shopping-cart"
+    },
+    {
+      "id": "tx_006_006",
+      "date": "2025-06-26",
+      "description": "Tools - Harbor Freight",
+      "amount": -234.56,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "work",
+      "icon": "fas fa-toolbox"
+    },
+    {
+      "id": "tx_006_007",
+      "date": "2025-06-25",
+      "description": "Family Dinner - Applebee's",
+      "amount": -67.89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-utensils"
+    },
+    {
+      "id": "tx_006_008",
+      "date": "2025-06-24",
+      "description": "Overtime Pay",
+      "amount": 345.25,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-clock"
+    },
+    {
+      "id": "tx_006_009",
+      "date": "2025-06-23",
+      "description": "Auto Insurance - State Farm",
+      "amount": -98.50,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-car"
+    },
+    {
+      "id": "tx_006_010",
+      "date": "2025-06-22",
+      "description": "Home Improvement - Lowe's",
+      "amount": -298.67,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "home",
+      "icon": "fas fa-hammer"
+    },
+    {
+      "id": "tx_006_011",
+      "date": "2025-06-21",
+      "description": "Beer & Snacks - Convenience Store",
+      "amount": -34.21,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "personal",
+      "icon": "fas fa-beer"
+    },
+    {
+      "id": "tx_006_012",
+      "date": "2025-06-20",
+      "description": "Phoenix Suns Tickets",
+      "amount": -120.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-basketball-ball"
+    },
+    {
+      "id": "tx_006_013",
+      "date": "2025-06-19",
+      "description": "Work Shirt - Carhartt",
+      "amount": -45.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "work",
+      "icon": "fas fa-tshirt"
+    },
+    {
+      "id": "tx_006_014",
+      "date": "2025-06-18",
+      "description": "Phone Bill - Verizon",
+      "amount": -78.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-phone"
+    },
+    {
+      "id": "tx_006_015",
+      "date": "2025-06-17",
+      "description": "Barbershop",
+      "amount": -25.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "personal",
+      "icon": "fas fa-cut"
+    },
+    {
+      "id": "tx_006_016",
+      "date": "2025-06-16",
+      "description": "Hardware Store - Ace Hardware",
+      "amount": -67.89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "work",
+      "icon": "fas fa-wrench"
+    },
+    {
+      "id": "tx_006_017",
+      "date": "2025-06-15",
+      "description": "Paycheck - Arizona Construction Co",
+      "amount": 1890.75,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "tx_006_018",
+      "date": "2025-06-14",
+      "description": "Fast Food - McDonald's",
+      "amount": -12.45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-hamburger"
+    },
+    {
+      "id": "tx_006_019",
+      "date": "2025-06-13",
+      "description": "Safety Equipment",
+      "amount": -89.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "work",
+      "icon": "fas fa-shield-alt"
+    },
+    {
+      "id": "tx_006_020",
+      "date": "2025-06-12",
+      "description": "Truck Maintenance",
+      "amount": -156.78,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-tools"
+    }
+  ],
+  "preferences": {
+    "theme": "dark",
+    "notifications": false,
+    "language": "en"
+  }
+}

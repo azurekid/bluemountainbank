@@ -1,0 +1,244 @@
+{
+  "credentials": {
+    "username": "alice.martinez",
+    "password": "ec4874af59fe23a3f555276a4ebfa20a3e3ccaa5cd535065d6052db5e7bf5d01",
+    "email": "alice.martinez@email.com"
+  },
+  "profile": {
+    "firstName": "Alice",
+    "lastName": "Martinez",
+    "fullName": "Alice Martinez",
+    "age": 28,
+    "profession": "Software Engineer",
+    "phone": "(555) 123-4567",
+    "address": "1234 Tech Avenue, San Francisco, CA 94105",
+    "joinDate": "2022-03-15",
+    "avatar": "AM",
+    "accountNumber": "****-1234"
+  },
+  "accounts": {
+    "checking": {
+      "balance": 8750.43,
+      "accountNumber": "CHK-001-1234",
+      "type": "Premium Checking"
+    },
+    "savings": {
+      "balance": 25300.89,
+      "accountNumber": "SAV-001-1234",
+      "type": "High Yield Savings"
+    },
+    "credit": {
+      "balance": -1234.56,
+      "limit": 15000,
+      "accountNumber": "CC-001-1234",
+      "type": "Rewards Credit Card"
+    }
+  },
+  "recentTransactions": [
+    {
+      "id": "tx_001_001",
+      "date": "2025-07-01",
+      "description": "Salary Deposit - TechCorp Inc",
+      "amount": 4250.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "tx_001_002",
+      "date": "2025-06-30",
+      "description": "Rent Payment - Bay Area Apartments",
+      "amount": -2200.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "housing",
+      "icon": "fas fa-home"
+    },
+    {
+      "id": "tx_001_003",
+      "date": "2025-06-29",
+      "description": "Grocery Store - Whole Foods",
+      "amount": -127.83,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "groceries",
+      "icon": "fas fa-shopping-cart"
+    },
+    {
+      "id": "tx_001_004",
+      "date": "2025-06-28",
+      "description": "Coffee Shop - Blue Bottle",
+      "amount": -12.45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-coffee"
+    },
+    {
+      "id": "tx_001_005",
+      "date": "2025-06-27",
+      "description": "Gas Station - Shell",
+      "amount": -65.20,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-gas-pump"
+    },
+    {
+      "id": "tx_001_006",
+      "date": "2025-06-26",
+      "description": "Online Transfer to Savings",
+      "amount": -1000.00,
+      "type": "transfer",
+      "account": "checking",
+      "category": "savings",
+      "icon": "fas fa-piggy-bank"
+    },
+    {
+      "id": "tx_001_007",
+      "date": "2025-06-25",
+      "description": "Gym Membership - FitLife",
+      "amount": -89.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "health",
+      "icon": "fas fa-dumbbell"
+    },
+    {
+      "id": "tx_001_008",
+      "date": "2025-06-24",
+      "description": "Uber Ride",
+      "amount": -18.75,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-car"
+    },
+    {
+      "id": "tx_001_009",
+      "date": "2025-06-25",
+      "description": "Amazon Purchase - Tech Gadgets",
+      "amount": -156.32,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "shopping",
+      "icon": "fas fa-shopping-bag"
+    },
+    {
+      "id": "tx_001_010",
+      "date": "2025-06-22",
+      "description": "Netflix Subscription",
+      "amount": -15.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-tv"
+    },
+    {
+      "id": "tx_001_011",
+      "date": "2025-06-21",
+      "description": "Freelance Project Payment",
+      "amount": 750.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-laptop-code"
+    },
+    {
+      "id": "tx_001_012",
+      "date": "2025-06-20",
+      "description": "Restaurant - Chez Laurent",
+      "amount": -89.50,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-utensils"
+    },
+    {
+      "id": "tx_001_013",
+      "date": "2025-06-19",
+      "description": "Electric Bill - PG&E",
+      "amount": -145.67,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-bolt"
+    },
+    {
+      "id": "tx_001_014",
+      "date": "2025-06-18",
+      "description": "Mobile Deposit - Check",
+      "amount": 320.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-mobile-alt"
+    },
+    {
+      "id": "tx_001_015",
+      "date": "2025-06-17",
+      "description": "Pharmacy - CVS",
+      "amount": -34.89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "healthcare",
+      "icon": "fas fa-pills"
+    },
+    {
+      "id": "tx_001_016",
+      "date": "2025-06-16",
+      "description": "Spotify Premium",
+      "amount": -12.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-music"
+    },
+    {
+      "id": "tx_001_017",
+      "date": "2025-06-15",
+      "description": "Salary Deposit - TechCorp Inc",
+      "amount": 4250.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "tx_001_018",
+      "date": "2025-06-14",
+      "description": "Target - Household Items",
+      "amount": -67.23,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "shopping",
+      "icon": "fas fa-shopping-cart"
+    },
+    {
+      "id": "tx_001_019",
+      "date": "2025-06-13",
+      "description": "Lunch - Chipotle",
+      "amount": -14.75,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-pepper-hot"
+    },
+    {
+      "id": "tx_001_020",
+      "date": "2025-06-12",
+      "description": "Investment Transfer - Vanguard",
+      "amount": -500.00,
+      "type": "transfer",
+      "account": "checking",
+      "category": "investment",
+      "icon": "fas fa-chart-line"
+    }
+  ],
+  "preferences": {
+    "theme": "light",
+    "notifications": true,
+    "language": "en"
+  }
+}

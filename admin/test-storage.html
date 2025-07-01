@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage Test - Blue Mountain Bank</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .result {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+        .success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+        }
+    </style>
+</head>
+<body>
+    <h1>Blue Mountain Bank - Storage System Test</h1>
+    
+    <div class="test-section">
+        <h2>LocalStorage Manager Test</h2>
+        <button onclick="testInitialization()">Test Initialization</button>
+        <button onclick="testAuthentication()">Test Authentication</button>
+        <button onclick="testUserData()">Test User Data</button>
+        <button onclick="testAllUsers()">Test Get All Users</button>
+        <button onclick="testTransactionAdd()">Test Add Transaction</button>
+        <button onclick="clearStorage()">Clear Storage</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script src="js/local-storage-manager.js"></script>
+    <script>
+        let storageManager;
+        const resultsDiv = document.getElementById('results');
+
+        // Initialize storage manager
+        try {
+            storageManager = new LocalStorageManager();
+            addResult('Storage Manager initialized successfully!', 'success');
+        } catch (error) {
+            addResult(`Error initializing storage manager: ${error.message}`, 'error');
+        }
+
+        function addResult(message, type = '') {
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.textContent = message;
+            resultsDiv.appendChild(div);
+        }
+
+        function testInitialization() {
+            addResult('\n=== Testing Initialization ===');
+            try {
+                const data = storageManager.loadData();
+                if (data && data.users) {
+                    const userCount = Object.keys(data.users).length;
+                    addResult(`✓ Data loaded successfully with ${userCount} users`, 'success');
+                    addResult(`Users: ${Object.keys(data.users).join(', ')}`);
+                } else {
+                    addResult('✗ No data found or invalid data structure', 'error');
+                }
+            } catch (error) {
+                addResult(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testAuthentication() {
+            addResult('\n=== Testing Authentication ===');
+            try {
+                // Test valid credentials
+                const validAuth = storageManager.authenticateUser('alice.martinez', 'AliceM2024!');
+                if (validAuth.success) {
+                    addResult(`✓ Valid auth successful for user: ${validAuth.userId}`, 'success');
+                } else {
+                    addResult('✗ Valid auth failed', 'error');
+                }
+
+                // Test invalid credentials
+                const invalidAuth = storageManager.authenticateUser('invalid', 'wrong');
+                if (!invalidAuth.success) {
+                    addResult('✓ Invalid auth correctly rejected', 'success');
+                } else {
+                    addResult('✗ Invalid auth incorrectly accepted', 'error');
+                }
+            } catch (error) {
+                addResult(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testUserData() {
+            addResult('\n=== Testing User Data Retrieval ===');
+            try {
+                const userData = storageManager.getUserData('alice_martinez');
+                if (userData) {
+                    addResult(`✓ User data retrieved for ${userData.profile.fullName}`, 'success');
+                    addResult(`Profile: ${userData.profile.profession}, Age: ${userData.profile.age}`);
+                    addResult(`Accounts: ${Object.keys(userData.accounts).join(', ')}`);
+                    addResult(`Transaction count: ${userData.transactions.length}`);
+                } else {
+                    addResult('✗ No user data found', 'error');
+                }
+            } catch (error) {
+                addResult(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testAllUsers() {
+            addResult('\n=== Testing Get All Users ===');
+            try {
+                const allUsers = storageManager.getAllUsers();
+                if (allUsers) {
+                    const userList = Object.entries(allUsers).map(([id, user]) => 
+                        `${id}: ${user.profile.fullName} (${user.profile.profession})`
+                    );
+                    addResult(`✓ Retrieved ${Object.keys(allUsers).length} users:`, 'success');
+                    addResult(userList.join('\n'));
+                } else {
+                    addResult('✗ No users found', 'error');
+                }
+            } catch (error) {
+                addResult(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testTransactionAdd() {
+            addResult('\n=== Testing Add Transaction ===');
+            try {
+                const newTransaction = {
+                    id: Date.now(),
+                    date: new Date().toISOString(),
+                    description: 'Test Transaction',
+                    amount: 100.00,
+                    category: 'test',
+                    icon: 'fas fa-test-icon'
+                };
+
+                const success = storageManager.addTransaction('alice_martinez', newTransaction);
+                if (success) {
+                    addResult('✓ Transaction added successfully', 'success');
+                    
+                    // Verify it was added
+                    const userData = storageManager.getUserData('alice_martinez');
+                    const addedTransaction = userData.transactions.find(t => t.id === newTransaction.id);
+                    if (addedTransaction) {
+                        addResult('✓ Transaction verified in user data', 'success');
+                    } else {
+                        addResult('✗ Transaction not found in user data', 'error');
+                    }
+                } else {
+                    addResult('✗ Failed to add transaction', 'error');
+                }
+            } catch (error) {
+                addResult(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function clearStorage() {
+            addResult('\n=== Clearing Storage ===');
+            try {
+                storageManager.clearData();
+                storageManager.initializeData();
+                addResult('✓ Storage cleared and reinitialized', 'success');
+            } catch (error) {
+                addResult(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

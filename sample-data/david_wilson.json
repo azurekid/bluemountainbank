@@ -1,0 +1,244 @@
+{
+  "credentials": {
+    "username": "david.wilson",
+    "password": "2a0841af892abcaf953782cbe8625f107fc59aeb2015f2fa05dbbf256086db7a",
+    "email": "david.wilson@email.com"
+  },
+  "profile": {
+    "firstName": "David",
+    "lastName": "Wilson",
+    "fullName": "David Wilson",
+    "age": 21,
+    "profession": "College Student",
+    "phone": "(555) 456-7890",
+    "address": "2468 College Ave, Boston, MA 02115",
+    "joinDate": "2023-09-01",
+    "avatar": "DW",
+    "accountNumber": "****-2468"
+  },
+  "accounts": {
+    "checking": {
+      "balance": 1245.67,
+      "accountNumber": "CHK-004-2468",
+      "type": "Student Checking"
+    },
+    "savings": {
+      "balance": 3890.23,
+      "accountNumber": "SAV-004-2468",
+      "type": "Student Savings"
+    },
+    "credit": {
+      "balance": -567.34,
+      "limit": 2500,
+      "accountNumber": "CC-004-2468",
+      "type": "Student Credit Card"
+    }
+  },
+  "recentTransactions": [
+    {
+      "id": "tx_004_001",
+      "date": "2025-07-01",
+      "description": "Part-time Job - Campus Bookstore",
+      "amount": 320.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "tx_004_002",
+      "date": "2025-06-30",
+      "description": "Textbooks - Amazon",
+      "amount": -245.89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "education",
+      "icon": "fas fa-book-open"
+    },
+    {
+      "id": "tx_004_003",
+      "date": "2025-06-29",
+      "description": "Pizza Delivery - Domino's",
+      "amount": -18.75,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-pizza-slice"
+    },
+    {
+      "id": "tx_004_004",
+      "date": "2025-06-28",
+      "description": "Laundromat",
+      "amount": -8.50,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "personal",
+      "icon": "fas fa-tshirt"
+    },
+    {
+      "id": "tx_004_005",
+      "date": "2025-06-27",
+      "description": "Coffee - Starbucks",
+      "amount": -6.95,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-coffee"
+    },
+    {
+      "id": "tx_004_006",
+      "date": "2025-06-26",
+      "description": "Financial Aid Refund",
+      "amount": 850.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-graduation-cap"
+    },
+    {
+      "id": "tx_004_007",
+      "date": "2025-06-25",
+      "description": "Movie Tickets",
+      "amount": -24.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-film"
+    },
+    {
+      "id": "tx_004_008",
+      "date": "2025-06-24",
+      "description": "Grocery Store - Target",
+      "amount": -67.43,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "groceries",
+      "icon": "fas fa-shopping-cart"
+    },
+    {
+      "id": "tx_004_009",
+      "date": "2025-06-23",
+      "description": "Bus Pass - MBTA",
+      "amount": -30.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-bus"
+    },
+    {
+      "id": "tx_004_010",
+      "date": "2025-06-22",
+      "description": "Spotify Premium",
+      "amount": -9.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-music"
+    },
+    {
+      "id": "tx_004_011",
+      "date": "2025-06-21",
+      "description": "Study Group Snacks",
+      "amount": -15.67,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-cookie-bite"
+    },
+    {
+      "id": "tx_004_012",
+      "date": "2025-06-20",
+      "description": "Parent Transfer",
+      "amount": 200.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-hand-holding-heart"
+    },
+    {
+      "id": "tx_004_013",
+      "date": "2025-06-19",
+      "description": "Campus Gym Membership",
+      "amount": -45.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "health",
+      "icon": "fas fa-dumbbell"
+    },
+    {
+      "id": "tx_004_014",
+      "date": "2025-06-18",
+      "description": "Uber Eats - Late Night",
+      "amount": -22.50,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-hamburger"
+    },
+    {
+      "id": "tx_004_015",
+      "date": "2025-06-17",
+      "description": "School Supplies - Staples",
+      "amount": -67.89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "education",
+      "icon": "fas fa-pencil-alt"
+    },
+    {
+      "id": "tx_004_016",
+      "date": "2025-06-16",
+      "description": "Gaming - Steam Purchase",
+      "amount": -29.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-gamepad"
+    },
+    {
+      "id": "tx_004_017",
+      "date": "2025-06-15",
+      "description": "Part-time Job - Campus Bookstore",
+      "amount": 320.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "tx_004_018",
+      "date": "2025-06-14",
+      "description": "Pharmacy - CVS",
+      "amount": -12.45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "healthcare",
+      "icon": "fas fa-pills"
+    },
+    {
+      "id": "tx_004_019",
+      "date": "2025-06-13",
+      "description": "Fast Food - Taco Bell",
+      "amount": -9.87,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-pepper-hot"
+    },
+    {
+      "id": "tx_004_020",
+      "date": "2025-06-12",
+      "description": "Used Books - Online",
+      "amount": -34.56,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "education",
+      "icon": "fas fa-book"
+    }
+  ],
+  "preferences": {
+    "theme": "dark",
+    "notifications": true,
+    "language": "en"
+  }
+}

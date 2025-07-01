@@ -1,0 +1,244 @@
+{
+  "credentials": {
+    "username": "emma.brown",
+    "password": "3089f8b268a347b23738dfd1caf39c9c49b607289461d682ba93f317adbd3b5f",
+    "email": "emma.brown@email.com"
+  },
+  "profile": {
+    "firstName": "Emma",
+    "lastName": "Brown",
+    "fullName": "Emma Brown",
+    "age": 34,
+    "profession": "Marketing Manager",
+    "phone": "(555) 567-8901",
+    "address": "1357 Park Avenue, New York, NY 10028",
+    "joinDate": "2020-11-12",
+    "avatar": "EB",
+    "accountNumber": "****-1357"
+  },
+  "accounts": {
+    "checking": {
+      "balance": 12890.45,
+      "accountNumber": "CHK-005-1357",
+      "type": "Premium Checking"
+    },
+    "savings": {
+      "balance": 45670.89,
+      "accountNumber": "SAV-005-1357",
+      "type": "Investment Savings"
+    },
+    "credit": {
+      "balance": -2345.67,
+      "limit": 18000,
+      "accountNumber": "CC-005-1357",
+      "type": "Platinum Rewards Card"
+    }
+  },
+  "recentTransactions": [
+    {
+      "id": "tx_005_001",
+      "date": "2025-07-01",
+      "description": "Salary - Global Marketing Inc",
+      "amount": 5250.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "tx_005_002",
+      "date": "2025-06-30",
+      "description": "Rent - Manhattan Apartments",
+      "amount": -3200.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "housing",
+      "icon": "fas fa-building"
+    },
+    {
+      "id": "tx_005_003",
+      "date": "2025-06-29",
+      "description": "Designer Clothing - Nordstrom",
+      "amount": -456.78,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "shopping",
+      "icon": "fas fa-shopping-bag"
+    },
+    {
+      "id": "tx_005_004",
+      "date": "2025-06-28",
+      "description": "Yoga Class - CorePower",
+      "amount": -35.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "health",
+      "icon": "fas fa-spa"
+    },
+    {
+      "id": "tx_005_005",
+      "date": "2025-06-27",
+      "description": "Fine Dining - Le Bernardin",
+      "amount": -180.50,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-wine-glass-alt"
+    },
+    {
+      "id": "tx_005_006",
+      "date": "2025-06-26",
+      "description": "Investment Transfer",
+      "amount": -2000.00,
+      "type": "transfer",
+      "account": "checking",
+      "category": "investment",
+      "icon": "fas fa-chart-line"
+    },
+    {
+      "id": "tx_005_007",
+      "date": "2025-06-25",
+      "description": "Taxi - NYC Yellow Cab",
+      "amount": -25.40,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-taxi"
+    },
+    {
+      "id": "tx_005_008",
+      "date": "2025-06-24",
+      "description": "Skincare - Sephora",
+      "amount": -89.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "personal",
+      "icon": "fas fa-magic"
+    },
+    {
+      "id": "tx_005_009",
+      "date": "2025-06-23",
+      "description": "Wine Shop - Vintage Cellars",
+      "amount": -125.67,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-wine-bottle"
+    },
+    {
+      "id": "tx_005_010",
+      "date": "2025-06-22",
+      "description": "Broadway Show Tickets",
+      "amount": -240.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-theater-masks"
+    },
+    {
+      "id": "tx_005_011",
+      "date": "2025-06-21",
+      "description": "Bonus - Q2 Performance",
+      "amount": 1500.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-trophy"
+    },
+    {
+      "id": "tx_005_012",
+      "date": "2025-06-20",
+      "description": "Personal Trainer",
+      "amount": -120.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "health",
+      "icon": "fas fa-dumbbell"
+    },
+    {
+      "id": "tx_005_013",
+      "date": "2025-06-19",
+      "description": "Luxury Spa Day",
+      "amount": -350.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "health",
+      "icon": "fas fa-spa"
+    },
+    {
+      "id": "tx_005_014",
+      "date": "2025-06-18",
+      "description": "Art Gallery Opening",
+      "amount": -75.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-palette"
+    },
+    {
+      "id": "tx_005_015",
+      "date": "2025-06-17",
+      "description": "Professional Networking Event",
+      "amount": -95.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "business",
+      "icon": "fas fa-handshake"
+    },
+    {
+      "id": "tx_005_016",
+      "date": "2025-06-16",
+      "description": "Luxury Shopping - Tiffany & Co",
+      "amount": -890.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "shopping",
+      "icon": "fas fa-gem"
+    },
+    {
+      "id": "tx_005_017",
+      "date": "2025-06-15",
+      "description": "Salary - Global Marketing Inc",
+      "amount": 5250.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "tx_005_018",
+      "date": "2025-06-14",
+      "description": "High-end Grocery - Dean & DeLuca",
+      "amount": -156.78,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "groceries",
+      "icon": "fas fa-shopping-cart"
+    },
+    {
+      "id": "tx_005_019",
+      "date": "2025-06-13",
+      "description": "Private Pilates Session",
+      "amount": -85.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "health",
+      "icon": "fas fa-spa"
+    },
+    {
+      "id": "tx_005_020",
+      "date": "2025-06-12",
+      "description": "Executive Travel - Uber",
+      "amount": -45.60,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-car"
+    }
+  ],
+  "preferences": {
+    "theme": "light",
+    "notifications": true,
+    "language": "en"
+  }
+}

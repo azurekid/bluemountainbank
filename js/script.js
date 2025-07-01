@@ -370,7 +370,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Authentication functionality
-function handleLogin(event) {
+async function handleLogin(event) {
     event.preventDefault();
     
     const username = document.getElementById('username').value;
@@ -388,18 +388,42 @@ function handleLogin(event) {
         return;
     }
     
-    // Check user credentials
-    const authResult = authenticateUser(username, password);
-    
-    if (authResult.success) {
-        // Store user session
-        sessionStorage.setItem('currentUser', authResult.userId);
-        sessionStorage.setItem('loginTime', new Date().toISOString());
+    // Initialize Azure storage manager and authenticate user
+    try {
+        console.log('Starting login process...');
         
-        // Redirect to dynamic user dashboard
-        window.location.href = 'user-dashboard.html';
-    } else {
-        showLoginError('Invalid username or password. Please try again.');
+        // Check if AzureStorageManager is available
+        if (typeof AzureStorageManager === 'undefined') {
+            throw new Error('AzureStorageManager not loaded');
+        }
+        
+        const storageManager = new AzureStorageManager();
+        console.log('Storage manager created');
+        
+        await storageManager.initialize();
+        console.log('Storage manager initialized');
+        
+        const authResult = await storageManager.authenticateUser(username, password);
+        console.log('Authentication result:', authResult);
+        
+        if (authResult.success) {
+            // Store user session
+            sessionStorage.setItem('currentUser', authResult.userId);
+            sessionStorage.setItem('loginTime', new Date().toISOString());
+            sessionStorage.setItem('storageType', 'azure');
+            sessionStorage.setItem('dataSource', authResult.dataSource || 'Unknown');
+            
+            console.log('Login successful, redirecting to dashboard');
+            console.log('Data source:', authResult.dataSource);
+            // Redirect to dynamic user dashboard
+            window.location.href = 'user-dashboard.html';
+        } else {
+            showLoginError('Invalid username or password. Please try again.');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        console.error('Error stack:', error.stack);
+        showLoginError('Service temporarily unavailable. Please try again later.');
     }
 }
 

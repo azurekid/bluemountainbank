@@ -1,0 +1,244 @@
+{
+  "credentials": {
+    "username": "bob.johnson",
+    "password": "7552dd66eb5496ddfed93eafe079b50f123c6e13af2967d3d4bc39a7455200a6",
+    "email": "bob.johnson@email.com"
+  },
+  "profile": {
+    "firstName": "Bob",
+    "lastName": "Johnson",
+    "fullName": "Bob Johnson",
+    "age": 45,
+    "profession": "Small Business Owner",
+    "phone": "(555) 234-5678",
+    "address": "5678 Main Street, Denver, CO 80202",
+    "joinDate": "2019-08-22",
+    "avatar": "BJ",
+    "accountNumber": "****-5678"
+  },
+  "accounts": {
+    "checking": {
+      "balance": 15420.75,
+      "accountNumber": "CHK-002-5678",
+      "type": "Business Checking"
+    },
+    "savings": {
+      "balance": 58900.23,
+      "accountNumber": "SAV-002-5678",
+      "type": "Business Savings"
+    },
+    "credit": {
+      "balance": -4567.89,
+      "limit": 25000,
+      "accountNumber": "CC-002-5678",
+      "type": "Business Credit Card"
+    }
+  },
+  "recentTransactions": [
+    {
+      "id": "tx_002_001",
+      "date": "2025-07-01",
+      "description": "Customer Payment - Invoice #1234",
+      "amount": 2850.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "tx_002_002",
+      "date": "2025-06-30",
+      "description": "Office Supplies - Staples",
+      "amount": -234.67,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "business",
+      "icon": "fas fa-briefcase"
+    },
+    {
+      "id": "tx_002_003",
+      "date": "2025-06-29",
+      "description": "Equipment Rental",
+      "amount": -450.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "business",
+      "icon": "fas fa-tools"
+    },
+    {
+      "id": "tx_002_004",
+      "date": "2025-06-28",
+      "description": "Insurance Payment - Business Policy",
+      "amount": -320.45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-shield-alt"
+    },
+    {
+      "id": "tx_002_005",
+      "date": "2025-06-27",
+      "description": "Utilities - Electric Company",
+      "amount": -178.92,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-bolt"
+    },
+    {
+      "id": "tx_002_006",
+      "date": "2025-06-26",
+      "description": "Client Payment - Project Alpha",
+      "amount": 1750.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-handshake"
+    },
+    {
+      "id": "tx_002_007",
+      "date": "2025-06-25",
+      "description": "Truck Payment - Ford Credit",
+      "amount": -567.89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-truck"
+    },
+    {
+      "id": "tx_002_008",
+      "date": "2025-06-24",
+      "description": "Lunch Meeting - Romano's",
+      "amount": -67.43,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-utensils"
+    },
+    {
+      "id": "tx_002_009",
+      "date": "2025-06-23",
+      "description": "Marketing - Google Ads",
+      "amount": -125.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "business",
+      "icon": "fas fa-bullhorn"
+    },
+    {
+      "id": "tx_002_010",
+      "date": "2025-06-22",
+      "description": "Hardware Store - Home Depot",
+      "amount": -198.76,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "business",
+      "icon": "fas fa-hammer"
+    },
+    {
+      "id": "tx_002_011",
+      "date": "2025-06-21",
+      "description": "Deposit - Cash Sales",
+      "amount": 890.50,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-cash-register"
+    },
+    {
+      "id": "tx_002_012",
+      "date": "2025-06-20",
+      "description": "Phone Bill - Verizon Business",
+      "amount": -89.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-phone"
+    },
+    {
+      "id": "tx_002_013",
+      "date": "2025-06-19",
+      "description": "Fuel - Business Truck",
+      "amount": -156.78,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transportation",
+      "icon": "fas fa-gas-pump"
+    },
+    {
+      "id": "tx_002_014",
+      "date": "2025-06-18",
+      "description": "Client Meeting - Starbucks",
+      "amount": -23.45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-coffee"
+    },
+    {
+      "id": "tx_002_015",
+      "date": "2025-06-17",
+      "description": "Software License - QuickBooks",
+      "amount": -89.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "business",
+      "icon": "fas fa-laptop"
+    },
+    {
+      "id": "tx_002_016",
+      "date": "2025-06-16",
+      "description": "Customer Payment - Invoice #1189",
+      "amount": 1890.00,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "tx_002_017",
+      "date": "2025-06-15",
+      "description": "Business Lunch - Olive Garden",
+      "amount": -78.90,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "dining",
+      "icon": "fas fa-utensils"
+    },
+    {
+      "id": "tx_002_018",
+      "date": "2025-06-14",
+      "description": "Internet Bill - Comcast Business",
+      "amount": -129.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-wifi"
+    },
+    {
+      "id": "tx_002_019",
+      "date": "2025-06-13",
+      "description": "Office Rent Payment",
+      "amount": -1200.00,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "business",
+      "icon": "fas fa-building"
+    },
+    {
+      "id": "tx_002_020",
+      "date": "2025-06-12",
+      "description": "Equipment Purchase - Tools",
+      "amount": -345.67,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "business",
+      "icon": "fas fa-toolbox"
+    }
+  ],
+  "preferences": {
+    "theme": "dark",
+    "notifications": true,
+    "language": "en"
+  }
+}

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error Debug - Blue Mountain Bank</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background: #f5f5f5;
+            color: #333;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .error { 
+            background-color: #f8d7da; 
+            border: 1px solid #f5c6cb; 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin: 20px 0;
+        }
+        .success { 
+            background-color: #d4edda; 
+            border: 1px solid #c3e6cb; 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin: 20px 0;
+        }
+        .info { 
+            background-color: #d1ecf1; 
+            border: 1px solid #bee5eb; 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin: 20px 0;
+        }
+        pre { 
+            background: #f8f9fa; 
+            padding: 10px; 
+            overflow-x: auto; 
+            white-space: pre-wrap; 
+            border-radius: 3px;
+        }
+        button { 
+            margin: 5px; 
+            padding: 10px 15px; 
+            cursor: pointer; 
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .back-link:hover {
+            background: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Blue Mountain Bank - Error Diagnostics</h1>
+        
+        <div class="info">
+            <h3>What is this page?</h3>
+            <p>This page helps diagnose JavaScript errors and connectivity issues with the Blue Mountain Bank application.</p>
+        </div>
+
+        <div class="error" id="errorInfo" style="display: none;">
+            <h3>⚠️ Error Detected</h3>
+            <div id="errorDetails"></div>
+        </div>
+
+        <h2>System Diagnostics</h2>
+        <button onclick="runDiagnostics()">Run Full Diagnostics</button>
+        <button onclick="testBasicJS()">Test Basic JavaScript</button>
+        <button onclick="testStorageManager()">Test Storage Manager</button>
+        <button onclick="testDataSource()">Test Data Source</button>
+        <button onclick="clearStorage()">Clear Session Storage</button>
+        
+        <div id="diagnosticsResults"></div>
+
+        <h2>Manual Test</h2>
+        <div style="margin: 20px 0;">
+            <input type="text" id="testUsername" placeholder="Username" value="alice.martinez" style="margin: 5px; padding: 8px;">
+            <input type="password" id="testPassword" placeholder="Password" value="AliceM2024!" style="margin: 5px; padding: 8px;">
+            <button onclick="testLogin()">Test Login</button>
+        </div>
+        <div id="loginResults"></div>
+
+        <a href="login.html" class="back-link">← Back to Login</a>
+    </div>
+
+    <script>
+        // Global error handler
+        window.addEventListener('error', function(event) {
+            console.error('Global error caught:', event.error);
+            showError('JavaScript Error', event.error.message + '\n\nFile: ' + event.filename + '\nLine: ' + event.lineno);
+        });
+
+        function showError(title, details) {
+            const errorInfo = document.getElementById('errorInfo');
+            const errorDetails = document.getElementById('errorDetails');
+            errorDetails.innerHTML = `<h4>${title}</h4><pre>${details}</pre>`;
+            errorInfo.style.display = 'block';
+        }
+
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('diagnosticsResults');
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+
+        function testBasicJS() {
+            const results = document.getElementById('diagnosticsResults');
+            results.innerHTML = '';
+            
+            try {
+                addResult('✅ JavaScript is working', 'success');
+                addResult(`✅ Date: ${new Date().toISOString()}`, 'success');
+                addResult(`✅ User Agent: ${navigator.userAgent}`, 'info');
+                addResult(`✅ Location: ${window.location.href}`, 'info');
+            } catch (error) {
+                addResult(`❌ Basic JavaScript test failed: ${error.message}`, 'error');
+            }
+        }
+
+        function testStorageManager() {
+            const results = document.getElementById('diagnosticsResults');
+            
+            try {
+                // Test if script is loaded
+                if (typeof AzureStorageManager === 'undefined') {
+                    addResult('❌ AzureStorageManager not found - script not loaded', 'error');
+                    return;
+                }
+                
+                addResult('✅ AzureStorageManager class is available', 'success');
+                
+                // Try to create instance
+                const manager = new AzureStorageManager();
+                addResult('✅ AzureStorageManager instance created', 'success');
+                addResult(`✅ Storage Account: ${manager.storageAccount}`, 'info');
+                addResult(`✅ Container: ${manager.containerName}`, 'info');
+                addResult(`✅ Local users available: ${Object.keys(manager.localUsers).length}`, 'info');
+                
+            } catch (error) {
+                addResult(`❌ Storage Manager test failed: ${error.message}`, 'error');
+                console.error('Storage Manager error:', error);
+            }
+        }
+
+        async function testDataSource() {
+            const results = document.getElementById('diagnosticsResults');
+            
+            try {
+                if (typeof AzureStorageManager === 'undefined') {
+                    addResult('❌ AzureStorageManager not available', 'error');
+                    return;
+                }
+                
+                const manager = new AzureStorageManager();
+                await manager.initialize();
+                
+                addResult('📊 <strong>DATA SOURCE TEST</strong>', 'info');
+                addResult(`Initial fallback mode: ${manager.useLocalFallback ? 'LOCAL' : 'AZURE'}`, 'info');
+                
+                // Test Azure connectivity
+                const testUrl = `${manager.baseUrl}?restype=container&comp=list&prefix=users/&${manager.sasToken}`;
+                addResult(`Testing Azure URL: ${testUrl.substring(0, 80)}...`, 'info');
+                
+                try {
+                    const response = await fetch(testUrl);
+                    if (response.ok) {
+                        const xmlText = await response.text();
+                        const parser = new DOMParser();
+                        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                        const blobs = xmlDoc.getElementsByTagName('Blob');
+                        
+                        addResult(`✅ Azure connection successful - Found ${blobs.length} user files`, 'success');
+                        addResult(`🔵 <strong>DATA SOURCE: AZURE BLOB STORAGE</strong>`, 'success');
+                        
+                        if (blobs.length > 0) {
+                            addResult('Azure user files:', 'info');
+                            for (let blob of blobs) {
+                                const name = blob.getElementsByTagName('Name')[0].textContent;
+                                addResult(`  - ${name}`, 'info');
+                            }
+                        }
+                    } else {
+                        addResult(`❌ Azure connection failed: ${response.status} ${response.statusText}`, 'error');
+                        addResult(`🟠 <strong>DATA SOURCE: LOCAL JAVASCRIPT FALLBACK</strong>`, 'error');
+                    }
+                } catch (networkError) {
+                    addResult(`❌ Azure network error: ${networkError.message}`, 'error');
+                    addResult(`🟠 <strong>DATA SOURCE: LOCAL JAVASCRIPT FALLBACK</strong>`, 'error');
+                }
+                
+                // Show local fallback data
+                addResult(`Local fallback users: ${Object.keys(manager.localUsers).join(', ')}`, 'info');
+                
+                // Test user data loading
+                const testUserId = 'alice_martinez';
+                const userData = await manager.getUserData(testUserId);
+                if (userData) {
+                    const transactions = userData.transactions || userData.recentTransactions || [];
+                    const dataSource = manager.useLocalFallback ? 'LOCAL JS' : 'AZURE';
+                    addResult(`✅ User data loaded from ${dataSource} - ${transactions.length} transactions`, 'success');
+                } else {
+                    addResult(`❌ Failed to load user data for ${testUserId}`, 'error');
+                }
+                
+            } catch (error) {
+                addResult(`❌ Data source test failed: ${error.message}`, 'error');
+                console.error('Data source error:', error);
+            }
+        }
+
+        async function testLogin() {
+            const results = document.getElementById('loginResults');
+            results.innerHTML = '';
+            
+            const username = document.getElementById('testUsername').value;
+            const password = document.getElementById('testPassword').value;
+            
+            try {
+                results.innerHTML = '<div class="info">Testing login...</div>';
+                
+                if (typeof AzureStorageManager === 'undefined') {
+                    throw new Error('AzureStorageManager not loaded');
+                }
+                
+                const manager = new AzureStorageManager();
+                await manager.initialize();
+                
+                // Show initial state
+                results.innerHTML += `<div class="info">Initial fallback mode: ${manager.useLocalFallback ? 'LOCAL' : 'AZURE'}</div>`;
+                
+                const authResult = await manager.authenticateUser(username, password);
+                
+                // Show final state and data source
+                const dataSource = manager.useLocalFallback ? 'LOCAL JAVASCRIPT' : 'AZURE BLOB STORAGE';
+                const sourceColor = manager.useLocalFallback ? '#ff9800' : '#2196f3';
+                
+                if (authResult.success) {
+                    results.innerHTML += `<div class="success">✅ Login successful!<br>
+                        <strong>User ID:</strong> ${authResult.userId}<br>
+                        <strong style="color: ${sourceColor};">DATA SOURCE: ${dataSource}</strong><br>
+                        <strong>Has Transactions:</strong> ${(authResult.user.transactions || authResult.user.recentTransactions || []).length > 0 ? 'YES' : 'NO'}<br>
+                        <strong>Transaction Count:</strong> ${(authResult.user.transactions || authResult.user.recentTransactions || []).length}
+                    </div>`;
+                    
+                    // Show detailed data source info
+                    results.innerHTML += `<div class="info">
+                        <h4>Data Source Details:</h4>
+                        <pre>Fallback Mode: ${manager.useLocalFallback}
+Storage Account: ${manager.storageAccount}
+Container: ${manager.containerName}
+Local Users Available: ${Object.keys(manager.localUsers).length}</pre>
+                    </div>`;
+                } else {
+                    results.innerHTML += `<div class="error">❌ Login failed: ${authResult.message}<br>
+                        <strong style="color: ${sourceColor};">DATA SOURCE: ${dataSource}</strong>
+                    </div>`;
+                }
+                
+            } catch (error) {
+                results.innerHTML += `<div class="error">❌ Login test error: ${error.message}<br><pre>${error.stack}</pre></div>`;
+                console.error('Login test error:', error);
+            }
+        }
+
+        function clearStorage() {
+            sessionStorage.clear();
+            localStorage.clear();
+            addResult('✅ Storage cleared', 'success');
+        }
+
+        async function runDiagnostics() {
+            const results = document.getElementById('diagnosticsResults');
+            results.innerHTML = '<div class="info">Running diagnostics...</div>';
+            
+            testBasicJS();
+            testStorageManager();
+            
+            // Test network connectivity
+            try {
+                const response = await fetch('js/azure-storage-manager.js', { method: 'HEAD' });
+                if (response.ok) {
+                    addResult('✅ Network connectivity OK', 'success');
+                } else {
+                    addResult(`❌ Network issue: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-run basic diagnostics on load
+        window.addEventListener('load', () => {
+            setTimeout(runDiagnostics, 100);
+        });
+    </script>
+
+    <!-- Load the storage manager script -->
+    <script src="js/azure-storage-manager.js" onerror="showError('Script Load Error', 'Failed to load azure-storage-manager.js')"></script>
+</body>
+</html>

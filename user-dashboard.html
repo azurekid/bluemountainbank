@@ -89,17 +89,19 @@
         </div>
     </div>
 
-    <script src="js/users-data.js"></script>
+    <script src="js/local-storage-manager.js"></script>
+    <script src="js/azure-storage-manager.js"></script>
     <script src="js/script.js"></script>
     <script>
         // Dashboard management
         class UserDashboard {
             constructor() {
                 this.currentUser = null;
+                this.storageManager = null;
                 this.init();
             }
 
-            init() {
+            async init() {
                 // Check if user is logged in
                 const currentUserId = sessionStorage.getItem('currentUser');
                 if (!currentUserId) {
@@ -107,16 +109,38 @@
                     return;
                 }
 
-                // Load user data
-                this.currentUser = getUserData(currentUserId);
-                if (!this.currentUser) {
-                    alert('User data not found. Redirecting to login.');
-                    window.location.href = 'login.html';
-                    return;
-                }
+                try {
+                    // Initialize Azure storage manager
+                    this.storageManager = new AzureStorageManager();
+                    await this.storageManager.initialize();
+                    
+                    console.log('Loading user data for userId:', currentUserId);
+                    
+                    // Load user data
+                    this.currentUser = await this.storageManager.getUserData(currentUserId);
+                    
+                    console.log('Loaded user data:', this.currentUser);
+                    console.log('User data type:', typeof this.currentUser);
+                    console.log('User data keys:', this.currentUser ? Object.keys(this.currentUser) : 'null');
+                    
+                    if (!this.currentUser) {
+                        alert('User data not found. Redirecting to login.');
+                        window.location.href = 'login.html';
+                        return;
+                    }
 
-                // Initialize dashboard
-                this.loadUserDashboard();
+                    // Verify transaction data
+                    console.log('Checking transaction data...');
+                    console.log('this.currentUser.transactions:', this.currentUser.transactions);
+                    console.log('this.currentUser.recentTransactions:', this.currentUser.recentTransactions);
+
+                    // Initialize dashboard
+                    this.loadUserDashboard();
+                } catch (error) {
+                    console.error('Dashboard initialization error:', error);
+                    alert('Failed to load user data. Please try logging in again.');
+                    window.location.href = 'login.html';
+                }
             }
 
             loadUserDashboard() {
@@ -151,8 +175,13 @@
                 
                 // Update welcome section
                 document.getElementById('welcomeMessage').textContent = `Welcome back, ${profile.firstName}!`;
-                document.getElementById('userInfo').textContent = 
-                    `${profile.profession} | Member since ${new Date(profile.joinDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
+                
+                // Add data source information
+                const dataSource = this.currentUser._dataSource || 'Unknown';
+                const dataSourceIndicator = dataSource === 'Azure' ? '☁️ Azure' : '💾 Local';
+                
+                document.getElementById('userInfo').innerHTML = 
+                    `${profile.profession} | Member since ${new Date(profile.joinDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} | <span style="font-size: 0.9em; color: #666;">${dataSourceIndicator}</span>`;
             }
 
             populateAccounts() {
@@ -216,7 +245,20 @@
                 const container = document.getElementById('transactionsList');
                 container.innerHTML = '';
 
-                this.currentUser.transactions.forEach(transaction => {
+                // Check for both 'transactions' and 'recentTransactions' properties
+                const transactions = this.currentUser.transactions || this.currentUser.recentTransactions || [];
+                console.log('Current user data:', this.currentUser);
+                console.log('Found transactions:', transactions.length);
+                console.log('Transaction data:', transactions);
+
+                if (transactions.length === 0) {
+                    console.log('No transactions found. Available properties:', Object.keys(this.currentUser));
+                    container.innerHTML = '<div class="no-transactions">No recent transactions</div>';
+                    return;
+                }
+
+                transactions.forEach((transaction, index) => {
+                    console.log(`Processing transaction ${index}:`, transaction);
                     const transactionItem = this.createTransactionItem(transaction);
                     container.appendChild(transactionItem);
                 });
@@ -235,8 +277,9 @@
                     day: 'numeric'
                 });
 
-                // Use icon from transaction data, or default icon based on amount
-                const transactionIcon = transaction.icon || (isPositive ? 'fas fa-plus-circle' : 'fas fa-minus-circle');
+                // Handle different data structures - Azure vs LocalStorage
+                const category = transaction.category || transaction.type || 'general';
+                const transactionIcon = transaction.icon || this.getTransactionIcon(transaction.type, category);
 
                 item.innerHTML = `
                     <div class="transaction-icon">
@@ -245,12 +288,40 @@
                     <div class="transaction-info">
                         <div class="transaction-description">${transaction.description}</div>
                         <div class="transaction-date">${formattedDate}</div>
-                        <div class="transaction-category">${this.capitalizeFirst(transaction.category)}</div>
+                        <div class="transaction-category">${this.capitalizeFirst(category)}</div>
                     </div>
                     <div class="transaction-amount ${amountClass}">${amountText}</div>
                 `;
 
                 return item;
+            }
+
+            // Helper method to get transaction icon based on type/category
+            getTransactionIcon(type, category) {
+                // Default icons based on transaction type
+                const typeIcons = {
+                    'deposit': 'fas fa-plus-circle',
+                    'withdrawal': 'fas fa-minus-circle',
+                    'transfer': 'fas fa-exchange-alt'
+                };
+
+                // More specific icons based on category
+                const categoryIcons = {
+                    'salary': 'fas fa-money-bill-wave',
+                    'income': 'fas fa-money-bill-wave',
+                    'groceries': 'fas fa-shopping-cart',
+                    'dining': 'fas fa-utensils',
+                    'transportation': 'fas fa-car',
+                    'utilities': 'fas fa-bolt',
+                    'entertainment': 'fas fa-tv',
+                    'healthcare': 'fas fa-pills',
+                    'shopping': 'fas fa-shopping-bag',
+                    'business': 'fas fa-briefcase',
+                    'general': 'fas fa-circle'
+                };
+
+                // Return category icon if available, otherwise type icon, otherwise default
+                return categoryIcons[category.toLowerCase()] || typeIcons[type] || 'fas fa-circle';
             }
 
             populateQuickActions() {
@@ -359,7 +430,9 @@
             if (confirm('Are you sure you want to logout?')) {
                 sessionStorage.removeItem('currentUser');
                 sessionStorage.removeItem('loginTime');
-                window.location.href = 'login.html';
+                sessionStorage.removeItem('storageType');
+                sessionStorage.removeItem('dataSource');
+                window.location.href = 'index.html';
             }
         }
     </script>
