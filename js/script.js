@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
     const header = document.querySelector('.header');
-    
+
     // Mobile menu toggle
     hamburger.addEventListener('click', function() {
         hamburger.classList.toggle('active');
@@ -244,7 +244,7 @@ window.addEventListener('load', function() {
     loader.innerHTML = `
         <div class="loader-content">
             <div class="loader-logo">
-                <img src="https://via.placeholder.com/60x60/1e40af/ffffff?text=BMB" alt="Loading">
+                <img src="img/blue-mountain-logo-small.png" alt="Blue Mountain Bank" style="width: 80px; height: 80px; object-fit: contain;">
             </div>
             <div class="loader-text">Loading Blue Mountain Bank...</div>
             <div class="loader-bar">
@@ -259,7 +259,8 @@ window.addEventListener('load', function() {
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        background: linear-gradient(135deg, rgba(30, 64, 175, 0.85) 0%, rgba(59, 130, 246, 0.85) 100%), url('img/blue-mountain-bank.png') center/cover no-repeat;
+        backdrop-filter: blur(2px);
         z-index: 99999;
         display: flex;
         align-items: center;
@@ -287,6 +288,7 @@ window.addEventListener('load', function() {
         font-size: 1.2rem;
         margin-bottom: 30px;
         font-weight: 500;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     `;
     
     const loaderBar = loader.querySelector('.loader-bar');
@@ -302,7 +304,7 @@ window.addEventListener('load', function() {
     loaderProgress.style.cssText = `
         width: 0%;
         height: 100%;
-        background: white;
+        background: linear-gradient(90deg, #ffffff, #e0e7ff);
         border-radius: 2px;
         transition: width 0.3s ease;
         animation: loadingProgress 2s ease-in-out;
@@ -312,8 +314,8 @@ window.addEventListener('load', function() {
     const style = document.createElement('style');
     style.textContent = `
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
         }
         
         @keyframes loadingProgress {
