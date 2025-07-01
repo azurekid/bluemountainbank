@@ -1,0 +1,309 @@
+/* Rates Page Specific Styles */
+
+/* Main content area */
+.rates-main {
+    margin-top: 80px;
+    padding: 60px 0;
+    position: relative;
+    min-height: 100vh;
+}
+
+.rates-main .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Enhanced section header for rates page */
+.rates-main .section-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.rates-main .section-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.15) 0%, 
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.rates-main .section-header h1 {
+    color: rgba(30, 64, 175, 0.9);
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+}
+
+.rates-main .section-header p {
+    color: rgba(100, 116, 139, 0.9);
+    text-shadow: 0 1px 5px rgba(255, 255, 255, 0.3);
+}
+
+/* Rates cards */
+.rates-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.rates-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.2) 0%, 
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.rates-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.rates-card-title {
+    color: #1e40af;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rates-table-container {
+    overflow-x: auto;
+}
+
+.rates-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rates-table thead tr {
+    background: rgba(248, 250, 252, 0.3);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.rates-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #1e40af;
+}
+
+.rates-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.rates-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+.rates-table td {
+    padding: 20px;
+}
+
+.rates-table .account-type {
+    font-weight: 500;
+}
+
+.rates-table .balance-info {
+    color: #64748b;
+}
+
+.rates-table .rate-info {
+    color: #10b981;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.rates-table .loan-rate-info {
+    color: #3b82f6;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.rates-table .features-info {
+    color: #64748b;
+}
+
+/* Disclaimer section */
+.rates-disclaimer {
+    background: rgba(254, 243, 199, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(252, 211, 77, 0.3);
+    border-radius: 16px;
+    padding: 25px;
+    margin-top: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.rates-disclaimer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(254, 243, 199, 0.3) 0%, 
+        rgba(254, 243, 199, 0.1) 50%,
+        rgba(254, 243, 199, 0.2) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.rates-disclaimer-title {
+    color: #92400e;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rates-disclaimer p {
+    color: #92400e;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.rates-disclaimer p:last-child {
+    margin-bottom: 0;
+}
+
+/* Call to action section */
+.rates-cta {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.rates-cta-title {
+    color: #1e40af;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.rates-cta p {
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.rates-cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.rates-cta .btn {
+    min-width: 150px;
+}
+
+/* Responsive Design for Rates Page */
+@media (max-width: 768px) {
+    .rates-main {
+        padding: 40px 0;
+    }
+    
+    .rates-card {
+        padding: 30px 20px;
+        margin-bottom: 20px;
+    }
+    
+    .rates-card-title {
+        font-size: 1.5rem;
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .rates-table th,
+    .rates-table td {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+    }
+    
+    .rates-table .rate-info,
+    .rates-table .loan-rate-info {
+        font-size: 1rem;
+    }
+    
+    .rates-disclaimer {
+        padding: 15px;
+    }
+    
+    .rates-disclaimer-title {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .rates-cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .rates-cta .btn {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .rates-card {
+        padding: 20px 15px;
+    }
+    
+    .rates-table-container {
+        font-size: 0.8rem;
+    }
+    
+    .rates-table th,
+    .rates-table td {
+        padding: 8px 4px;
+    }
+    
+    .section-header h1 {
+        font-size: 2rem;
+    }
+    
+    .section-header p {
+        font-size: 1rem;
+    }
+}

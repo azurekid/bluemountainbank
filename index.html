@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blue Mountain Bank - Your trusted financial partner serving 15 states with comprehensive banking services, competitive rates, and cutting-edge digital banking technology.">
+    <meta name="keywords" content="banking, financial services, loans, mortgages, digital banking, Blue Mountain Bank">
+    <meta name="author" content="Blue Mountain Bank">
+    <meta property="og:title" content="Blue Mountain Bank - Your Trusted Financial Partner">
+    <meta property="og:description" content="Banking excellence across 15 states with personalized financial solutions and digital banking technology.">
+    <meta property="og:type" content="website">
     <title>Blue Mountain Bank - Your Trusted Financial Partner</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/index.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -14,15 +25,40 @@
         <nav class="navbar">
             <div class="nav-container">
                 <div class="nav-logo">
-                    <img src="https://via.placeholder.com/40x40/1e40af/ffffff?text=BMB" alt="Blue Mountain Bank Logo">
+                    <img src="img/loading-logo.png" alt="Blue Mountain Bank Logo">
                     <span>Blue Mountain Bank</span>
                 </div>
                 <div class="nav-menu" id="nav-menu">
                     <a href="#home" class="nav-link">Home</a>
-                    <a href="#services" class="nav-link">Services</a>
+                    <div class="nav-dropdown">
+                        <a href="#services" class="nav-link">Services</a>
+                        <div class="dropdown-content">
+                            <a href="#services">All Services</a>
+                            <a href="rates.html">Interest Rates</a>
+                            <a href="login.html">Online Banking</a>
+                        </div>
+                    </div>
                     <a href="#about" class="nav-link">About</a>
                     <a href="#locations" class="nav-link">Locations</a>
-                    <a href="#contact" class="nav-link">Contact</a>
+                    <div class="nav-dropdown">
+                        <a href="#contact" class="nav-link">Support</a>
+                        <div class="dropdown-content">
+                            <a href="#contact">Contact Us</a>
+                            <a href="help.html">Help & Support</a>
+                            <a href="security.html">Security Center</a>
+                            <a href="privacy.html">Privacy Policy</a>
+                            <a href="terms.html">Terms of Service</a>
+                        </div>
+                    </div>
+                    <div class="nav-dropdown">
+                        <a href="careers.html" class="nav-link">More</a>
+                        <div class="dropdown-content">
+                            <a href="careers.html">Careers</a>
+                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i> Facebook</a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i> Twitter</a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                        </div>
+                    </div>
                     <a href="login.html" class="nav-link login-btn">Online Banking</a>
                 </div>
                 <div class="hamburger" id="hamburger">
@@ -128,7 +164,7 @@
                     </div>
                 </div>
                 <div class="about-image">
-                    <img src="https://via.placeholder.com/500x400/1e40af/ffffff?text=Blue+Mountain+Bank+Building" alt="Blue Mountain Bank Building">
+                    <img src="img/about-building.jpg" alt="Blue Mountain Bank Building">
                 </div>
             </div>
         </div>
@@ -244,11 +280,10 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <img src="https://via.placeholder.com/40x40/ffffff/1e40af?text=BMB" alt="Blue Mountain Bank Logo">
-                        <span>Blue Mountain Bank</span>
-                    </div>
+                <div class="footer-section">                        <div class="footer-logo">
+                            <img src="img/loading-logo.png" alt="Blue Mountain Bank Logo">
+                            <span>Blue Mountain Bank</span>
+                        </div>
                     <p>Your trusted financial partner across 15 states, committed to providing exceptional banking services and personalized solutions.</p>
                 </div>
                 <div class="footer-section">
@@ -287,6 +322,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
