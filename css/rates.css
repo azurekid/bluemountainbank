@@ -98,6 +98,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+    font-weight: 600;
 }
 
 .rates-table-container {
@@ -107,6 +109,10 @@
 .rates-table {
     width: 100%;
     border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .rates-table thead tr {
@@ -120,6 +126,7 @@
     text-align: left;
     font-weight: 600;
     color: #1e40af;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
 }
 
 .rates-table tbody tr {
@@ -128,36 +135,50 @@
 }
 
 .rates-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
+}
+
+.rates-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .rates-table td {
     padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
 }
 
 .rates-table .account-type {
-    font-weight: 500;
+    font-weight: 600;
+    color: #1f2937;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .rates-table .balance-info {
-    color: #64748b;
+    color: #374151;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 .rates-table .rate-info {
-    color: #10b981;
-    font-weight: 600;
+    color: #059669;
+    font-weight: 700;
     font-size: 1.1rem;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
 .rates-table .loan-rate-info {
-    color: #3b82f6;
-    font-weight: 600;
+    color: #2563eb;
+    font-weight: 700;
     font-size: 1.1rem;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
 .rates-table .features-info {
-    color: #64748b;
+    color: #374151;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 /* Disclaimer section */
@@ -194,13 +215,17 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    font-weight: 600;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
 }
 
 .rates-disclaimer p {
-    color: #92400e;
+    color: #7c2d12;
     font-size: 0.9rem;
     line-height: 1.6;
     margin-bottom: 10px;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 .rates-disclaimer p:last-child {
@@ -217,11 +242,15 @@
     color: #1e40af;
     margin-bottom: 20px;
     font-size: 1.5rem;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
 .rates-cta p {
-    color: #64748b;
+    color: #374151;
     margin-bottom: 30px;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.6);
 }
 
 .rates-cta-buttons {
