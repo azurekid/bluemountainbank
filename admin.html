@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Blue Mountain Bank</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="img/blue-mountain-bank.png" alt="Blue Mountain Bank Logo" class="header-logo">
+                    <h1>Blue Mountain Bank - Admin Panel</h1>
+                </div>
+                <div class="admin-info">
+                    <div class="admin-user">
+                        <div class="admin-avatar">
+                            AD
+                        </div>
+                        <div class="admin-details">
+                            <div class="admin-name">Bank Administrator</div>
+                            <div class="admin-role">System Admin</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-dashboard">
+            <div class="admin-welcome">
+                <div class="welcome-content">
+                    <h2>Admin Dashboard</h2>
+                    <p>Manage users, monitor system activity, and oversee banking operations.</p>
+                </div>
+            </div>
+
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Total Users</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">6</div>
+                    <div class="stat-change positive">Active users in system</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Total Deposits</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">$260.6K</div>
+                    <div class="stat-change positive">Combined user deposits</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">System Status</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">Online</div>
+                    <div class="stat-change positive">All systems operational</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Today's Transactions</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">72</div>
+                    <div class="stat-change positive">Processed successfully</div>
+                </div>
+            </div>
+
+            <div class="admin-grid">
+                <div class="admin-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-users"></i>
+                        User Management
+                    </h3>
+                    <div class="user-management-grid">
+                        <div class="user-card" onclick="openUserDashboard('alice_martinez')">
+                            <div class="user-card-header">
+                                <div class="user-avatar">AM</div>
+                                <div class="user-card-info">
+                                    <h4>Alice Martinez</h4>
+                                    <p>Software Engineer</p>
+                                    <span class="user-status active">Active</span>
+                                </div>
+                            </div>
+                            <div class="user-card-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Balance</span>
+                                    <span class="stat-value">$32,816.76</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Last Login</span>
+                                    <span class="stat-value">Today</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-card" onclick="openUserDashboard('bob_johnson')">
+                            <div class="user-card-header">
+                                <div class="user-avatar">BJ</div>
+                                <div class="user-card-info">
+                                    <h4>Bob Johnson</h4>
+                                    <p>Business Owner</p>
+                                    <span class="user-status active">Active</span>
+                                </div>
+                            </div>
+                            <div class="user-card-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Balance</span>
+                                    <span class="stat-value">$69,753.09</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Last Login</span>
+                                    <span class="stat-value">Yesterday</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-card" onclick="openUserDashboard('carol_smith')">
+                            <div class="user-card-header">
+                                <div class="user-avatar">CS</div>
+                                <div class="user-card-info">
+                                    <h4>Carol Smith</h4>
+                                    <p>Retired Teacher</p>
+                                    <span class="user-status active">Active</span>
+                                </div>
+                            </div>
+                            <div class="user-card-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Balance</span>
+                                    <span class="stat-value">$91,740.79</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Last Login</span>
+                                    <span class="stat-value">2 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-card" onclick="openUserDashboard('david_wilson')">
+                            <div class="user-card-header">
+                                <div class="user-avatar">DW</div>
+                                <div class="user-card-info">
+                                    <h4>David Wilson</h4>
+                                    <p>College Student</p>
+                                    <span class="user-status active">Active</span>
+                                </div>
+                            </div>
+                            <div class="user-card-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Balance</span>
+                                    <span class="stat-value">$4,568.56</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Last Login</span>
+                                    <span class="stat-value">Today</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-card" onclick="openUserDashboard('emma_brown')">
+                            <div class="user-card-header">
+                                <div class="user-avatar">EB</div>
+                                <div class="user-card-info">
+                                    <h4>Emma Brown</h4>
+                                    <p>Marketing Manager</p>
+                                    <span class="user-status active">Active</span>
+                                </div>
+                            </div>
+                            <div class="user-card-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Balance</span>
+                                    <span class="stat-value">$56,215.67</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Last Login</span>
+                                    <span class="stat-value">Today</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-card" onclick="openUserDashboard('frank_miller')">
+                            <div class="user-card-header">
+                                <div class="user-avatar">FM</div>
+                                <div class="user-card-info">
+                                    <h4>Frank Miller</h4>
+                                    <p>Construction Foreman</p>
+                                    <span class="user-status active">Active</span>
+                                </div>
+                            </div>
+                            <div class="user-card-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Balance</span>
+                                    <span class="stat-value">$23,359.56</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Last Login</span>
+                                    <span class="stat-value">Yesterday</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        System Analytics
+                    </h3>
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <div class="analytics-header">
+                                <h4>User Activity</h4>
+                                <div class="analytics-value">85%</div>
+                            </div>
+                            <div class="analytics-bar">
+                                <div class="analytics-fill" style="width: 85%"></div>
+                            </div>
+                            <p>Active users this week</p>
+                        </div>
+
+                        <div class="analytics-card">
+                            <div class="analytics-header">
+                                <h4>Transaction Volume</h4>
+                                <div class="analytics-value">92%</div>
+                            </div>
+                            <div class="analytics-bar">
+                                <div class="analytics-fill" style="width: 92%"></div>
+                            </div>
+                            <p>Compared to last month</p>
+                        </div>
+
+                        <div class="analytics-card">
+                            <div class="analytics-header">
+                                <h4>System Performance</h4>
+                                <div class="analytics-value">98%</div>
+                            </div>
+                            <div class="analytics-bar">
+                                <div class="analytics-fill" style="width: 98%"></div>
+                            </div>
+                            <p>Uptime this month</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-actions">
+                        <h4 style="color: white; margin-bottom: 15px;">Quick Actions</h4>
+                        <div class="action-buttons">
+                            <button class="admin-btn" onclick="exportUserData()">
+                                <i class="fas fa-download"></i>
+                                Export Data
+                            </button>
+                            <button class="admin-btn" onclick="generateReport()">
+                                <i class="fas fa-chart-bar"></i>
+                                Generate Report
+                            </button>
+                            <button class="admin-btn" onclick="systemMaintenance()">
+                                <i class="fas fa-tools"></i>
+                                System Maintenance
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/users-data.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function openUserDashboard(userId) {
+            // Store the user ID in sessionStorage and open the dynamic dashboard
+            sessionStorage.setItem('currentUser', userId);
+            sessionStorage.setItem('loginTime', new Date().toISOString());
+            window.open('user-dashboard.html', '_blank');
+        }
+
+        function exportUserData() {
+            alert('User data export functionality would be implemented here.');
+        }
+
+        function generateReport() {
+            alert('Report generation functionality would be implemented here.');
+        }
+
+        function systemMaintenance() {
+            alert('System maintenance panel would be implemented here.');
+        }
+    </script>
+</body>
+</html>

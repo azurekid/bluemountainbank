@@ -310,9 +310,37 @@
                     <i class="fas fa-info-circle"></i>
                     Demo Credentials
                 </h4>
-                <p><strong>Username:</strong> demo@bluemountainbank.com</p>
-                <p><strong>Password:</strong> Demo123!</p>
-                <p style="margin-top: 10px; font-style: italic;">This is a demonstration website. Use the credentials above to explore the banking dashboard.</p>
+                <div class="credentials-grid">
+                    <div class="credential-item">
+                        <p><strong>Alice Martinez (Software Engineer)</strong></p>
+                        <p>Username: alice.martinez | Password: AliceM2024!</p>
+                    </div>
+                    <div class="credential-item">
+                        <p><strong>Bob Johnson (Business Owner)</strong></p>
+                        <p>Username: bob.johnson | Password: BobJ2024!</p>
+                    </div>
+                    <div class="credential-item">
+                        <p><strong>Carol Smith (Retired Teacher)</strong></p>
+                        <p>Username: carol.smith | Password: CarolS2024!</p>
+                    </div>
+                    <div class="credential-item">
+                        <p><strong>David Wilson (College Student)</strong></p>
+                        <p>Username: david.wilson | Password: DavidW2024!</p>
+                    </div>
+                    <div class="credential-item">
+                        <p><strong>Emma Brown (Marketing Manager)</strong></p>
+                        <p>Username: emma.brown | Password: EmmaB2024!</p>
+                    </div>
+                    <div class="credential-item">
+                        <p><strong>Frank Miller (Construction Foreman)</strong></p>
+                        <p>Username: frank.miller | Password: FrankM2024!</p>
+                    </div>
+                    <div class="credential-item admin-creds">
+                        <p><strong>Admin Panel Access</strong></p>
+                        <p>Username: admin | Password: admin123</p>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; font-style: italic; font-size: 0.9rem;">This is a demonstration website. Use any of the credentials above to explore the dynamic user dashboard that adapts to each user's profile, or try the admin panel to manage all users.</p>
             </div>
 
             <div class="security-info">
@@ -325,6 +353,8 @@
         </div>
     </div>
 
+    <script src="js/users-data.js"></script>
+    <script src="js/script.js"></script>
     <script>
         // Password toggle functionality
         document.getElementById('passwordToggle').addEventListener('click', function() {
@@ -341,68 +371,6 @@
                 icon.classList.add('fa-eye');
             }
         });
-
-        // Login form handling
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Demo authentication
-            if (username === 'demo@bluemountainbank.com' && password === 'Demo123!') {
-                // Show loading state
-                const loginBtn = document.querySelector('.login-btn');
-                const originalText = loginBtn.innerHTML;
-                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
-                loginBtn.disabled = true;
-                
-                // Simulate authentication delay
-                setTimeout(() => {
-                    alert('Login successful! Redirecting to banking dashboard...');
-                    window.location.href = 'dashboard.html';
-                }, 2000);
-            } else {
-                // Show error message
-                showLoginError('Invalid username or password. Please try again or use the demo credentials provided.');
-            }
-        });
-
-        function showLoginError(message) {
-            // Remove existing error
-            const existingError = document.querySelector('.login-error');
-            if (existingError) {
-                existingError.remove();
-            }
-
-            // Create error element
-            const error = document.createElement('div');
-            error.className = 'login-error';
-            error.style.cssText = `
-                background: #fef2f2;
-                border: 1px solid #fecaca;
-                border-radius: 8px;
-                padding: 12px;
-                margin-top: 15px;
-                color: #dc2626;
-                font-size: 0.9rem;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            `;
-            error.innerHTML = `<i class="fas fa-exclamation-triangle"></i>${message}`;
-
-            // Insert after form
-            const form = document.querySelector('.login-form');
-            form.appendChild(error);
-
-            // Remove error after 5 seconds
-            setTimeout(() => {
-                if (error.parentNode) {
-                    error.parentNode.removeChild(error);
-                }
-            }, 5000);
-        }
 
         // Enhance form validation
         document.querySelectorAll('input').forEach(input => {

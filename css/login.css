@@ -290,6 +290,40 @@
     to { transform: rotate(360deg); }
 }
 
+/* Credentials Grid Styles */
+.credentials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.credential-item {
+    background: rgba(59, 130, 246, 0.05);
+    border: 1px solid rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+}
+
+.credential-item p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.credential-item strong {
+    color: #1e40af;
+}
+
+.admin-creds {
+    background: rgba(168, 85, 247, 0.05);
+    border-color: rgba(168, 85, 247, 0.1);
+}
+
+.admin-creds strong {
+    color: #7c3aed;
+}
+
 /* Responsive Design for Login Page */
 @media (max-width: 768px) {
     .login-container {

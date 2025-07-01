@@ -369,22 +369,111 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Accessibility improvements
-document.addEventListener('DOMContentLoaded', function() {
-    // Add focus indicators for keyboard navigation
-    const focusableElements = document.querySelectorAll('a, button, input, select, textarea');
+// Authentication functionality
+function handleLogin(event) {
+    event.preventDefault();
     
-    focusableElements.forEach(element => {
-        element.addEventListener('focus', function() {
-            this.style.outline = '2px solid #3b82f6';
-            this.style.outlineOffset = '2px';
-        });
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (!username || !password) {
+        showLoginError('Please enter both username and password.');
+        return;
+    }
+    
+    // Check for admin credentials
+    if (username === 'admin' && password === 'admin123') {
+        // Redirect to admin dashboard
+        window.location.href = 'admin.html';
+        return;
+    }
+    
+    // Check user credentials
+    const authResult = authenticateUser(username, password);
+    
+    if (authResult.success) {
+        // Store user session
+        sessionStorage.setItem('currentUser', authResult.userId);
+        sessionStorage.setItem('loginTime', new Date().toISOString());
         
-        element.addEventListener('blur', function() {
-            this.style.outline = 'none';
-        });
-    });
+        // Redirect to dynamic user dashboard
+        window.location.href = 'user-dashboard.html';
+    } else {
+        showLoginError('Invalid username or password. Please try again.');
+    }
+}
+
+function showLoginError(message) {
+    const errorDiv = document.getElementById('login-error') || createErrorDiv();
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    
+    // Hide error after 5 seconds
+    setTimeout(() => {
+        errorDiv.style.display = 'none';
+    }, 5000);
+}
+
+function createErrorDiv() {
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'login-error';
+    errorDiv.style.cssText = `
+        color: #dc2626;
+        background: rgba(220, 38, 38, 0.1);
+        border: 1px solid rgba(220, 38, 38, 0.3);
+        padding: 10px;
+        border-radius: 8px;
+        margin-top: 15px;
+        display: none;
+        font-size: 0.9rem;
+    `;
+    
+    const loginForm = document.querySelector('.login-form');
+    if (loginForm) {
+        loginForm.appendChild(errorDiv);
+    }
+    
+    return errorDiv;
+}
+
+// Initialize login form
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
 });
+
+// User session management
+function checkUserSession() {
+    const currentUser = sessionStorage.getItem('currentUser');
+    const loginTime = sessionStorage.getItem('loginTime');
+    
+    if (!currentUser || !loginTime) {
+        return false;
+    }
+    
+    // Check if session is still valid (24 hours)
+    const sessionAge = Date.now() - new Date(loginTime).getTime();
+    const maxSessionAge = 24 * 60 * 60 * 1000; // 24 hours
+    
+    if (sessionAge > maxSessionAge) {
+        sessionStorage.removeItem('currentUser');
+        sessionStorage.removeItem('loginTime');
+        return false;
+    }
+    
+    return true;
+}
+
+function logout() {
+    sessionStorage.removeItem('currentUser');
+    sessionStorage.removeItem('loginTime');
+    window.location.href = 'login.html';
+}
+
+// Make logout function available globally
+window.logout = logout;
 
 // Performance optimization - Lazy loading for images
 document.addEventListener('DOMContentLoaded', function() {
