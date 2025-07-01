@@ -15,13 +15,11 @@
 
 /* Enhanced section header for rates page */
 .rates-main .section-header {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
     padding: 40px;
     margin-bottom: 60px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     position: relative;
     overflow: hidden;
 }
@@ -42,27 +40,21 @@
 }
 
 .rates-main .section-header h1 {
-    color: rgba(30, 64, 175, 0.9);
-    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+    color: #1e40af;
 }
 
 .rates-main .section-header p {
-    color: rgba(100, 116, 139, 0.9);
-    text-shadow: 0 1px 5px rgba(255, 255, 255, 0.3);
+    color: #64748b;
 }
 
 /* Rates cards */
 .rates-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.95);
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     margin-bottom: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -85,10 +77,8 @@
 
 .rates-card:hover {
     transform: translateY(-5px);
-    box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .rates-card-title {
@@ -98,7 +88,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
     font-weight: 600;
 }
 
@@ -109,15 +98,13 @@
 .rates-table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .rates-table thead tr {
-    background: rgba(248, 250, 252, 0.3);
-    backdrop-filter: blur(10px);
+    background: rgba(248, 250, 252, 0.9);
     border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -126,7 +113,6 @@
     text-align: left;
     font-weight: 600;
     color: #1e40af;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
 }
 
 .rates-table tbody tr {
@@ -135,57 +121,49 @@
 }
 
 .rates-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.7);
 }
 
 .rates-table tbody tr:hover td {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .rates-table td {
     padding: 20px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.5);
     transition: all 0.3s ease;
 }
 
 .rates-table .account-type {
     font-weight: 600;
     color: #1f2937;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .rates-table .balance-info {
     color: #374151;
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 .rates-table .rate-info {
     color: #059669;
     font-weight: 700;
     font-size: 1.1rem;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
 .rates-table .loan-rate-info {
     color: #2563eb;
     font-weight: 700;
     font-size: 1.1rem;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
 .rates-table .features-info {
     color: #374151;
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 /* Disclaimer section */
 .rates-disclaimer {
-    background: rgba(254, 243, 199, 0.2);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: rgba(254, 243, 199, 0.9);
     border: 1px solid rgba(252, 211, 77, 0.3);
     border-radius: 16px;
     padding: 25px;
@@ -216,7 +194,6 @@
     align-items: center;
     gap: 10px;
     font-weight: 600;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
 }
 
 .rates-disclaimer p {
@@ -225,7 +202,6 @@
     line-height: 1.6;
     margin-bottom: 10px;
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 .rates-disclaimer p:last-child {
@@ -243,14 +219,12 @@
     margin-bottom: 20px;
     font-size: 1.5rem;
     font-weight: 600;
-    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
 .rates-cta p {
     color: #374151;
     margin-bottom: 30px;
     font-weight: 500;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.6);
 }
 
 .rates-cta-buttons {
