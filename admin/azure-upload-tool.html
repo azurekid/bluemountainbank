@@ -4,59 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Azure Data Upload Tool - Blue Mountain Bank</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.6) 0%, rgba(59, 130, 246, 0.5) 50%, rgba(96, 165, 250, 0.4) 100%);
+            min-height: 100vh;
+            color: #ffffff;
         }
         .header {
-            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             color: white;
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 20px;
             margin-bottom: 30px;
             text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        h1, h2, h3 {
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        h1 i {
+            color: rgba(255, 255, 255, 0.9);
+            margin-right: 15px;
         }
         .section {
-            background: white;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             padding: 25px;
             margin: 20px 0;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         button {
-            background: #3b82f6;
+            background: rgba(59, 130, 246, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             color: white;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 12px 24px;
             border-radius: 8px;
             cursor: pointer;
             margin: 8px;
             font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
         button:hover {
-            background: #2563eb;
+            background: rgba(59, 130, 246, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
         .upload-button {
-            background: #10b981;
+            background: rgba(16, 185, 129, 0.8);
         }
         .upload-button:hover {
-            background: #059669;
+            background: rgba(16, 185, 129, 1);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        .back-link { 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px; 
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(-3px);
         }
         .result-area {
-            background: #f8fafc;
-            border: 1px solid #e5e7eb;
-            padding: 15px;
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
             margin: 15px 0;
             max-height: 400px;
             overflow-y: auto;
-            font-family: monospace;
+            font-family: 'Inter', monospace;
             font-size: 13px;
             white-space: pre-wrap;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
         .success {
             background: #f0fdf4;
@@ -91,6 +150,7 @@
     </style>
 </head>
 <body>
+    <a href="index.html" class="back-link">← Back to Admin Tools</a>
     <div class="header">
         <h1>🏦 Blue Mountain Bank</h1>
         <h2>Azure Data Upload Tool</h2>
@@ -133,7 +193,7 @@ Azure Data Upload Tool Ready
         </ul>
     </div>
 
-    <script src="js/azure-storage-manager.js"></script>
+    <script src="../js/azure-storage-manager.js"></script>
     <script>
         let azureManager;
 

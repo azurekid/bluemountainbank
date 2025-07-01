@@ -2,72 +2,138 @@
 <html>
 <head>
     <title>Error Debug - Blue Mountain Bank</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { 
-            font-family: Arial, sans-serif; 
-            margin: 20px; 
-            background: #f5f5f5;
-            color: #333;
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.6) 0%, rgba(59, 130, 246, 0.5) 50%, rgba(96, 165, 250, 0.4) 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 20px 0;
         }
         .container { 
             max-width: 800px; 
             margin: 0 auto; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
         }
         .error { 
-            background-color: #f8d7da; 
-            border: 1px solid #f5c6cb; 
-            padding: 15px; 
-            border-radius: 5px; 
+            background: rgba(239, 68, 68, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid #ef4444;
+            padding: 20px; 
+            border-radius: 12px; 
             margin: 20px 0;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);
         }
         .success { 
-            background-color: #d4edda; 
-            border: 1px solid #c3e6cb; 
-            padding: 15px; 
-            border-radius: 5px; 
+            background: rgba(5, 150, 105, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(5, 150, 105, 0.3);
+            border-left: 4px solid #10b981;
+            padding: 20px; 
+            border-radius: 12px; 
             margin: 20px 0;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.1);
         }
         .info { 
-            background-color: #d1ecf1; 
-            border: 1px solid #bee5eb; 
-            padding: 15px; 
-            border-radius: 5px; 
+            background: rgba(30, 64, 175, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(30, 64, 175, 0.3);
+            border-left: 4px solid #3b82f6;
+            padding: 20px; 
+            border-radius: 12px; 
             margin: 20px 0;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.1);
         }
         pre { 
-            background: #f8f9fa; 
-            padding: 10px; 
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px; 
             overflow-x: auto; 
             white-space: pre-wrap; 
-            border-radius: 3px;
+            border-radius: 10px;
+            color: #ffffff;
+            font-family: 'Inter', monospace;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
         button { 
-            margin: 5px; 
-            padding: 10px 15px; 
+            margin: 8px; 
+            padding: 12px 24px; 
             cursor: pointer; 
-            background: #007bff;
+            background: rgba(59, 130, 246, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             color: white;
-            border: none;
-            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
         button:hover {
-            background: #0056b3;
+            background: rgba(59, 130, 246, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
+        h1, h2, h3 {
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+        
+        h1 i {
+            color: rgba(255, 255, 255, 0.9);
+            margin-right: 15px;
+        }
+        
         .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #28a745;
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
             text-decoration: none;
-            border-radius: 4px;
+            font-weight: 500;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
+        
         .back-link:hover {
-            background: #1e7e34;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
@@ -102,7 +168,7 @@
         </div>
         <div id="loginResults"></div>
 
-        <a href="login.html" class="back-link">← Back to Login</a>
+        <a href="../login.html" class="back-link">← Back to Login</a>
     </div>
 
     <script>
@@ -319,6 +385,6 @@ Local Users Available: ${Object.keys(manager.localUsers).length}</pre>
     </script>
 
     <!-- Load the storage manager script -->
-    <script src="js/azure-storage-manager.js" onerror="showError('Script Load Error', 'Failed to load azure-storage-manager.js')"></script>
+    <script src="../js/azure-storage-manager.js" onerror="showError('Script Load Error', 'Failed to load azure-storage-manager.js')"></script>
 </body>
 </html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Tools - Blue Mountain Bank</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Admin-specific styles that complement the base design */
+        .admin-main {
+            margin-top: 80px;
+            padding: 40px 0;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.6) 0%, rgba(59, 130, 246, 0.5) 50%, rgba(96, 165, 250, 0.4) 100%);
+        }
+        
+        .admin-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            margin: 20px auto;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .admin-header h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .admin-header h1 i {
+            color: rgba(255, 255, 255, 0.9);
+            margin-right: 15px;
+        }
+        
+        .admin-header .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            font-weight: 400;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.18);
+        }
+        
+        .tool-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        .tool-card h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-card p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+            line-height: 1.6;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-card a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-card a:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        
+        .debug-section {
+            --accent-color: #1e40af;
+            --accent-hover: #1e3a8a;
+        }
+        
+        .upload-section {
+            --accent-color: #059669;
+            --accent-hover: #047857;
+        }
+        
+        .utility-section {
+            --accent-color: #d97706;
+            --accent-hover: #b45309;
+        }
+        
+        .demo-section {
+            --accent-color: #7c3aed;
+            --accent-hover: #6d28d9;
+        }
+        
+        .usage-notes {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .usage-notes h3 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .usage-notes ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .usage-notes li {
+            margin: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .usage-notes li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .usage-notes code {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Inter', monospace;
+            color: #ffffff;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .admin-main {
+                padding: 20px 0;
+            }
+            
+            .admin-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+            
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="../img/blue-mountain-bank.png" alt="Blue Mountain Bank Logo">
+                    <span>Blue Mountain Bank</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="../index.html" class="nav-link">Home</a>
+                    <a href="../login.html" class="nav-link login-btn">Online Banking</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="container">
+            <div class="admin-container">
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Blue Mountain Bank
+                </a>
+                
+                <div class="admin-header">
+                    <h1>
+                        <i class="fas fa-tools"></i>
+                        Admin Tools
+                    </h1>
+                    <p class="subtitle">Administrative tools and diagnostics for Blue Mountain Bank</p>
+                </div>
+                
+                <div class="tool-grid">
+                    <div class="tool-card debug-section">
+                        <div class="icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Debug User Data</h3>
+                        <p>Test user authentication, data loading, and Azure connectivity. Shows data source information and session details with comprehensive diagnostics.</p>
+                        <a href="admin/ebug-userdata.html">
+                            <i class="fas fa-play"></i>
+                            Launch Debug Tool
+                        </a>
+                    </div>
+                    
+                    <div class="tool-card debug-section">
+                        <div class="icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Error Debug Console</h3>
+                        <p>Advanced error debugging with detailed logging. Shows Azure connectivity status, error traces, and system diagnostics.</p>
+                        <a href="admin/error-debug.html">
+                            <i class="fas fa-bug"></i>
+                            Launch Error Debug
+                        </a>
+                    </div>
+                    
+                    <div class="tool-card upload-section">
+                        <div class="icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3>Azure Upload Tool</h3>
+                        <p>Upload sample user data to Azure Blob Storage. Includes all user profiles, account balances, and transaction histories.</p>
+                        <a href="admin/azure-upload-tool.html">
+                            <i class="fas fa-upload"></i>
+                            Launch Upload Tool
+                        </a>
+                    </div>
+                    
+                    <div class="tool-card upload-section">
+                        <div class="icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Azure Blob Manager</h3>
+                        <p>Direct blob storage uploader with configuration options. Test connectivity, manage storage, and upload custom files.</p>
+                        <a href="admin/azure-blob-uploader.html">
+                            <i class="fas fa-cogs"></i>
+                            Launch Blob Manager
+                        </a>
+                    </div>
+                    
+                    <div class="tool-card debug-section">
+                        <div class="icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <h3>Storage Test Lab</h3>
+                        <p>Test local storage functionality and data persistence. Useful for debugging storage issues and data integrity.</p>
+                        <a href="admin/test-storage.html">
+                            <i class="fas fa-vial"></i>
+                            Launch Storage Test
+                        </a>
+                    </div>
+                    
+                    <div class="tool-card demo-section">
+                        <div class="icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Azure Live Demo</h3>
+                        <p>Interactive Azure functionality demo with live testing capabilities. Explore Azure features in real-time.</p>
+                        <a href="admin/azure-demo.html">
+                            <i class="fas fa-play-circle"></i>
+                            Launch Azure Demo
+                        </a>
+                    </div>
+                    
+                    <div class="tool-card utility-section">
+                        <div class="icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3>Password Hash Generator</h3>
+                        <p>Generate SHA-256 hashes for user passwords. Shows secure hashes for all demo users with copy functionality.</p>
+                        <a href="admin/hash-passwords.html">
+                            <i class="fas fa-lock"></i>
+                            Launch Hash Generator
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="usage-notes">
+                    <h3>
+                        <i class="fas fa-info-circle"></i>
+                        Usage Notes & Guidelines
+                    </h3>
+                    <ul>
+                        <li>All tools work seamlessly from the <code>/admin</code> directory when deployed</li>
+                        <li>JavaScript files are automatically referenced from <code>../js/</code> directory</li>
+                        <li>Tools automatically detect Azure vs Local data sources with visual indicators</li>
+                        <li>Use <strong>Debug User Data</strong> tool first to verify system connectivity</li>
+                        <li>Upload tools require valid Azure SAS tokens with proper permissions</li>
+                        <li>All diagnostic tools provide real-time status and error reporting</li>
+                        <li>Session data and user preferences are preserved across tool navigation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
