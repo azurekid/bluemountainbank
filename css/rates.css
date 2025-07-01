@@ -1,30 +1,128 @@
 /* Rates Page Specific Styles */
 
-/* Main content area */
+/* Main content area with dashboard-style background */
 .rates-main {
     margin-top: 80px;
     padding: 60px 0;
     position: relative;
     min-height: 100vh;
+    overflow: hidden;
+}
+
+.rates-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.6) 0%, rgba(59, 130, 246, 0.5) 50%, rgba(96, 165, 250, 0.4) 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    opacity: 0.8;
+    z-index: 1;
+}
+
+.rates-main::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+    animation: floatingBubbles 12s ease infinite;
+    z-index: 2;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes floatingBubbles {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(120deg); }
+    66% { transform: translateY(-5px) rotate(240deg); }
 }
 
 .rates-main .container {
     position: relative;
-    z-index: 2;
+    z-index: 10;
 }
 
 /* Enhanced section header for rates page */
 .rates-main .section-header {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     border-radius: 20px;
     padding: 40px;
     margin-bottom: 60px;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .rates-main .section-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.rates-main .section-header:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.rates-main .section-header h1 {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.rates-main .section-header p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Rates cards */
+.rates-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.rates-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -39,50 +137,16 @@
     z-index: -1;
 }
 
-.rates-main .section-header h1 {
-    color: #1e40af;
-}
-
-.rates-main .section-header p {
-    color: #64748b;
-}
-
-/* Rates cards */
-.rates-card {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    margin-bottom: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.rates-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.2) 0%, 
-        rgba(255, 255, 255, 0.05) 50%,
-        rgba(255, 255, 255, 0.1) 100%);
-    pointer-events: none;
-    z-index: -1;
-}
-
 .rates-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
     border-color: rgba(255, 255, 255, 0.4);
 }
 
 .rates-card-title {
-    color: #1e40af;
+    color: white;
     margin-bottom: 30px;
     font-size: 1.8rem;
     display: flex;
@@ -98,13 +162,18 @@
 .rates-table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 12px;
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .rates-table thead tr {
-    background: rgba(248, 250, 252, 0.9);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -112,64 +181,75 @@
     padding: 15px;
     text-align: left;
     font-weight: 600;
-    color: #1e40af;
+    color: white;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .rates-table tbody tr {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
 }
 
 .rates-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.7);
-}
-
-.rates-table tbody tr:hover td {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transform: translateY(-1px);
 }
 
 .rates-table td {
     padding: 20px;
-    background: rgba(255, 255, 255, 0.5);
+    background: transparent;
     transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .rates-table .account-type {
     font-weight: 600;
-    color: #1f2937;
+    color: white;
 }
 
 .rates-table .balance-info {
-    color: #374151;
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
 }
 
 .rates-table .rate-info {
-    color: #059669;
+    color: #4ade80;
     font-weight: 700;
     font-size: 1.1rem;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
 }
 
 .rates-table .loan-rate-info {
-    color: #2563eb;
+    color: #60a5fa;
     font-weight: 700;
     font-size: 1.1rem;
+    text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
 }
 
 .rates-table .features-info {
-    color: #374151;
+    color: rgba(255, 255, 255, 0.7);
     font-weight: 500;
 }
 
 /* Disclaimer section */
 .rates-disclaimer {
-    background: rgba(254, 243, 199, 0.9);
-    border: 1px solid rgba(252, 211, 77, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 16px;
     padding: 25px;
     margin-top: 30px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .rates-disclaimer::before {
@@ -180,24 +260,33 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, 
-        rgba(254, 243, 199, 0.3) 0%, 
-        rgba(254, 243, 199, 0.1) 50%,
-        rgba(254, 243, 199, 0.2) 100%);
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.08) 100%);
     pointer-events: none;
     z-index: -1;
 }
 
+.rates-disclaimer:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
 .rates-disclaimer-title {
-    color: #92400e;
+    color: #fbbf24;
     margin-bottom: 15px;
     display: flex;
     align-items: center;
     gap: 10px;
     font-weight: 600;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
 }
 
 .rates-disclaimer p {
-    color: #7c2d12;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 0.9rem;
     line-height: 1.6;
     margin-bottom: 10px;
@@ -212,17 +301,35 @@
 .rates-cta {
     text-align: center;
     margin-top: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.rates-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .rates-cta-title {
-    color: #1e40af;
+    color: white;
     margin-bottom: 20px;
     font-size: 1.5rem;
     font-weight: 600;
 }
 
 .rates-cta p {
-    color: #374151;
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 30px;
     font-weight: 500;
 }
