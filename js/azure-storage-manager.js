@@ -4,9 +4,14 @@ class AzureStorageManager {
         // Azure Storage configuration
         this.storageAccount = 'bluemountaindata'; // Your storage account name
         this.containerName = 'userdata';
+        this.credentialsContainerName = 'credentials'; // Separate container for credentials
         this.sasToken = 'sv=2024-11-04&ss=bfqt&srt=sco&sp=rlptfx&se=2028-07-01T21:22:53Z&st=2025-07-01T13:22:53Z&spr=https&sig=pH34OTj9l29ovANxyjOWAgiShFQ6A3qY0sspcDNp4VE%3D';
         this.baseUrl = `https://${this.storageAccount}.blob.core.windows.net/${this.containerName}`;
+        this.credentialsBaseUrl = `https://${this.storageAccount}.blob.core.windows.net/${this.credentialsContainerName}`;
         this.useLocalFallback = false;
+        
+        // Initialize proxy for CORS handling
+        this.proxy = window.AzureStorageProxy ? new window.AzureStorageProxy() : null;
         
         // Local sample data for fallback
         this.localUsers = {
@@ -59,25 +64,41 @@ class AzureStorageManager {
     async saveUserData(userId, userData) {
         const blobName = `users/${userId}.json`;
         const url = `${this.baseUrl}/${blobName}?${this.sasToken}`;
+        const options = {
+            method: 'PUT',
+            headers: {
+                'x-ms-blob-type': 'BlockBlob',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        };
 
         try {
-            const response = await fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'x-ms-blob-type': 'BlockBlob',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
+            let response;
+            
+            // Use proxy if available, otherwise use direct fetch
+            if (this.proxy) {
+                console.log(`Using proxy for saving user data: ${userId}`);
+                response = await this.proxy.sendRequest(url, options);
+            } else {
+                console.log(`Direct fetch for saving user data: ${userId}`);
+                response = await fetch(url, options);
+            }
 
             if (response.ok) {
                 console.log(`User data saved for ${userId}`);
                 return { success: true };
             } else {
+                console.error(`Failed HTTP status: ${response.status} - ${response.statusText}`);
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
         } catch (error) {
             console.error('Failed to save user data:', error);
+            
+            if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                console.warn('CORS issue detected. Please ensure Azure Storage CORS settings are configured properly.');
+            }
+            
             return { success: false, error: error.message };
         }
     }
@@ -86,15 +107,26 @@ class AzureStorageManager {
     async loadUserData(userId) {
         const blobName = `users/${userId}.json`;
         const url = `${this.baseUrl}/${blobName}?${this.sasToken}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        };
 
         try {
             console.log('Loading user data from Azure URL:', url);
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
+            
+            let response;
+            
+            // Use proxy if available, otherwise use direct fetch
+            if (this.proxy) {
+                console.log(`Using proxy for loading user data: ${userId}`);
+                response = await this.proxy.sendRequest(url, options);
+            } else {
+                console.log(`Direct fetch for loading user data: ${userId}`);
+                response = await fetch(url, options);
+            }
 
             if (response.ok) {
                 const userData = await response.json();
@@ -118,6 +150,13 @@ class AzureStorageManager {
             }
         } catch (error) {
             console.error('Network error loading user data:', error);
+            
+            if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                console.warn('CORS issue detected. Please ensure Azure Storage CORS settings are configured properly.');
+                console.warn('Falling back to local data if available...');
+                this.useLocalFallback = true;
+            }
+            
             return { success: false, error: error.message };
         }
     }
@@ -127,24 +166,39 @@ class AzureStorageManager {
         const timestamp = new Date().toISOString();
         const blobName = `transactions/${userId}/${timestamp}_${transaction.id || 'tx'}.json`;
         const url = `${this.baseUrl}/${blobName}?${this.sasToken}`;
+        const options = {
+            method: 'PUT',
+            headers: {
+                'x-ms-blob-type': 'BlockBlob',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ...transaction,
+                userId,
+                timestamp
+            })
+        };
 
         try {
-            const response = await fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'x-ms-blob-type': 'BlockBlob',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    ...transaction,
-                    userId,
-                    timestamp
-                })
-            });
+            let response;
+            
+            // Use proxy if available, otherwise use direct fetch
+            if (this.proxy) {
+                console.log(`Using proxy for saving transaction: ${userId}`);
+                response = await this.proxy.sendRequest(url, options);
+            } else {
+                console.log(`Direct fetch for saving transaction: ${userId}`);
+                response = await fetch(url, options);
+            }
 
             return response.ok ? { success: true } : { success: false, error: 'Failed to save transaction' };
         } catch (error) {
             console.error('Failed to save transaction:', error);
+            
+            if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                console.warn('CORS issue detected when saving transaction. Check Azure Storage CORS settings.');
+            }
+            
             return { success: false, error: error.message };
         }
     }
@@ -152,9 +206,22 @@ class AzureStorageManager {
     // List transactions for a user
     async getTransactions(userId, limit = 20) {
         const url = `${this.baseUrl}?restype=container&comp=list&prefix=transactions/${userId}/&maxresults=${limit}&${this.sasToken}`;
+        const options = {
+            method: 'GET'
+        };
 
         try {
-            const response = await fetch(url);
+            let response;
+            
+            // Use proxy if available, otherwise use direct fetch
+            if (this.proxy) {
+                console.log(`Using proxy for listing transactions: ${userId}`);
+                response = await this.proxy.sendRequest(url, options);
+            } else {
+                console.log(`Direct fetch for listing transactions: ${userId}`);
+                response = await fetch(url, options);
+            }
+            
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
@@ -168,10 +235,18 @@ class AzureStorageManager {
 
             for (let blob of blobs) {
                 const blobName = blob.getElementsByTagName('Name')[0].textContent;
-                const transactionUrl = `${this.baseUrl}/${blobName}${this.sasToken}`;
+                const transactionUrl = `${this.baseUrl}/${blobName}?${this.sasToken}`;
 
                 try {
-                    const transactionResponse = await fetch(`${this.baseUrl}/${blobName}?${this.sasToken}`);
+                    let transactionResponse;
+                    
+                    // Use proxy for each transaction request
+                    if (this.proxy) {
+                        transactionResponse = await this.proxy.sendRequest(transactionUrl, { method: 'GET' });
+                    } else {
+                        transactionResponse = await fetch(transactionUrl);
+                    }
+                    
                     if (transactionResponse.ok) {
                         const transactionData = await transactionResponse.json();
                         transactions.push(transactionData);
@@ -187,6 +262,11 @@ class AzureStorageManager {
             return { success: true, data: transactions.slice(0, limit) };
         } catch (error) {
             console.error('Failed to get transactions:', error);
+            
+            if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                console.warn('CORS issue detected when listing transactions. Check Azure Storage CORS settings.');
+            }
+            
             return { success: false, error: error.message };
         }
     }
@@ -231,64 +311,145 @@ class AzureStorageManager {
 
     // Azure authentication method
     async authenticateUserAzure(username, password) {
-        const userListUrl = `${this.baseUrl}?restype=container&comp=list&prefix=users/&${this.sasToken}`;
+        // First, try to get all user IDs from both containers
+        let userIds = [];
         
-        console.log('Fetching user list from Azure...');
-        console.log('Azure URL:', userListUrl);
-
         try {
-            const response = await fetch(userListUrl);
+            // First check the dedicated credentials container
+            console.log('Checking credentials container first...');
+            const credentialsUrl = `${this.credentialsBaseUrl}?restype=container&comp=list&${this.sasToken}`;
             
-            if (!response.ok) {
-                console.error('Failed to fetch user list:', response.status, response.statusText);
-                console.error('Response headers:', [...response.headers.entries()]);
-                const errorText = await response.text();
-                console.error('Error response body:', errorText);
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            let credResponse;
+            if (this.proxy) {
+                credResponse = await this.proxy.sendRequest(credentialsUrl, { method: 'GET' });
+            } else {
+                credResponse = await fetch(credentialsUrl);
             }
             
-            const xmlText = await response.text();
-            console.log('User list XML response length:', xmlText.length);
-            console.log('First 500 chars of XML:', xmlText.substring(0, 500));
-
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-
-            const blobs = xmlDoc.getElementsByTagName('Blob');
-            console.log('Found', blobs.length, 'user files in Azure');
-            
-            for (let blob of blobs) {
-                const blobName = blob.getElementsByTagName('Name')[0].textContent;
-                const userId = blobName.split('/')[1].replace('.json', '');
-                console.log('Checking user:', userId);
+            if (credResponse.ok) {
+                const xmlText = await credResponse.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                const blobs = xmlDoc.getElementsByTagName('Blob');
                 
-                const userData = await this.loadUserData(userId);
-                if (userData.success) {
-                    console.log('Loaded user data for:', userId);
-                    console.log('Stored username:', userData.data.credentials.username);
-                    console.log('Username match:', userData.data.credentials.username === username);
+                console.log('Found', blobs.length, 'credential files in Azure');
+                
+                for (let blob of blobs) {
+                    const blobName = blob.getElementsByTagName('Name')[0].textContent;
+                    const userId = blobName.replace('.json', '');
+                    userIds.push(userId);
+                }
+            }
+        } catch (credError) {
+            console.error('Error checking credentials container:', credError);
+            // Continue with regular user container if credential container fails
+        }
+        
+        // If no credentials found or error occurred, try the regular user container
+        if (userIds.length === 0) {
+            try {
+                console.log('Checking users container...');
+                const userListUrl = `${this.baseUrl}?restype=container&comp=list&prefix=users/&${this.sasToken}`;
+                
+                let userResponse;
+                if (this.proxy) {
+                    userResponse = await this.proxy.sendRequest(userListUrl, { method: 'GET' });
+                } else {
+                    userResponse = await fetch(userListUrl);
+                }
+                
+                if (userResponse.ok) {
+                    const xmlText = await userResponse.text();
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                    const blobs = xmlDoc.getElementsByTagName('Blob');
                     
-                    if (userData.data.credentials.username === username) {
-                        const passwordMatch = await this.verifyPassword(password, userData.data.credentials.password);
-                        console.log('Password verification result:', passwordMatch);
-
+                    console.log('Found', blobs.length, 'user files in Azure');
+                    
+                    for (let blob of blobs) {
+                        const blobName = blob.getElementsByTagName('Name')[0].textContent;
+                        const userId = blobName.split('/')[1].replace('.json', '');
+                        userIds.push(userId);
+                    }
+                }
+            } catch (userError) {
+                console.error('Error checking user container:', userError);
+                throw userError;
+            }
+        }
+        
+        // No users found in either container
+        if (userIds.length === 0) {
+            console.log('No user files found in Azure');
+            return { success: false, message: "Invalid credentials" };
+        }
+        
+        // Check each user for matching credentials
+        for (const userId of userIds) {
+            console.log('Checking user:', userId);
+            
+            // First check for separate credentials
+            try {
+                const credResult = await this.loadUserCredentials(userId);
+                
+                if (credResult.success) {
+                    console.log('Found credentials for:', userId);
+                    
+                    if (credResult.data.username === username) {
+                        console.log('Username match found in credentials');
+                        const passwordMatch = await this.verifyPassword(password, credResult.data.password);
+                        
                         if (passwordMatch) {
-                            console.log('Azure authentication successful for:', username);
-                            const userWithSource = { ...userData.data, _dataSource: 'Azure' };
-                            return { success: true, userId, user: userWithSource, dataSource: 'Azure' };
+                            console.log('Password verified from credentials');
+                            // Load full user data
+                            const userData = await this.loadUserData(userId);
+                            
+                            if (userData.success) {
+                                console.log('Successfully loaded full user data');
+                                const userWithSource = { ...userData.data, _dataSource: 'Azure' };
+                                return { success: true, userId, user: userWithSource, dataSource: 'Azure' };
+                            } else {
+                                console.log('Failed to load full user data, returning partial credentials');
+                                // Return a basic user object if we can't load the full user data
+                                return { 
+                                    success: true, 
+                                    userId, 
+                                    user: { 
+                                        credentials: credResult.data,
+                                        _dataSource: 'Azure',
+                                        profile: {
+                                            fullName: credResult.data.username
+                                        }
+                                    },
+                                    dataSource: 'Azure'
+                                };
+                            }
                         }
                     }
                 } else {
-                    console.error('Failed to load user data for:', userId);
+                    // If no separate credentials found, check the user data
+                    const userData = await this.loadUserData(userId);
+                    
+                    if (userData.success && userData.data.credentials) {
+                        if (userData.data.credentials.username === username) {
+                            const passwordMatch = await this.verifyPassword(password, userData.data.credentials.password);
+                            
+                            if (passwordMatch) {
+                                console.log('Azure authentication successful from user data for:', username);
+                                const userWithSource = { ...userData.data, _dataSource: 'Azure' };
+                                return { success: true, userId, user: userWithSource, dataSource: 'Azure' };
+                            }
+                        }
+                    }
                 }
+            } catch (error) {
+                console.error('Error checking user credentials:', error);
+                // Continue to next user
             }
-            
-            console.log('No matching user credentials found in Azure');
-            return { success: false, message: "Invalid credentials" };
-        } catch (error) {
-            console.error('Azure authentication error:', error);
-            throw error; // Re-throw to trigger fallback
         }
+        
+        console.log('No matching user credentials found in Azure');
+        return { success: false, message: "Invalid credentials" };
     }
 
     // Local fallback authentication
@@ -493,6 +654,189 @@ class AzureStorageManager {
     // Check if currently using local fallback
     isUsingLocalFallback() {
         return this.useLocalFallback;
+    }
+
+    // Save only the credentials to a separate secure container
+    async saveUserCredentials(userId, credentials) {
+        const blobName = `${userId}.json`;
+        const url = `${this.credentialsBaseUrl}/${blobName}?${this.sasToken}`;
+        const options = {
+            method: 'PUT',
+            headers: {
+                'x-ms-blob-type': 'BlockBlob',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        };
+
+        try {
+            let response;
+            
+            // Use proxy if available, otherwise use direct fetch
+            if (this.proxy) {
+                console.log(`Using proxy for saving user credentials: ${userId}`);
+                response = await this.proxy.sendRequest(url, options);
+            } else {
+                console.log(`Direct fetch for saving user credentials: ${userId}`);
+                response = await fetch(url, options);
+            }
+
+            if (response.ok) {
+                console.log(`User credentials saved for ${userId}`);
+                return { success: true };
+            } else {
+                console.error(`Failed HTTP status: ${response.status} - ${response.statusText}`);
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Failed to save user credentials:', error);
+            
+            if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                console.warn('CORS issue detected. Please ensure Azure Storage CORS settings are configured properly.');
+            }
+            
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Load user credentials from the secure container
+    async loadUserCredentials(userId) {
+        const blobName = `${userId}.json`;
+        const url = `${this.credentialsBaseUrl}/${blobName}?${this.sasToken}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        };
+
+        try {
+            console.log('Loading user credentials from Azure URL:', url);
+            
+            let response;
+            
+            // Use proxy if available, otherwise use direct fetch
+            if (this.proxy) {
+                console.log(`Using proxy for loading user credentials: ${userId}`);
+                response = await this.proxy.sendRequest(url, options);
+            } else {
+                console.log(`Direct fetch for loading user credentials: ${userId}`);
+                response = await fetch(url, options);
+            }
+
+            if (response.ok) {
+                const credentials = await response.json();
+                console.log('Successfully loaded user credentials from Azure for:', userId);
+                return { success: true, data: credentials };
+            } else if (response.status === 404) {
+                console.log('User credentials file not found in Azure Storage for:', userId);
+                return { success: false, error: 'User credentials not found' };
+            } else {
+                console.error('Failed to load user credentials from Azure:', response.status, response.statusText);
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Network error loading user credentials:', error);
+            
+            if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                console.warn('CORS issue detected. Please ensure Azure Storage CORS settings are configured properly.');
+            }
+            
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Delete user credentials from the secure container
+    async deleteUserCredentials(userId) {
+        const blobName = `${userId}.json`;
+        const url = `${this.credentialsBaseUrl}/${blobName}?${this.sasToken}`;
+        const options = {
+            method: 'DELETE'
+        };
+
+        try {
+            let response;
+            
+            // Use proxy if available, otherwise use direct fetch
+            if (this.proxy) {
+                console.log(`Using proxy for deleting user credentials: ${userId}`);
+                response = await this.proxy.sendRequest(url, options);
+            } else {
+                console.log(`Direct fetch for deleting user credentials: ${userId}`);
+                response = await fetch(url, options);
+            }
+
+            if (response.ok || response.status === 404) { // Success or not found (already deleted)
+                console.log(`User credentials deleted for ${userId}`);
+                return { success: true };
+            } else {
+                console.error(`Failed HTTP status: ${response.status} - ${response.statusText}`);
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Failed to delete user credentials:', error);
+            
+            if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                console.warn('CORS issue detected. Please ensure Azure Storage CORS settings are configured properly.');
+            }
+            
+            return { success: false, error: error.message };
+        }
+    }
+    
+    // List all credentials in the secure container
+    async listAllCredentials() {
+        const url = `${this.credentialsBaseUrl}?restype=container&comp=list&prefix=&${this.sasToken}`;
+        const options = {
+            method: 'GET'
+        };
+
+        try {
+            let response;
+            
+            // Use proxy if available, otherwise use direct fetch
+            if (this.proxy) {
+                console.log(`Using proxy for listing all credentials`);
+                response = await this.proxy.sendRequest(url, options);
+            } else {
+                console.log(`Direct fetch for listing all credentials`);
+                response = await fetch(url, options);
+            }
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
+            const blobs = xmlDoc.getElementsByTagName('Blob');
+            const credentials = [];
+
+            for (let blob of blobs) {
+                const blobName = blob.getElementsByTagName('Name')[0].textContent;
+                const userId = blobName.replace('.json', '');
+                
+                const credentialData = await this.loadUserCredentials(userId);
+                if (credentialData.success) {
+                    credentials.push({
+                        userId: userId,
+                        ...credentialData.data
+                    });
+                }
+            }
+
+            return { success: true, data: credentials };
+        } catch (error) {
+            console.error('Failed to list all credentials:', error);
+            
+            if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                console.warn('CORS issue detected. Please ensure Azure Storage CORS settings are configured properly.');
+            }
+            
+            return { success: false, error: error.message };
+        }
     }
 }
 
