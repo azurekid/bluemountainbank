@@ -4,12 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Blue Mountain Bank</title>
+    <!-- Pre-render auth check script -->
+    <script>
+        // Immediately check admin session before any content loads
+        (function() {
+            const adminSession = sessionStorage.getItem('adminSession');
+            const adminExpiry = sessionStorage.getItem('adminSessionExpiry');
+            
+            if (!adminSession || !adminExpiry) {
+                window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname));
+                return;
+            }
+            
+            // Check if session has expired
+            if (new Date(adminExpiry) < new Date()) {
+                sessionStorage.removeItem('adminSession');
+                sessionStorage.removeItem('adminUser');
+                sessionStorage.removeItem('adminLoginTime');
+                sessionStorage.removeItem('adminSessionExpiry');
+                window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname) + '&message=' + encodeURIComponent('Your session has expired. Please log in again.'));
+                return;
+            }
+            
+            // Session is valid, extend it
+            sessionStorage.setItem('adminSessionExpiry', new Date(Date.now() + 30 * 60 * 1000).toISOString());
+        })();
+    </script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Loading overlay (hidden when auth is confirmed) -->
+    <div id="auth-loading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;">
+        <img src="img/blue-mountain-bank.png" alt="Blue Mountain Bank" style="width: 200px; margin-bottom: 20px;">
+        <div style="color: white; font-size: 20px; font-weight: 600; margin-bottom: 20px;">Verifying secure access...</div>
+        <div style="width: 50px; height: 50px; border: 5px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite;"></div>
+    </div>
+    
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    
+    <script>
+        // Hide loading screen once DOM is ready and auth is confirmed
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('auth-loading').style.display = 'none';
+        });
+    </script>
+
     <div class="dashboard">
         <header class="dashboard-header">
             <div class="header-content">
@@ -19,12 +65,13 @@
                 </div>
                 <div class="admin-info">
                     <div class="admin-user">
-                        <div class="admin-avatar">
+                        <div class="admin-avatar" id="admin-avatar">
                             AD
                         </div>
                         <div class="admin-details">
-                            <div class="admin-name">Bank Administrator</div>
+                            <div class="admin-name" id="admin-name">Bank Administrator</div>
                             <div class="admin-role">System Admin</div>
+                            <div class="admin-session-timer" id="admin-session-timer">Session: 30:00</div>
                         </div>
                     </div>
                     <button class="logout-btn" onclick="logout()">
@@ -171,11 +218,17 @@
     </div>
 
     <script src="js/local-storage-manager.js"></script>
+    <script src="js/azure-proxy.js"></script>
+    <script src="js/azure-storage-manager.js"></script>
+    <script src="js/login.js"></script>
     <script src="js/script.js"></script>
     <script>
         // Initialize admin dashboard
         document.addEventListener('DOMContentLoaded', function() {
+            // The auth check was already done before page load, so we know we have a valid session
             loadAdminDashboard();
+            // Initialize admin session management (timer, etc.)
+            initAdminSession();
         });
 
         function loadAdminDashboard() {
@@ -262,7 +315,14 @@
 
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'login.html';
+                // Clear admin session
+                sessionStorage.removeItem('adminSession');
+                sessionStorage.removeItem('adminUser');
+                sessionStorage.removeItem('adminLoginTime');
+                sessionStorage.removeItem('adminSessionExpiry');
+                
+                // Redirect to login page with logout parameter to prevent auto-login
+                window.location.href = 'login.html?logout=true';
             }
         }
 
@@ -337,6 +397,88 @@
                 alert('System has been reset to default values. The page will reload.');
                 location.reload();
             }
+        }
+        
+        // This will be called in the main DOMContentLoaded event
+        function initAdminSession() {
+            // Verify admin session exists
+            checkAdminAccess();
+            
+            // Update admin name if available
+            const adminUser = sessionStorage.getItem('adminUser');
+            if (adminUser) {
+                document.getElementById('admin-name').textContent = adminUser.charAt(0).toUpperCase() + adminUser.slice(1);
+                document.getElementById('admin-avatar').textContent = adminUser.charAt(0).toUpperCase();
+            }
+            
+            // Set up session timer
+            startSessionTimer();
+        }
+        
+        // Check if user has admin access
+        function checkAdminAccess() {
+            const adminSession = sessionStorage.getItem('adminSession');
+            const adminExpiry = sessionStorage.getItem('adminSessionExpiry');
+            
+            if (!adminSession || !adminExpiry) {
+                console.log('No admin session found, redirecting to login');
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                return false;
+            }
+            
+            // Check if session has expired
+            if (new Date(adminExpiry) < new Date()) {
+                console.log('Admin session expired, redirecting to login');
+                sessionStorage.removeItem('adminSession');
+                sessionStorage.removeItem('adminUser');
+                sessionStorage.removeItem('adminLoginTime');
+                sessionStorage.removeItem('adminSessionExpiry');
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname) + '&message=' + encodeURIComponent('Your session has expired. Please log in again.');
+                return false;
+            }
+            
+            // Session is valid, extend it
+            sessionStorage.setItem('adminSessionExpiry', new Date(Date.now() + 30 * 60 * 1000).toISOString());
+            console.log('Admin session extended until:', new Date(Date.now() + 30 * 60 * 1000).toLocaleTimeString());
+            return true;
+        }
+        
+        // Start countdown timer for session
+        function startSessionTimer() {
+            const timerElement = document.getElementById('admin-session-timer');
+            if (!timerElement) return;
+            
+            function updateTimer() {
+                const expiryTime = new Date(sessionStorage.getItem('adminSessionExpiry')).getTime();
+                const now = Date.now();
+                const timeLeft = Math.max(0, expiryTime - now);
+                
+                if (timeLeft <= 0) {
+                    // Session expired
+                    clearInterval(timerInterval);
+                    logout();
+                    return;
+                }
+                
+                // Format remaining time as MM:SS
+                const minutes = Math.floor(timeLeft / 60000);
+                const seconds = Math.floor((timeLeft % 60000) / 1000);
+                timerElement.textContent = `Session: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Apply warning styles when less than 5 minutes remain
+                if (timeLeft < 5 * 60 * 1000) {
+                    timerElement.style.color = '#f59e0b';
+                }
+                
+                // Apply urgent styles when less than 1 minute remains
+                if (timeLeft < 60 * 1000) {
+                    timerElement.style.color = '#ef4444';
+                    timerElement.style.fontWeight = 'bold';
+                }
+            }
+            
+            updateTimer();
+            const timerInterval = setInterval(updateTimer, 1000);
         }
     </script>
 </body>

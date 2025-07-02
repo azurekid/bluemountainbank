@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Admin session is now checked directly in the admin pages before they render
+
     // Enhance form validation
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('blur', function() {
@@ -53,10 +55,9 @@ async function handleLogin(event) {
         return;
     }
     
-    // Check for admin credentials (this should be moved to server-side in production)
+    // Check for admin credentials
     if (username === 'admin' && password === 'admin123') {
-        // Redirect to admin dashboard
-        window.location.href = 'admin.html';
+        authenticateAdmin(username);
         return;
     }
     
@@ -114,6 +115,110 @@ async function handleLogin(event) {
         submitButton.innerHTML = originalButtonText;
         submitButton.disabled = false;
     }
+}
+
+/**
+ * Authenticate admin user and create a secure admin session
+ * @param {string} username - Admin username
+ */
+function authenticateAdmin(username) {
+    console.log('Authenticating admin user:', username);
+    
+    // Clear any existing admin session first
+    sessionStorage.removeItem('adminSession');
+    sessionStorage.removeItem('adminUser');
+    sessionStorage.removeItem('adminLoginTime');
+    sessionStorage.removeItem('adminSessionExpiry');
+    
+    // Store admin session with security metadata
+    sessionStorage.setItem('adminSession', 'true');
+    sessionStorage.setItem('adminUser', username);
+    sessionStorage.setItem('adminLoginTime', new Date().toISOString());
+    sessionStorage.setItem('adminSessionExpiry', new Date(Date.now() + 30 * 60 * 1000).toISOString()); // 30 minutes
+    
+    console.log('Admin session created:', {
+        adminSession: sessionStorage.getItem('adminSession'),
+        adminUser: sessionStorage.getItem('adminUser'),
+        adminSessionExpiry: sessionStorage.getItem('adminSessionExpiry')
+    });
+    
+    // Show success message
+    showLoginSuccess('Admin authentication successful! Redirecting to admin dashboard...');
+    
+    // Redirect to admin dashboard
+    setTimeout(() => {
+        // Check for redirect in URL parameters first, then in sessionStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectParam = urlParams.get('redirect');
+        const storedRedirect = sessionStorage.getItem('loginRedirect');
+        
+        const adminPageUrl = redirectParam || storedRedirect || 'admin.html';
+        console.log('Redirecting admin to:', adminPageUrl);
+        
+        // Clear stored redirect
+        sessionStorage.removeItem('loginRedirect');
+        
+        window.location.href = adminPageUrl;
+    }, 1500);
+}
+
+/**
+ * Check if there is a valid admin session
+ * Redirects to login if no valid session exists
+ */
+function checkAdminSession() {
+    const adminSession = sessionStorage.getItem('adminSession');
+    const adminSessionExpiry = sessionStorage.getItem('adminSessionExpiry');
+    
+    console.log('Checking admin session:', { adminSession, adminSessionExpiry });
+    
+    if (!adminSession || !adminSessionExpiry) {
+        console.log('No admin session found');
+        redirectToAdminLogin();
+        return false;
+    }
+    
+    // Check if session has expired
+    if (new Date(adminSessionExpiry) < new Date()) {
+        console.log('Admin session expired');
+        clearAdminSession();
+        redirectToAdminLogin('Your session has expired. Please log in again.');
+        return false;
+    }
+    
+    console.log('Admin session is valid');
+    // Renew session expiry time
+    sessionStorage.setItem('adminSessionExpiry', new Date(Date.now() + 30 * 60 * 1000).toISOString());
+    return true;
+}
+
+/**
+ * Clear admin session data
+ */
+function clearAdminSession() {
+    sessionStorage.removeItem('adminSession');
+    sessionStorage.removeItem('adminUser');
+    sessionStorage.removeItem('adminLoginTime');
+    sessionStorage.removeItem('adminSessionExpiry');
+}
+
+/**
+ * Redirect to admin login with optional message
+ * @param {string} message - Optional message to display
+ */
+function redirectToAdminLogin(message) {
+    const currentPath = encodeURIComponent(window.location.pathname);
+    
+    // Determine if we need to prepend ../ to the login.html path
+    let loginPath = 'login.html';
+    if (currentPath.includes('/admin/')) {
+        // We're in a subdirectory, so we need to go up one level
+        loginPath = '../login.html';
+    }
+    
+    const loginUrl = `${loginPath}?redirect=${currentPath}${message ? '&message=' + encodeURIComponent(message) : ''}`;
+    console.log('Redirecting to login:', loginUrl);
+    window.location.href = loginUrl;
 }
 
 // Display login error message

@@ -65,5 +65,46 @@
     <script src="js/azure-storage-manager.js"></script>
     <script src="js/script.js"></script>
     <script src="js/login.js"></script>
+    
+    <script>
+        // Check for message and redirect parameters when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            
+            // Display error message if present in URL
+            if (message) {
+                showLoginError(message);
+            }
+            
+            // Store redirect parameter for post-login redirect
+            const redirect = urlParams.get('redirect');
+            if (redirect) {
+                console.log('Storing redirect URL for after login:', redirect);
+                sessionStorage.setItem('loginRedirect', redirect);
+                
+                // Check if this is an admin page and set a visual indicator
+                if (redirect.includes('/admin') || redirect === 'admin.html') {
+                    document.querySelector('.login-title').textContent = 'Admin Login';
+                    document.querySelector('.login-subtitle').textContent = 'Secure access to admin panel';
+                }
+            }
+            
+            // Check if we're already logged in as admin (and no forced logout)
+            if (!urlParams.get('logout')) {
+                const adminSession = sessionStorage.getItem('adminSession');
+                const adminExpiry = sessionStorage.getItem('adminSessionExpiry');
+                
+                if (adminSession === 'true' && adminExpiry && new Date(adminExpiry) > new Date()) {
+                    console.log('Already logged in as admin, redirecting to admin page');
+                    // Reset session expiry
+                    sessionStorage.setItem('adminSessionExpiry', new Date(Date.now() + 30 * 60 * 1000).toISOString());
+                    // Redirect to requested page or admin dashboard
+                    const redirectUrl = redirect || 'admin.html';
+                    window.location.replace(redirectUrl);
+                }
+            }
+        });
+    </script>
 </body>
 </html>

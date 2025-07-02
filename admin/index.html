@@ -4,11 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Tools - Blue Mountain Bank</title>
+    <!-- Pre-render auth check script -->
+    <script>
+        // Immediately check admin session before any content loads
+        (function() {
+            const adminSession = sessionStorage.getItem('adminSession');
+            const adminExpiry = sessionStorage.getItem('adminSessionExpiry');
+            
+            if (!adminSession || !adminExpiry) {
+                window.location.replace('../login.html?redirect=' + encodeURIComponent(window.location.pathname));
+                return;
+            }
+            
+            // Check if session has expired
+            if (new Date(adminExpiry) < new Date()) {
+                sessionStorage.removeItem('adminSession');
+                sessionStorage.removeItem('adminUser');
+                sessionStorage.removeItem('adminLoginTime');
+                sessionStorage.removeItem('adminSessionExpiry');
+                window.location.replace('../login.html?redirect=' + encodeURIComponent(window.location.pathname) + '&message=' + encodeURIComponent('Your session has expired. Please log in again.'));
+                return;
+            }
+            
+            // Session is valid, extend it
+            sessionStorage.setItem('adminSessionExpiry', new Date(Date.now() + 30 * 60 * 1000).toISOString());
+        })();
+    </script>
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/header.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* Admin-specific styles that complement the base design */
         .admin-main {
             margin-top: 80px;
@@ -239,6 +269,20 @@
     </style>
 </head>
 <body>
+    <!-- Loading overlay (hidden when auth is confirmed) -->
+    <div id="auth-loading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;">
+        <img src="../img/blue-mountain-bank.png" alt="Blue Mountain Bank" style="width: 200px; margin-bottom: 20px;">
+        <div style="color: white; font-size: 20px; font-weight: 600; margin-bottom: 20px;">Verifying secure access...</div>
+        <div style="width: 50px; height: 50px; border: 5px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite;"></div>
+    </div>
+    
+    <script>
+        // Hide loading screen once DOM is ready and auth is confirmed
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('auth-loading').style.display = 'none';
+        });
+    </script>
+    
     <!-- Header -->
     <header class="header">
         <nav class="navbar">
@@ -273,13 +317,49 @@
                 </div>
                 
                 <div class="tool-grid">
+                    <div class="tool-card user-section" style="--accent-color: #0a4275; --accent-hover: #0d5394;">
+                        <div class="icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3>Create User Tool</h3>
+                        <p>Create new user accounts with complete profile data, account information, and initial transactions. Automatically saves to Azure.</p>
+                        <a href="create-user.html">
+                            <i class="fas fa-plus-circle"></i>
+                            Launch User Creator
+                        </a>
+                    </div>
+                    
+                    <div class="tool-card user-section" style="--accent-color: #0a4275; --accent-hover: #0d5394;">
+                        <div class="icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3>Manage Credentials</h3>
+                        <p>View, edit, and download user credentials. Update usernames, email addresses, and reset passwords for existing users.</p>
+                        <a href="manage-credentials.html">
+                            <i class="fas fa-cog"></i>
+                            Manage User Credentials
+                        </a>
+                    </div>
+                    
+                    <div class="tool-card user-section" style="--accent-color: #0a4275; --accent-hover: #0d5394;">
+                        <div class="icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h3>Credential Migration</h3>
+                        <p>Migrate user credentials to a secure dedicated container. Separates authentication data from user profiles for improved security.</p>
+                        <a href="migrate-credentials.html">
+                            <i class="fas fa-shield-alt"></i>
+                            Launch Migration Tool
+                        </a>
+                    </div>
+                    
                     <div class="tool-card debug-section">
                         <div class="icon">
                             <i class="fas fa-search"></i>
                         </div>
                         <h3>Debug User Data</h3>
                         <p>Test user authentication, data loading, and Azure connectivity. Shows data source information and session details with comprehensive diagnostics.</p>
-                        <a href="admin/ebug-userdata.html">
+                        <a href="debug-userdata.html">
                             <i class="fas fa-play"></i>
                             Launch Debug Tool
                         </a>
@@ -291,7 +371,7 @@
                         </div>
                         <h3>Error Debug Console</h3>
                         <p>Advanced error debugging with detailed logging. Shows Azure connectivity status, error traces, and system diagnostics.</p>
-                        <a href="admin/error-debug.html">
+                        <a href="error-debug.html">
                             <i class="fas fa-bug"></i>
                             Launch Error Debug
                         </a>
@@ -303,7 +383,7 @@
                         </div>
                         <h3>Azure Upload Tool</h3>
                         <p>Upload sample user data to Azure Blob Storage. Includes all user profiles, account balances, and transaction histories.</p>
-                        <a href="admin/azure-upload-tool.html">
+                        <a href="azure-upload-tool.html">
                             <i class="fas fa-upload"></i>
                             Launch Upload Tool
                         </a>
@@ -315,7 +395,7 @@
                         </div>
                         <h3>Azure Blob Manager</h3>
                         <p>Direct blob storage uploader with configuration options. Test connectivity, manage storage, and upload custom files.</p>
-                        <a href="admin/azure-blob-uploader.html">
+                        <a href="azure-blob-uploader.html">
                             <i class="fas fa-cogs"></i>
                             Launch Blob Manager
                         </a>
@@ -327,7 +407,7 @@
                         </div>
                         <h3>Storage Test Lab</h3>
                         <p>Test local storage functionality and data persistence. Useful for debugging storage issues and data integrity.</p>
-                        <a href="admin/test-storage.html">
+                        <a href="test-storage.html">
                             <i class="fas fa-vial"></i>
                             Launch Storage Test
                         </a>
@@ -339,7 +419,7 @@
                         </div>
                         <h3>Azure Live Demo</h3>
                         <p>Interactive Azure functionality demo with live testing capabilities. Explore Azure features in real-time.</p>
-                        <a href="admin/azure-demo.html">
+                        <a href="azure-demo.html">
                             <i class="fas fa-play-circle"></i>
                             Launch Azure Demo
                         </a>
@@ -351,7 +431,7 @@
                         </div>
                         <h3>Password Hash Generator</h3>
                         <p>Generate SHA-256 hashes for user passwords. Shows secure hashes for all demo users with copy functionality.</p>
-                        <a href="admin/hash-passwords.html">
+                        <a href="hash-passwords.html">
                             <i class="fas fa-lock"></i>
                             Launch Hash Generator
                         </a>
@@ -376,5 +456,58 @@
             </div>
         </div>
     </main>
+
+    <script src="../js/login.js"></script>
+    <script>
+        // Check for admin session when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verify admin session exists
+            checkAdminAccess();
+            
+            // Update admin name if available
+            const adminUser = sessionStorage.getItem('adminUser');
+            if (adminUser && document.getElementById('admin-name')) {
+                document.getElementById('admin-name').textContent = adminUser.charAt(0).toUpperCase() + adminUser.slice(1);
+            }
+        });
+        
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear admin session
+                sessionStorage.removeItem('adminSession');
+                sessionStorage.removeItem('adminUser');
+                sessionStorage.removeItem('adminLoginTime');
+                sessionStorage.removeItem('adminSessionExpiry');
+                
+                // Redirect to login page with logout parameter to prevent auto-login
+                window.location.href = '../login.html?logout=true';
+            }
+        }
+        
+        // Check if user has admin access
+        function checkAdminAccess() {
+            const adminSession = sessionStorage.getItem('adminSession');
+            const adminExpiry = sessionStorage.getItem('adminSessionExpiry');
+            
+            if (!adminSession || !adminExpiry) {
+                console.log('No admin session found, redirecting to login');
+                window.location.href = '../login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                return;
+            }
+            
+            // Check if session has expired
+            if (new Date(adminExpiry) < new Date()) {
+                console.log('Admin session expired, redirecting to login');
+                sessionStorage.removeItem('adminSession');
+                sessionStorage.removeItem('adminExpiry');
+                window.location.href = '../login.html?redirect=' + encodeURIComponent(window.location.pathname) + '&message=' + encodeURIComponent('Your session has expired. Please log in again.');
+                return;
+            }
+            
+            // Session is valid, extend it
+            sessionStorage.setItem('adminSessionExpiry', new Date(Date.now() + 30 * 60 * 1000).toISOString());
+        }
+    </script>
 </body>
 </html>
