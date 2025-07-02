@@ -8,70 +8,51 @@ class AzureStorageManager {
         this.baseUrl = `https://${this.storageAccount}.blob.core.windows.net/${this.containerName}`;
         this.useLocalFallback = false;
         
-        // Security features
-        this.loginAttempts = new Map(); // Track failed login attempts
-        this.maxAttempts = 5; // Maximum login attempts
-        this.lockoutDuration = 5 * 60 * 1000; // 15 minutes lockout
-        
-        // Local sample data for fallback (minimal for login only)
-        // Note: In production, these would be loaded from secure storage
-        // All passwords are stored as salt:hash format using PBKDF2
+        // Local sample data for fallback
         this.localUsers = {
             'alice_martinez': {
                 credentials: {
                     username: 'alice.martinez',
-                    password: 'a1b2c3d4e5f6789012345678:d4c8b9e2f3a1b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0',
-                    email: 'alice.martinez@gmail.com'
+                    password: 'ec4874af59fe23a3f555276a4ebfa20a3e3ccaa5cd535065d6052db5e7bf5d01',
+                    email: 'alice.martinez@email.com'
                 }
             },
             'bob_johnson': {
                 credentials: {
                     username: 'bob.johnson',
-                    password: 'b2c3d4e5f6a7890123456789:e5d9c8b7f4a3b6c5d8e7f0a9b2c1d4e3f6a5b8c7d0e9f2a1b4c3d6e5f8a7b0c9',
-                    email: 'bob.johnson@outlook.com'
+                    password: '7552dd66eb5496ddfed93eafe079b50f123c6e13af2967d3d4bc39a7455200a6',
+                    email: 'bob.johnson@email.com'
                 }
             },
             'carol_smith': {
                 credentials: {
                     username: 'carol.smith',
-                    password: 'c3d4e5f6a7b8901234567890:f6e0d9c8b7a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0',
+                    password: '6320030ac57ad4df03baed0b99b0babf534af7cfb2c601eba9d933f144e9b643',
+                    email: 'carol.smith@email.com'
                 }
             },
             'david_wilson': {
                 credentials: {
                     username: 'david.wilson',
-                    password: 'd4e5f6a7b8c9012345678901:a7b1e0d9c8f5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1',
+                    password: '2a0841af892abcaf953782cbe8625f107fc59aeb2015f2fa05dbbf256086db7a',
+                    email: 'david.wilson@email.com'
                 }
             },
             'emma_brown': {
                 credentials: {
                     username: 'emma.brown',
-                    password: 'e5f6a7b8c9d0123456789012:b8c2f1e0d9a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2',
+                    password: '3089f8b268a347b23738dfd1caf39c9c49b607289461d682ba93f317adbd3b5f',
+                    email: 'emma.brown@email.com'
                 }
             },
             'frank_miller': {
                 credentials: {
                     username: 'frank.miller',
-                    password: 'f6a7b8c9d0e1234567890123:c9d3g2f1e0b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3',
+                    password: '5e3c0a612afee08a6a8a1c395c962dceb069a56ef988a36ab71f87dc2bade904',
+                    email: 'frank.miller@email.com'
                 }
             }
         };
-    }
-
-    // Get user data (wrapper for loadUserData that returns data directly)
-    async getUserData(userId) {
-        try {
-            const result = await this.loadUserData(userId);
-            if (result.success) {
-                return result.data;
-            } else {
-                console.error('Failed to get user data:', result.error);
-                return null;
-            }
-        } catch (error) {
-            console.error('Error getting user data:', error);
-            return null;
-        }
     }
 
     // Upload user data to Azure Blob Storage
@@ -107,6 +88,7 @@ class AzureStorageManager {
         const url = `${this.baseUrl}/${blobName}?${this.sasToken}`;
 
         try {
+            console.log('Loading user data from Azure URL:', url);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -116,10 +98,22 @@ class AzureStorageManager {
 
             if (response.ok) {
                 const userData = await response.json();
+                console.log('Successfully loaded user data from Azure for:', userId);
                 return { success: true, data: userData };
             } else if (response.status === 404) {
+                console.log('User data file not found in Azure Storage for:', userId);
                 return { success: false, error: 'User not found' };
             } else {
+                console.error('Failed to load user data from Azure:', response.status, response.statusText);
+
+                // Try to get more details about the error
+                if (response.status === 403) {
+                    console.log('Access denied - check SAS token permissions');
+                } else {
+                    const errorText = await response.text();
+                    console.log('Error response:', errorText);
+                }
+
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
         } catch (error) {
@@ -128,56 +122,109 @@ class AzureStorageManager {
         }
     }
 
-    // Authenticate user with enhanced security
-    async authenticateUser(username, password) {
-        console.log('🔐 Authenticating user:', username);
-        
-        // Check if account is locked
-        if (this.isAccountLocked(username)) {
-            console.warn('🔒 Account locked:', username);
-            return { 
-                success: false, 
-                message: "Account temporarily locked due to too many failed login attempts. Please try again later.",
-                locked: true
-            };
-        }
-        
-        // Input validation
-        if (!username || !password) {
-            return { success: false, message: "Username and password are required" };
-        }
-        
-        // Sanitize username to prevent injection attacks
-        const sanitizedUsername = username.trim().toLowerCase();
-        
-        // Try Azure first, then fallback to local
+    // Save transaction data
+    async saveTransaction(userId, transaction) {
+        const timestamp = new Date().toISOString();
+        const blobName = `transactions/${userId}/${timestamp}_${transaction.id || 'tx'}.json`;
+        const url = `${this.baseUrl}/${blobName}?${this.sasToken}`;
+
         try {
-            const azureResult = await this.authenticateUserAzure(sanitizedUsername, password);
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'x-ms-blob-type': 'BlockBlob',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...transaction,
+                    userId,
+                    timestamp
+                })
+            });
+
+            return response.ok ? { success: true } : { success: false, error: 'Failed to save transaction' };
+        } catch (error) {
+            console.error('Failed to save transaction:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    // List transactions for a user
+    async getTransactions(userId, limit = 20) {
+        const url = `${this.baseUrl}?restype=container&comp=list&prefix=transactions/${userId}/&maxresults=${limit}&${this.sasToken}`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
+            const blobs = xmlDoc.getElementsByTagName('Blob');
+            const transactions = [];
+
+            for (let blob of blobs) {
+                const blobName = blob.getElementsByTagName('Name')[0].textContent;
+                const transactionUrl = `${this.baseUrl}/${blobName}${this.sasToken}`;
+
+                try {
+                    const transactionResponse = await fetch(`${this.baseUrl}/${blobName}?${this.sasToken}`);
+                    if (transactionResponse.ok) {
+                        const transactionData = await transactionResponse.json();
+                        transactions.push(transactionData);
+                    }
+                } catch (error) {
+                    console.warn(`Failed to load transaction ${blobName}:`, error);
+                }
+            }
+
+            // Sort by date (newest first)
+            transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            return { success: true, data: transactions.slice(0, limit) };
+        } catch (error) {
+            console.error('Failed to get transactions:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Authenticate user (simplified - in production, use proper authentication service)
+    async authenticateUser(username, password) {
+        console.log('🔐 Starting authentication for username:', username);
+        console.log('🔐 Current useLocalFallback flag:', this.useLocalFallback);
+        
+        // ALWAYS try Azure first, regardless of previous failures
+        console.log('☁️ Attempting Azure authentication first...');
+        try {
+            const azureResult = await this.authenticateUserAzure(username, password);
+            console.log('☁️ Azure authentication result:', azureResult);
+
             if (azureResult.success) {
-                console.log('✅ Azure authentication successful');
-                this.useLocalFallback = false;
-                this.clearFailedAttempts(sanitizedUsername);
+                console.log('✅ Azure authentication successful!');
+                this.useLocalFallback = false; // Reset flag on success
                 return azureResult;
+            } else {
+                console.log('❌ Azure authentication failed (invalid credentials)');
             }
         } catch (azureError) {
-            console.error('Azure authentication error:', azureError.message);
+            console.error('❌ Azure authentication error:', azureError.message);
+            console.error('❌ Full Azure error:', azureError);
         }
         
-        // Fallback to local authentication
+        // Only fall back to local if Azure completely fails
+        console.log('💾 Falling back to local authentication...');
         try {
-            const localResult = await this.authenticateUserLocal(sanitizedUsername, password);
+            const localResult = await this.authenticateUserLocal(username, password);
             if (localResult.success) {
-                console.log('✅ Local authentication successful');
-                this.useLocalFallback = true;
-                this.clearFailedAttempts(sanitizedUsername);
-                return localResult;
-            } else {
-                this.recordFailedAttempt(sanitizedUsername);
-                return localResult;
+                console.log('💾 Local authentication successful');
+                this.useLocalFallback = true; // Set flag for subsequent calls
             }
+            return localResult;
         } catch (fallbackError) {
-            console.error('Authentication system error:', fallbackError.message);
-            this.recordFailedAttempt(sanitizedUsername);
+            console.error('❌ Fallback authentication also failed:', fallbackError);
             return { success: false, message: "Authentication system temporarily unavailable" };
         }
     }
@@ -186,316 +233,266 @@ class AzureStorageManager {
     async authenticateUserAzure(username, password) {
         const userListUrl = `${this.baseUrl}?restype=container&comp=list&prefix=users/&${this.sasToken}`;
         
+        console.log('Fetching user list from Azure...');
+        console.log('Azure URL:', userListUrl);
+
         try {
             const response = await fetch(userListUrl);
             
             if (!response.ok) {
+                console.error('Failed to fetch user list:', response.status, response.statusText);
+                console.error('Response headers:', [...response.headers.entries()]);
+                const errorText = await response.text();
+                console.error('Error response body:', errorText);
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
             
             const xmlText = await response.text();
+            console.log('User list XML response length:', xmlText.length);
+            console.log('First 500 chars of XML:', xmlText.substring(0, 500));
+
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
             const blobs = xmlDoc.getElementsByTagName('Blob');
+            console.log('Found', blobs.length, 'user files in Azure');
             
             for (let blob of blobs) {
                 const blobName = blob.getElementsByTagName('Name')[0].textContent;
                 const userId = blobName.split('/')[1].replace('.json', '');
+                console.log('Checking user:', userId);
                 
                 const userData = await this.loadUserData(userId);
-                if (userData.success && userData.data.credentials.username === username) {
-                    const passwordMatch = await this.verifyPassword(password, userData.data.credentials.password);
-                    console.log('🔐 Password verification:', passwordMatch ? 'SUCCESS' : 'FAILED');
+                if (userData.success) {
+                    console.log('Loaded user data for:', userId);
+                    console.log('Stored username:', userData.data.credentials.username);
+                    console.log('Username match:', userData.data.credentials.username === username);
                     
-                    if (passwordMatch) {
-                        const userWithSource = { ...userData.data, _dataSource: 'Azure' };
-                        return { success: true, userId, user: userWithSource, dataSource: 'Azure' };
+                    if (userData.data.credentials.username === username) {
+                        const passwordMatch = await this.verifyPassword(password, userData.data.credentials.password);
+                        console.log('Password verification result:', passwordMatch);
+
+                        if (passwordMatch) {
+                            console.log('Azure authentication successful for:', username);
+                            const userWithSource = { ...userData.data, _dataSource: 'Azure' };
+                            return { success: true, userId, user: userWithSource, dataSource: 'Azure' };
+                        }
                     }
+                } else {
+                    console.error('Failed to load user data for:', userId);
                 }
             }
             
+            console.log('No matching user credentials found in Azure');
             return { success: false, message: "Invalid credentials" };
         } catch (error) {
             console.error('Azure authentication error:', error);
-            throw error;
+            throw error; // Re-throw to trigger fallback
         }
     }
 
     // Local fallback authentication
     async authenticateUserLocal(username, password) {
+        console.log('Checking local user data for:', username);
+
         for (const [userId, userData] of Object.entries(this.localUsers)) {
+            console.log('Checking local user:', userId, 'username:', userData.credentials.username);
+
             if (userData.credentials.username === username) {
                 const passwordMatch = await this.verifyPassword(password, userData.credentials.password);
-                console.log('🔐 Local password verification:', passwordMatch ? 'SUCCESS' : 'FAILED');
+                console.log('Local password verification result:', passwordMatch);
                 
                 if (passwordMatch) {
-                    this.useLocalFallback = true;
-                    
-                    const completeUserData = {
-                        credentials: userData.credentials,
-                        userId: userId,
-                        username: userData.credentials.username,
-                        email: userData.credentials.email,
-                        _dataSource: 'Local'
-                    };
-                    
-                    return { 
-                        success: true, 
-                        userId, 
-                        user: completeUserData, 
-                        dataSource: 'Local' 
-                    };
+                    console.log('Local authentication successful for:', username);
+                    this.useLocalFallback = true; // Ensure flag is set for future operations
+                    const userWithSource = { ...userData, _dataSource: 'Local' };
+                    return { success: true, userId, user: userWithSource, dataSource: 'Local' };
                 }
             }
         }
         
+        console.log('No matching local user credentials found');
         return { success: false, message: "Invalid credentials" };
     }
 
-    // Secure password verification with backward compatibility
-    async verifyPassword(password, storedHash) {
-        try {
-            // Check if this is the new salt:hash format or old SHA-256 format
-            if (storedHash.includes(':')) {
-                console.log('🔐 Using salt:hash format');
-                const [salt, hash] = storedHash.split(':');
-                if (!salt || !hash) {
-                    console.error('❌ Invalid salt:hash format');
-                    return false;
-                }
-                
-                const inputHash = await this.hashPasswordWithSalt(password, salt);
-                return this.constantTimeCompare(inputHash, hash);
-            } else {
-                console.log('🔐 Using legacy SHA-256 format');
-                const inputHash = await this.legacySHA256Hash(password);
-                return this.constantTimeCompare(inputHash, storedHash);
-            }
-        } catch (error) {
-            console.error('❌ Password verification error:', error);
-            return false;
-        }
-    }
-
-    // Hash password with salt using PBKDF2
-    async hashPasswordWithSalt(password, salt) {
-        const encoder = new TextEncoder();
-        const passwordBuffer = encoder.encode(password);
-        const saltBuffer = encoder.encode(salt);
-        
-        // Import password as key material
-        const keyMaterial = await crypto.subtle.importKey(
-            'raw',
-            passwordBuffer,
-            { name: 'PBKDF2' },
-            false,
-            ['deriveBits']
-        );
-        
-        // Derive key using PBKDF2 with 100,000 iterations
-        const derivedBits = await crypto.subtle.deriveBits(
-            {
-                name: 'PBKDF2',
-                salt: saltBuffer,
-                iterations: 100000,
-                hash: 'SHA-256'
-            },
-            keyMaterial,
-            256 // 32 bytes
-        );
-        
-        // Convert to hex string
-        const hashArray = Array.from(new Uint8Array(derivedBits));
-        return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Legacy SHA-256 hash for backward compatibility
-    async legacySHA256Hash(password) {
+    // Verify password (implement proper hashing in production)
+    async verifyPassword(password, hashedPassword) {
+        // Simple verification - use bcrypt or similar in production
         const encoder = new TextEncoder();
         const data = encoder.encode(password);
         const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = new Uint8Array(hashBuffer);
-        return Array.from(hashArray, byte => byte.toString(16).padStart(2, '0')).join('');
-    }
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashedInput = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 
-    // Generate cryptographically secure random salt
-    generateSalt() {
-        const array = new Uint8Array(16);
-        crypto.getRandomValues(array);
-        return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Hash password for storage (use this when creating new users)
-    async hashPassword(password) {
-        const salt = this.generateSalt();
-        const hash = await this.hashPasswordWithSalt(password, salt);
-        return `${salt}:${hash}`;
-    }
-
-    // Constant-time string comparison to prevent timing attacks
-    constantTimeCompare(a, b) {
-        if (a.length !== b.length) {
-            return false;
-        }
-        
-        let result = 0;
-        for (let i = 0; i < a.length; i++) {
-            result |= a.charCodeAt(i) ^ b.charCodeAt(i);
-        }
-        
-        return result === 0;
-    }
-
-    // Clear sensitive data from memory
-    clearSensitiveData() {
-        // Clear any stored passwords from memory
-        if (this.localUsers) {
-            Object.values(this.localUsers).forEach(user => {
-                if (user.credentials && user.credentials.password) {
-                    user.credentials.password = null;
-                }
-            });
-        }
+        return hashedInput === hashedPassword;
     }
 
     // Method compatibility for application integration
+    async getUserData(userId) {
+        console.log('📊 getUserData called for userId:', userId);
+        console.log('📊 Current useLocalFallback flag:', this.useLocalFallback);
+
+        // If we're not in fallback mode, ALWAYS try Azure first
+        if (!this.useLocalFallback) {
+            console.log('☁️ Attempting to load user data from Azure first...');
+            try {
+                const result = await this.loadUserData(userId);
+                if (result.success) {
+                    console.log('✅ Successfully loaded user data from Azure for:', userId);
+                    return { ...result.data, _dataSource: 'Azure' };
+                } else {
+                    console.log('❌ Failed to load user data from Azure for:', userId);
+                }
+            } catch (error) {
+                console.error('❌ Error loading user data from Azure:', error);
+            }
+        }
+
+        // Fall back to local data
+        console.log('💾 Using local fallback data for:', userId);
+        const localData = this.localUsers[userId];
+        if (localData) {
+            console.log('✅ Found local user data for:', userId);
+            return { ...localData, _dataSource: 'Local' };
+        } else {
+            console.log('❌ No local user data found for:', userId);
+            console.log('Available local users:', Object.keys(this.localUsers));
+            return null;
+        }
+    }
+
+    // Get all users (required by admin panel)
+    async getAllUsers() {
+        const userListUrl = `${this.baseUrl}?restype=container&comp=list&prefix=users/&${this.sasToken}`;
+        
+        try {
+            const response = await fetch(userListUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
+            const blobs = xmlDoc.getElementsByTagName('Blob');
+            const users = {};
+
+            for (let blob of blobs) {
+                const blobName = blob.getElementsByTagName('Name')[0].textContent;
+                const userId = blobName.split('/')[1].replace('.json', '');
+
+                const userData = await this.getUserData(userId);
+                if (userData) {
+                    users[userId] = userData;
+                }
+            }
+
+            return users;
+        } catch (error) {
+            console.error('Failed to get all users:', error);
+            return {};
+        }
+    }
+
+    // Add transaction to user's account
+    async addTransaction(userId, transaction) {
+        try {
+            // Get current user data
+            const userData = await this.getUserData(userId);
+            if (!userData) {
+                return false;
+            }
+
+            // Add transaction to user's transaction list
+            userData.transactions = userData.transactions || [];
+            userData.transactions.unshift(transaction);
+
+            // Save updated user data
+            const result = await this.saveUserData(userId, userData);
+            return result.success;
+        } catch (error) {
+            console.error('Failed to add transaction:', error);
+            return false;
+        }
+    }
+
+    // Update account balance
+    async updateAccountBalance(userId, accountType, newBalance) {
+        try {
+            const userData = await this.getUserData(userId);
+            if (!userData || !userData.accounts[accountType]) {
+                return false;
+            }
+
+            userData.accounts[accountType].balance = newBalance;
+            const result = await this.saveUserData(userId, userData);
+            return result.success;
+        } catch (error) {
+            console.error('Failed to update account balance:', error);
+            return false;
+        }
+    }
+
+    // Initialize the storage manager
     async initialize() {
         console.log('🚀 Initializing Azure Storage Manager');
         
-        // Generate secure password hashes for local users
-        await this.initializeSecurePasswords();
-        
         // Reset fallback flag on initialization
         this.useLocalFallback = false;
+        console.log('🔄 Reset fallback flag - will attempt Azure first');
         
-        // Test Azure connectivity
+        // Check if users exist, if not, suggest manual upload
         try {
             const testUrl = `${this.baseUrl}?restype=container&comp=list&prefix=users/&${this.sasToken}`;
+            console.log('🔍 Testing Azure connectivity:', testUrl);
+            
             const response = await fetch(testUrl);
             if (response.ok) {
-                console.log('✅ Azure Storage connected');
+                console.log('✅ Azure Storage connection successful');
                 const xmlText = await response.text();
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
                 const blobs = xmlDoc.getElementsByTagName('Blob');
-                console.log(`📁 Found ${blobs.length} user files in Azure`);
+                console.log(`📁 Found ${blobs.length} user files in Azure storage`);
                 
                 if (blobs.length === 0) {
-                    console.warn('⚠️ No user files in Azure storage');
+                    console.warn('⚠️ No user files found in Azure storage. Please upload sample user data.');
                 }
             } else {
-                console.log('💾 Using local fallback data');
+                console.error('❌ Azure Storage connection failed:', response.status, response.statusText);
+                console.log('💾 Will use local fallback data');
                 this.useLocalFallback = true;
             }
         } catch (error) {
-            console.log('💾 Using local fallback data');
+            console.error('❌ Could not test Azure connectivity:', error.message);
+            console.log('💾 Will use local fallback data');
             this.useLocalFallback = true;
         }
         
         return this;
     }
 
-    // Initialize secure password hashes for demo users
-    async initializeSecurePasswords() {
-        // Passwords are already securely hashed in constructor
-        console.log('🔒 Local users ready with PBKDF2 hashed passwords');
+    // Initialize with sample data (legacy method)
+    async initializeData() {
+        return this.initialize();
     }
 
-    // Check if account is locked due to too many failed attempts
-    isAccountLocked(username) {
-        const attempts = this.loginAttempts.get(username);
-        if (!attempts) return false;
-        
-        const { count, lastAttempt } = attempts;
-        const timeSinceLastAttempt = Date.now() - lastAttempt;
-        
-        // Reset if lockout period has passed
-        if (timeSinceLastAttempt > this.lockoutDuration) {
-            this.loginAttempts.delete(username);
-            return false;
-        }
-        
-        return count >= this.maxAttempts;
+    // Hash password for storage (simplified - use bcrypt in production)
+    hashPassword(password) {
+        // Simple hash for demo - use proper hashing in production
+        return btoa(password);
     }
 
-    // Record failed login attempt
-    recordFailedAttempt(username) {
-        const now = Date.now();
-        const attempts = this.loginAttempts.get(username) || { count: 0, lastAttempt: now };
-        
-        // Reset count if enough time has passed
-        if (now - attempts.lastAttempt > this.lockoutDuration) {
-            attempts.count = 0;
-        }
-        
-        attempts.count++;
-        attempts.lastAttempt = now;
-        
-        this.loginAttempts.set(username, attempts);
-        
-        if (attempts.count >= this.maxAttempts) {
-            console.warn(`🔒 Account locked: ${username} (${attempts.count} failed attempts)`);
-        }
+    // Reset fallback flag to force Azure attempts
+    resetFallbackMode() {
+        console.log('🔄 Resetting fallback mode - will try Azure again');
+        this.useLocalFallback = false;
     }
 
-    // Clear failed attempts on successful login
-    clearFailedAttempts(username) {
-        this.loginAttempts.delete(username);
-    }
-
-    // Validate password strength (for new passwords)
-    validatePasswordStrength(password) {
-        const minLength = 8;
-        const hasUppercase = /[A-Z]/.test(password);
-        const hasLowercase = /[a-z]/.test(password);
-        const hasNumbers = /\d/.test(password);
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-        
-        const errors = [];
-        
-        if (password.length < minLength) {
-            errors.push(`Password must be at least ${minLength} characters long`);
-        }
-        if (!hasUppercase) {
-            errors.push('Password must contain at least one uppercase letter');
-        }
-        if (!hasLowercase) {
-            errors.push('Password must contain at least one lowercase letter');
-        }
-        if (!hasNumbers) {
-            errors.push('Password must contain at least one number');
-        }
-        if (!hasSpecialChar) {
-            errors.push('Password must contain at least one special character');
-        }
-        
-        return {
-            isValid: errors.length === 0,
-            errors: errors,
-            strength: this.calculatePasswordStrength(password)
-        };
-    }
-
-    // Calculate password strength score
-    calculatePasswordStrength(password) {
-        let score = 0;
-        
-        // Length bonus
-        score += Math.min(password.length * 2, 20);
-        
-        // Character variety bonus
-        if (/[a-z]/.test(password)) score += 5;
-        if (/[A-Z]/.test(password)) score += 5;
-        if (/\d/.test(password)) score += 5;
-        if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score += 10;
-        
-        // Penalty for common patterns
-        if (/(.)\1{2,}/.test(password)) score -= 10; // Repeated characters
-        if (/123|abc|qwe/i.test(password)) score -= 15; // Sequential patterns
-        
-        if (score < 30) return 'weak';
-        if (score < 60) return 'medium';
-        return 'strong';
+    // Check if currently using local fallback
+    isUsingLocalFallback() {
+        return this.useLocalFallback;
     }
 }
 
