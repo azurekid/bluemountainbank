@@ -168,6 +168,13 @@ class JobApplicationManager {
             isValid = false;
         }
 
+        // Validate phone number format
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput.value && !this.isValidPhone(phoneInput.value)) {
+            this.showFieldError(phoneInput, 'Please enter a valid phone number');
+            isValid = false;
+        }
+
         return isValid;
     }
 
@@ -426,6 +433,125 @@ class JobApplicationManager {
         } catch (error) {
             console.error('Error testing Azure connection:', error);
         }
+    }
+
+    /**
+     * Send email notifications for the application
+     */
+    async sendEmailNotifications(formData) {
+        try {
+            // Send confirmation email to applicant
+            const confirmationResponse = await fetch('/api/send-confirmation-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    position: formData.position,
+                    applicationId: this.applicationId,
+                    fileCount: this.uploadedFiles.length
+                })
+            });
+
+            // Send notification to HR
+            const hrResponse = await fetch('/api/send-hr-notification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...formData,
+                    applicationId: this.applicationId,
+                    fileCount: this.uploadedFiles.length
+                })
+            });
+
+            console.log('Email notifications sent successfully');
+            
+        } catch (error) {
+            console.error('Error sending email notifications:', error);
+            // Don't fail the application if emails fail
+        }
+    }
+
+    /**
+     * Enhanced accessibility announcements
+     */
+    announceToScreenReader(message) {
+        const announcement = document.createElement('div');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.setAttribute('aria-atomic', 'true');
+        announcement.className = 'sr-only';
+        announcement.textContent = message;
+        
+        document.body.appendChild(announcement);
+        
+        setTimeout(() => {
+            if (document.body.contains(announcement)) {
+                document.body.removeChild(announcement);
+            }
+        }, 1000);
+    }
+
+    /**
+     * Enhanced phone number validation
+     */
+    isValidPhone(phone) {
+        const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+        const cleanPhone = phone.replace(/[\s\-\(\)\.]/g, '');
+        return phoneRegex.test(cleanPhone) && cleanPhone.length >= 10;
+    }
+
+    /**
+     * Enhanced file validation with better error messages
+     */
+    validateFile(file) {
+        const errors = [];
+        
+        // Check file size (10MB limit)
+        if (file.size > this.maxFileSize) {
+            errors.push(`File "${file.name}" is too large. Maximum size is ${this.maxFileSize / (1024 * 1024)}MB.`);
+        }
+        
+        // Check file type
+        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+        if (!this.allowedFileTypes.includes(fileExtension)) {
+            errors.push(`File "${file.name}" is not supported. Allowed types: ${this.allowedFileTypes.join(', ')}.`);
+        }
+        
+        // Check for duplicate files
+        const existingFile = this.uploadedFiles.find(f => f.name === file.name);
+        if (existingFile) {
+            errors.push(`File "${file.name}" has already been added.`);
+        }
+        
+        return {
+            isValid: errors.length === 0,
+            errors: errors
+        };
+    }
+
+    /**
+     * Enhanced error handling with user-friendly messages
+     */
+    handleUploadError(error, fileName) {
+        let userMessage = 'Upload failed. Please try again.';
+        
+        if (error.message.includes('authentication') || error.message.includes('403')) {
+            userMessage = 'Authentication error. Please refresh the page and try again.';
+        } else if (error.message.includes('network') || error.message.includes('timeout')) {
+            userMessage = 'Network error. Please check your connection and try again.';
+        } else if (error.message.includes('size')) {
+            userMessage = 'File is too large. Please select a file under 10MB.';
+        } else if (error.message.includes('type')) {
+            userMessage = 'File type not supported. Please select a PDF, DOC, or DOCX file.';
+        }
+        
+        this.showErrorMessage(`${fileName}: ${userMessage}`);
+        this.announceToScreenReader(`Upload failed for ${fileName}. ${userMessage}`);
     }
 }
 

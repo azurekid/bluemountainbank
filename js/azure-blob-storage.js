@@ -13,26 +13,90 @@ class AzureBlobStorageManager {
     }
 
     /**
-     * Get SAS token for blob storage access
-     * In production, this should come from a secure backend endpoint
+     * Get SAS token for blob storage access from secure backend
      */
-    getSasToken() {
-        // This is a placeholder SAS token
-        // In production, you should:
-        // 1. Call your backend API to get a fresh SAS token
-        // 2. Store SAS tokens securely
-        // 3. Implement token refresh logic
-        
-        const storedToken = localStorage.getItem('azure_sas_token');
-        if (storedToken && this.isTokenValid(storedToken)) {
-            return storedToken;
+    async getSasToken(applicationId, fileCount) {
+        try {
+            // Check for valid cached token first
+            const cachedToken = this.getCachedToken();
+            if (cachedToken) {
+                return cachedToken;
+            }
+
+            // Request new token from secure backend
+            const response = await fetch('/api/generate-sas-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    applicationId: applicationId,
+                    fileCount: fileCount
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to get SAS token: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (!data.success) {
+                throw new Error(data.error || 'Failed to generate SAS token');
+            }
+
+            // Cache the token with expiry
+            this.cacheToken(data.sasToken, data.expiresAt);
+            
+            return data.sasToken;
+
+        } catch (error) {
+            console.error('Error getting SAS token:', error);
+            
+            // Fallback to demo token for development
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.warn('Using demo token for local development');
+                return this.generateDemoToken();
+            }
+            
+            throw new Error('Unable to authenticate with storage service. Please try again later.');
+        }
+    }
+
+    /**
+     * Get cached token if still valid
+     */
+    getCachedToken() {
+        const tokenData = localStorage.getItem('azure_sas_token_data');
+        if (!tokenData) return null;
+
+        try {
+            const { token, expiresAt } = JSON.parse(tokenData);
+            const now = new Date();
+            const expiry = new Date(expiresAt);
+            
+            // Check if token expires within next 10 minutes
+            if (expiry.getTime() - now.getTime() > 10 * 60 * 1000) {
+                return token;
+            }
+        } catch (error) {
+            console.error('Error parsing cached token:', error);
         }
 
-        // For demo purposes - replace with actual SAS token
-        // Format: ?sv=2021-06-08&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2025-12-31T23:59:59Z&st=2025-01-01T00:00:00Z&spr=https&sig=SIGNATURE
-        const demoToken = this.generateDemoToken();
-        localStorage.setItem('azure_sas_token', demoToken);
-        return demoToken;
+        return null;
+    }
+
+    /**
+     * Cache SAS token with expiry
+     */
+    cacheToken(token, expiresAt) {
+        const tokenData = {
+            token: token,
+            expiresAt: expiresAt,
+            cachedAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem('azure_sas_token_data', JSON.stringify(tokenData));
     }
 
     /**
@@ -72,6 +136,9 @@ class AzureBlobStorageManager {
      */
     async uploadFile(file, applicationId, onProgress = null) {
         try {
+            // Get secure SAS token
+            const sasToken = await this.getSasToken(applicationId, 1);
+            
             // Generate unique blob name
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
             const fileExtension = file.name.split('.').pop();
@@ -79,7 +146,7 @@ class AzureBlobStorageManager {
             const blobName = `${applicationId}/${timestamp}_${sanitizedFileName}`;
             
             // Construct upload URL
-            const uploadUrl = `${this.baseUrl}/${blobName}${this.sasToken}`;
+            const uploadUrl = `${this.baseUrl}/${blobName}?${sasToken}`;
             
             // Create upload headers
             const headers = {
@@ -106,9 +173,21 @@ class AzureBlobStorageManager {
 
         } catch (error) {
             console.error('File upload error:', error);
+            
+            // Provide user-friendly error messages
+            let errorMessage = 'Upload failed. Please try again.';
+            
+            if (error.message.includes('authentication') || error.message.includes('403')) {
+                errorMessage = 'Authentication failed. Please refresh the page and try again.';
+            } else if (error.message.includes('network') || error.message.includes('fetch')) {
+                errorMessage = 'Network error. Please check your connection and try again.';
+            } else if (file.size > 10 * 1024 * 1024) {
+                errorMessage = 'File is too large. Please select a file under 10MB.';
+            }
+            
             return {
                 success: false,
-                error: error.message,
+                error: errorMessage,
                 fileName: file.name
             };
         }

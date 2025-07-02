@@ -11,7 +11,7 @@
     <style>
         .login-page {
             min-height: 100vh;
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.6) 0%, rgba(59, 130, 246, 0.5) 50%, rgba(96, 165, 250, 0.4) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -26,24 +26,27 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://via.placeholder.com/1920x1080/1e40af/ffffff?text=Secure+Banking+Background');
+            background-image: url('img/hero-mountains.png');
             background-size: cover;
             background-position: center;
-            opacity: 0.1;
+            background-repeat: no-repeat;
+            opacity: 0.8;
             animation: parallaxFloat 15s ease-in-out infinite;
+            z-index: -1;
         }
 
         .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
             width: 100%;
             max-width: 450px;
             position: relative;
             z-index: 2;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .login-header {
@@ -55,30 +58,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
             margin-bottom: 20px;
         }
 
         .login-logo img {
+            width: 60px;
+            height: 60px;
             border-radius: 8px;
-        }
-
-        .login-logo span {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1e40af;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
         }
 
         .login-title {
             font-size: 2rem;
             font-weight: 700;
-            color: #1e40af;
+            color: #ffffff;
             margin-bottom: 10px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .login-subtitle {
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.8);
             font-size: 1rem;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
         }
 
         .login-form {
@@ -94,17 +95,24 @@
         .form-group input {
             width: 100%;
             padding: 15px 50px 15px 15px;
-            border: 2px solid #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             border-radius: 12px;
             font-size: 1rem;
+            color: #ffffff;
             transition: all 0.3s ease;
-            background: white;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: rgba(96, 165, 250, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
         }
 
         .form-group .input-icon {
@@ -112,7 +120,7 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #94a3b8;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 1.2rem;
         }
 
@@ -137,7 +145,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .remember-me input[type="checkbox"] {
@@ -146,13 +154,13 @@
         }
 
         .forgot-password {
-            color: #3b82f6;
+            color: rgba(96, 165, 250, 0.9);
             text-decoration: none;
             font-weight: 500;
         }
 
         .forgot-password:hover {
-            color: #1e40af;
+            color: #ffffff;
         }
 
         .login-btn {
@@ -180,13 +188,15 @@
         .security-info {
             margin-top: 30px;
             padding: 20px;
-            background: #f8fafc;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
             border-left: 4px solid #10b981;
         }
 
         .security-info h4 {
-            color: #10b981;
+            color: rgba(16, 185, 129, 0.9);
             font-size: 1rem;
             margin-bottom: 10px;
             display: flex;
@@ -195,7 +205,7 @@
         }
 
         .security-info p {
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.9rem;
             line-height: 1.5;
         }
@@ -217,29 +227,6 @@
         .back-to-home:hover {
             transform: translateX(-5px);
             color: #93c5fd;
-        }
-
-        .demo-credentials {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fef3c7;
-            border-radius: 12px;
-            border-left: 4px solid #f59e0b;
-        }
-
-        .demo-credentials h4 {
-            color: #f59e0b;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .demo-credentials p {
-            color: #92400e;
-            font-size: 0.8rem;
-            margin: 5px 0;
         }
 
         @media (max-width: 480px) {
@@ -273,8 +260,7 @@
         <div class="login-container">
             <div class="login-header">
                 <div class="login-logo">
-                    <img src="https://via.placeholder.com/50x50/1e40af/ffffff?text=BMB" alt="Blue Mountain Bank Logo">
-                    <span>Blue Mountain Bank</span>
+                    <img src="img/blue-mountain-bank.png" alt="Blue Mountain Bank Logo">
                 </div>
                 <h1 class="login-title">Online Banking</h1>
                 <p class="login-subtitle">Secure access to your accounts</p>
@@ -304,44 +290,6 @@
                     Secure Login
                 </button>
             </form>
-
-            <div class="demo-credentials">
-                <h4>
-                    <i class="fas fa-info-circle"></i>
-                    Demo Credentials
-                </h4>
-                <div class="credentials-grid">
-                    <div class="credential-item">
-                        <p><strong>Alice Martinez (Software Engineer)</strong></p>
-                        <p>Username: alice.martinez | Password: AliceM2024!</p>
-                    </div>
-                    <div class="credential-item">
-                        <p><strong>Bob Johnson (Business Owner)</strong></p>
-                        <p>Username: bob.johnson | Password: BobJ2024!</p>
-                    </div>
-                    <div class="credential-item">
-                        <p><strong>Carol Smith (Retired Teacher)</strong></p>
-                        <p>Username: carol.smith | Password: CarolS2024!</p>
-                    </div>
-                    <div class="credential-item">
-                        <p><strong>David Wilson (College Student)</strong></p>
-                        <p>Username: david.wilson | Password: DavidW2024!</p>
-                    </div>
-                    <div class="credential-item">
-                        <p><strong>Emma Brown (Marketing Manager)</strong></p>
-                        <p>Username: emma.brown | Password: EmmaB2024!</p>
-                    </div>
-                    <div class="credential-item">
-                        <p><strong>Frank Miller (Construction Foreman)</strong></p>
-                        <p>Username: frank.miller | Password: FrankM2024!</p>
-                    </div>
-                    <div class="credential-item admin-creds">
-                        <p><strong>Admin Panel Access</strong></p>
-                        <p>Username: admin | Password: admin123</p>
-                    </div>
-                </div>
-                <p style="margin-top: 15px; font-style: italic; font-size: 0.9rem;">This is a demonstration website. Use any of the credentials above to explore the dynamic user dashboard that adapts to each user's profile, or try the admin panel to manage all users.</p>
-            </div>
 
             <div class="security-info">
                 <h4>

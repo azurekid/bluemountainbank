@@ -122,6 +122,52 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
         }
         
+        /* Enhanced accessibility */
+        .form-group input:focus-visible,
+        .form-group select:focus-visible,
+        .form-group textarea:focus-visible {
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
+        }
+        
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Error states */
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .form-group .error-text {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-group.error .error-text {
+            display: block;
+        }
+        
+        /* Required field indicator */
+        .form-group label.required::after {
+            content: ' *';
+            color: #ef4444;
+        }
+        
         .form-group textarea {
             min-height: 120px;
             resize: vertical;
@@ -330,6 +376,97 @@
             h1 {
                 font-size: 1.8rem;
             }
+            
+            .file-upload-area {
+                padding: 20px;
+            }
+            
+            .file-upload-icon {
+                font-size: 2rem;
+            }
+            
+            .file-upload-text {
+                font-size: 1rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .application-main {
+                padding: 20px 0;
+            }
+            
+            .application-container {
+                padding: 15px;
+                margin: 5px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px 12px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            .file-upload-section {
+                padding: 20px;
+            }
+            
+            .submit-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .application-container {
+                border: 2px solid #ffffff;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                border: 2px solid rgba(255, 255, 255, 0.8);
+            }
+            
+            .submit-btn {
+                border: 2px solid #ffffff;
+            }
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                background: rgba(255, 255, 255, 0.05);
+            }
         }
     </style>
 </head>
@@ -368,38 +505,57 @@
                     <p id="jobType">Employment Type</p>
                 </div>
 
-                <form id="jobApplicationForm">
+                <form id="jobApplicationForm" novalidate aria-label="Job Application Form">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" name="firstName" required placeholder="Enter your first name">
+                            <label for="firstName" class="required">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required 
+                                   placeholder="Enter your first name" 
+                                   aria-describedby="firstName-error"
+                                   autocomplete="given-name">
+                            <div class="error-text" id="firstName-error" role="alert"></div>
                         </div>
                         <div class="form-group">
-                            <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" name="lastName" required placeholder="Enter your last name">
+                            <label for="lastName" class="required">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required 
+                                   placeholder="Enter your last name"
+                                   aria-describedby="lastName-error"
+                                   autocomplete="family-name">
+                            <div class="error-text" id="lastName-error" role="alert"></div>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                            <label for="email" class="required">Email Address</label>
+                            <input type="email" id="email" name="email" required 
+                                   placeholder="Enter your email address"
+                                   aria-describedby="email-error"
+                                   autocomplete="email">
+                            <div class="error-text" id="email-error" role="alert"></div>
                         </div>
                         <div class="form-group">
-                            <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+                            <label for="phone" class="required">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required 
+                                   placeholder="Enter your phone number"
+                                   aria-describedby="phone-error"
+                                   autocomplete="tel">
+                            <div class="error-text" id="phone-error" role="alert"></div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <textarea id="address" name="address" placeholder="Enter your address"></textarea>
+                        <textarea id="address" name="address" 
+                                  placeholder="Enter your address"
+                                  autocomplete="street-address"
+                                  rows="3"></textarea>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="experience">Years of Experience</label>
-                            <select id="experience" name="experience">
+                            <select id="experience" name="experience" aria-describedby="experience-help">
                                 <option value="">Select experience level</option>
                                 <option value="0-1">0-1 years</option>
                                 <option value="2-5">2-5 years</option>
@@ -407,33 +563,53 @@
                                 <option value="11-15">11-15 years</option>
                                 <option value="16+">16+ years</option>
                             </select>
+                            <div class="sr-only" id="experience-help">Choose your years of relevant work experience</div>
                         </div>
                         <div class="form-group">
                             <label for="salary">Expected Salary</label>
-                            <input type="text" id="salary" name="salary" placeholder="e.g., $60,000 - $80,000">
+                            <input type="text" id="salary" name="salary" 
+                                   placeholder="e.g., $60,000 - $80,000"
+                                   aria-describedby="salary-help">
+                            <div class="sr-only" id="salary-help">Enter your expected salary range</div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="coverLetter">Cover Letter</label>
-                        <textarea id="coverLetter" name="coverLetter" placeholder="Tell us why you're interested in this position and what makes you a great fit..."></textarea>
+                        <textarea id="coverLetter" name="coverLetter" 
+                                  placeholder="Tell us why you're interested in this position and what makes you a great fit..."
+                                  aria-describedby="coverLetter-help"
+                                  rows="6"></textarea>
+                        <div class="sr-only" id="coverLetter-help">Describe your interest in the position and relevant qualifications</div>
                     </div>
 
                     <div class="file-upload-section">
                         <h3><i class="fas fa-cloud-upload-alt"></i> Upload Documents</h3>
-                        <div class="file-upload-area" id="fileUploadArea">
+                        <div class="file-upload-area" id="fileUploadArea" 
+                             role="button" 
+                             tabindex="0"
+                             aria-label="Click to select files or drag and drop files here"
+                             aria-describedby="file-upload-help">
                             <div class="file-upload-icon">
                                 <i class="fas fa-cloud-upload-alt"></i>
                             </div>
                             <div class="file-upload-text">
                                 Drag and drop your files here or click to browse
                             </div>
-                            <div class="file-upload-hint">
-                                Support for PDF, DOC, DOCX files up to 10MB each
+                            <div class="file-upload-hint" id="file-upload-help">
+                                Support for PDF, DOC, DOCX files up to 10MB each. You can upload multiple documents including resume, cover letter, and references.
                             </div>
-                            <input type="file" id="fileInput" class="file-input" multiple accept=".pdf,.doc,.docx">
+                            <input type="file" 
+                                   id="fileInput" 
+                                   class="file-input" 
+                                   multiple 
+                                   accept=".pdf,.doc,.docx"
+                                   aria-describedby="file-upload-help">
                         </div>
-                        <div class="uploaded-files" id="uploadedFiles"></div>
+                        <div class="uploaded-files" 
+                             id="uploadedFiles" 
+                             role="list" 
+                             aria-label="Uploaded files"></div>
                     </div>
 
                     <div class="upload-progress" id="uploadProgress">
