@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User - Admin - Blue Mountain Bank</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-content {
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            color: #0a4275;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .full-width {
+            grid-column: span 2;
+        }
+        
+        .account-container, .transaction-container {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .account-header, .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            background-color: #0a4275;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #0d5394;
+        }
+        
+        button.secondary {
+            background-color: #6c757d;
+        }
+        
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .account-actions, .transaction-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .form-message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .accounts-container, .transactions-container {
+            margin-bottom: 20px;
+        }
+        
+        .note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .password-group {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 35px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+        }
+
+        .remove-btn:hover {
+            background-color: #c82333;
+        }
+
+        .download-btn {
+            background-color: #28a745;
+            margin-left: 10px;
+        }
+
+        .download-btn:hover {
+            background-color: #218838;
+        }
+
+        .download-btn.secondary {
+            background-color: #17a2b8;
+        }
+
+        .download-btn.secondary:hover {
+            background-color: #138496;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 70%;
+            max-width: 800px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        #jsonImportArea {
+            width: 100%;
+            padding: 10px;
+            font-family: monospace;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        #importCancelBtn {
+            background-color: #6c757d;
+        }
+
+        #importConfirmBtn {
+            background-color: #0a4275;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="../img/blue-mountain-bank.png" alt="Blue Mountain Bank Logo" class="header-logo">
+                    <h1>Blue Mountain Bank - Admin Panel</h1>
+                </div>
+                <div class="admin-info">
+                    <div class="admin-user">
+                        <div class="admin-avatar">
+                            AD
+                        </div>
+                        <div class="admin-details">
+                            <div class="admin-name">Bank Administrator</div>
+                            <div class="admin-role">System Admin</div>
+                        </div>
+                    </div>
+                    <a href="../admin.html" class="logout-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Admin
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-dashboard">
+            <div class="admin-welcome">
+                <div class="welcome-content">
+                    <h2>Create New User</h2>
+                    <p>Create a new user account with all required data fields. The user will be saved to Azure Storage.</p>
+                </div>
+            </div>
+
+            <div class="admin-content">
+                <div class="form-message" id="formMessage"></div>
+
+                <form id="newUserForm">
+                    <div class="form-section">
+                        <h3 class="section-title">User Identifier</h3>
+                        <div class="form-row">
+                            <label for="userId">User ID</label>
+                            <input type="text" id="userId" placeholder="e.g., john_doe" required>
+                            <div class="note">This will be used as the file name in Azure Storage (e.g., john_doe.json)</div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Credentials</h3>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" placeholder="e.g., john.doe" required>
+                            </div>
+                            <div class="form-row password-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" placeholder="Password" required>
+                                <span class="password-toggle" id="passwordToggle"><i class="fas fa-eye"></i></span>
+                                <div class="note">Password will be hashed before storage</div>
+                            </div>
+                            <div class="form-row">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" placeholder="e.g., john.doe@email.com" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Profile Information</h3>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" placeholder="First Name" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" placeholder="Last Name" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" placeholder="Age" min="18" max="120" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="profession">Profession</label>
+                                <input type="text" id="profession" placeholder="Profession" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" placeholder="e.g., (555) 123-4567" required>
+                            </div>
+                            <div class="form-row full-width">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" placeholder="Address" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="joinDate">Join Date</label>
+                                <input type="date" id="joinDate" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="accountNumber">Account Number (masked)</label>
+                                <input type="text" id="accountNumber" placeholder="e.g., ****-1234" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Accounts</h3>
+                        <div class="accounts-container" id="accountsContainer">
+                            <!-- Account templates will be added here -->
+                        </div>
+                        <button type="button" id="addAccountBtn" class="secondary">Add Account</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Recent Transactions</h3>
+                        <div class="transactions-container" id="transactionsContainer">
+                            <!-- Transaction templates will be added here -->
+                        </div>
+                        <button type="button" id="addTransactionBtn" class="secondary">Add Transaction</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Preferences</h3>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label for="theme">Theme</label>
+                                <select id="theme" required>
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label for="language">Language</label>
+                                <select id="language" required>
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Preview</h3>
+                        <pre id="jsonPreview"></pre>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" id="importBtn">Import from JSON</button>
+                        <button type="button" id="previewBtn">Preview JSON</button>
+                        <button type="submit" id="saveBtn">Save User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JSON Import Modal -->
+    <div id="jsonImportModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Import User Data from JSON</h3>
+            <p>Paste a valid JSON user object below to fill the form:</p>
+            <textarea id="jsonImportArea" rows="15" placeholder="Paste JSON here..."></textarea>
+            <div class="modal-buttons">
+                <button id="importCancelBtn">Cancel</button>
+                <button id="importConfirmBtn">Import Data</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Template (Hidden) -->
+    <template id="accountTemplate">
+        <div class="account-container">
+            <div class="account-header">
+                <h4>Account</h4>
+                <div class="account-actions">
+                    <button type="button" class="remove-btn remove-account-btn">Remove</button>
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    <label>Account Type</label>
+                    <input type="text" class="account-type" placeholder="e.g., checking, savings" required>
+                </div>
+                <div class="form-row">
+                    <label>Balance</label>
+                    <input type="number" step="0.01" class="account-balance" placeholder="0.00" required>
+                </div>
+                <div class="form-row">
+                    <label>Account Number</label>
+                    <input type="text" class="account-number" placeholder="e.g., CHK-001-1234" required>
+                </div>
+                <div class="form-row">
+                    <label>Type Description</label>
+                    <input type="text" class="account-type-desc" placeholder="e.g., Premium Checking" required>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Transaction Template (Hidden) -->
+    <template id="transactionTemplate">
+        <div class="transaction-container">
+            <div class="transaction-header">
+                <h4>Transaction</h4>
+                <div class="transaction-actions">
+                    <button type="button" class="remove-btn remove-transaction-btn">Remove</button>
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    <label>Transaction ID</label>
+                    <input type="text" class="transaction-id" placeholder="e.g., tx_001_001" required>
+                </div>
+                <div class="form-row">
+                    <label>Date</label>
+                    <input type="date" class="transaction-date" required>
+                </div>
+                <div class="form-row full-width">
+                    <label>Description</label>
+                    <input type="text" class="transaction-description" placeholder="e.g., Salary Deposit" required>
+                </div>
+                <div class="form-row">
+                    <label>Amount</label>
+                    <input type="number" step="0.01" class="transaction-amount" placeholder="0.00" required>
+                    <div class="note">Use negative value for withdrawals</div>
+                </div>
+                <div class="form-row">
+                    <label>Type</label>
+                    <select class="transaction-type" required>
+                        <option value="deposit">Deposit</option>
+                        <option value="withdrawal">Withdrawal</option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Account</label>
+                    <input type="text" class="transaction-account" placeholder="e.g., checking" required>
+                </div>
+                <div class="form-row">
+                    <label>Category</label>
+                    <input type="text" class="transaction-category" placeholder="e.g., income, food, etc.">
+                </div>
+                <div class="form-row">
+                    <label>Icon</label>
+                    <input type="text" class="transaction-icon" placeholder="e.g., fas fa-money-bill-wave">
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="../js/azure-proxy.js"></script>
+    <script src="../js/azure-storage-manager.js"></script>
+    <script>
+        // Using the global azureManager instance from azure-storage-manager.js
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await azureManager.initialize();
+                console.log('Azure Storage Manager initialized');
+            } catch (error) {
+                console.error('Error initializing Azure Storage Manager:', error);
+                showMessage('Error initializing Azure Storage Manager. Check console for details.', 'error');
+            }
+
+            // Add default accounts and transactions
+            addAccount();
+            addTransaction();
+
+            // Set today's date as default
+            document.getElementById('joinDate').valueAsDate = new Date();
+            document.querySelectorAll('.transaction-date').forEach(input => {
+                input.valueAsDate = new Date();
+            });
+
+            // Setup event listeners
+            document.getElementById('passwordToggle').addEventListener('click', togglePasswordVisibility);
+            document.getElementById('addAccountBtn').addEventListener('click', addAccount);
+            document.getElementById('addTransactionBtn').addEventListener('click', addTransaction);
+            document.getElementById('previewBtn').addEventListener('click', previewUserData);
+            document.getElementById('newUserForm').addEventListener('submit', saveUser);
+
+            // Import JSON functionality
+            document.getElementById('importBtn').addEventListener('click', openImportModal);
+            document.getElementById('importCancelBtn').addEventListener('click', closeImportModal);
+            document.getElementById('importConfirmBtn').addEventListener('click', importJsonData);
+            document.querySelector('#jsonImportModal .close').addEventListener('click', closeImportModal);
+
+            // Generate initials for avatar based on name inputs
+            document.getElementById('firstName').addEventListener('input', updateAvatar);
+            document.getElementById('lastName').addEventListener('input', updateAvatar);
+        });
+
+        function openImportModal() {
+            document.getElementById('jsonImportModal').style.display = 'block';
+        }
+
+        function closeImportModal() {
+            document.getElementById('jsonImportModal').style.display = 'none';
+        }
+
+        function importJsonData() {
+            const jsonText = document.getElementById('jsonImportArea').value.trim();
+            if (!jsonText) {
+                showMessage('Please paste valid JSON data first', 'error');
+                return;
+            }
+
+            try {
+                const userData = JSON.parse(jsonText);
+                populateFormFromJson(userData);
+                closeImportModal();
+                showMessage('Form populated from JSON data', 'success');
+            } catch (error) {
+                showMessage(`Invalid JSON format: ${error.message}`, 'error');
+            }
+        }
+
+        function populateFormFromJson(userData) {
+            // Clear existing accounts and transactions
+            document.getElementById('accountsContainer').innerHTML = '';
+            document.getElementById('transactionsContainer').innerHTML = '';
+
+            // Populate basic fields
+            if (userData.credentials) {
+                document.getElementById('username').value = userData.credentials.username || '';
+                document.getElementById('email').value = userData.credentials.email || '';
+                // Note: We don't populate the password for security reasons
+            }
+
+            if (userData.profile) {
+                document.getElementById('firstName').value = userData.profile.firstName || '';
+                document.getElementById('lastName').value = userData.profile.lastName || '';
+                document.getElementById('age').value = userData.profile.age || '';
+                document.getElementById('profession').value = userData.profile.profession || '';
+                document.getElementById('phone').value = userData.profile.phone || '';
+                document.getElementById('address').value = userData.profile.address || '';
+                document.getElementById('joinDate').value = userData.profile.joinDate || '';
+                document.getElementById('accountNumber').value = userData.profile.accountNumber || '';
+            }
+
+            // Populate accounts
+            if (userData.accounts) {
+                for (const [type, accountData] of Object.entries(userData.accounts)) {
+                    addAccount();
+                    const accountContainer = document.querySelector('#accountsContainer .account-container:last-child');
+                    accountContainer.querySelector('.account-type').value = type;
+                    accountContainer.querySelector('.account-balance').value = accountData.balance || 0;
+                    accountContainer.querySelector('.account-number').value = accountData.accountNumber || '';
+                    accountContainer.querySelector('.account-type-desc').value = accountData.type || '';
+                }
+            }
+
+            // Populate transactions
+            if (userData.recentTransactions && userData.recentTransactions.length > 0) {
+                userData.recentTransactions.forEach(tx => {
+                    addTransaction();
+                    const txContainer = document.querySelector('#transactionsContainer .transaction-container:last-child');
+                    txContainer.querySelector('.transaction-id').value = tx.id || '';
+                    txContainer.querySelector('.transaction-date').value = tx.date || '';
+                    txContainer.querySelector('.transaction-description').value = tx.description || '';
+                    txContainer.querySelector('.transaction-amount').value = tx.amount || 0;
+                    txContainer.querySelector('.transaction-type').value = tx.type || 'deposit';
+                    txContainer.querySelector('.transaction-account').value = tx.account || '';
+                    txContainer.querySelector('.transaction-category').value = tx.category || '';
+                    txContainer.querySelector('.transaction-icon').value = tx.icon || '';
+                });
+            }
+
+            // Populate preferences
+            if (userData.preferences) {
+                document.getElementById('theme').value = userData.preferences.theme || 'light';
+                document.getElementById('language').value = userData.preferences.language || 'en';
+            }
+
+            // Generate a reasonable userId if not set
+            if (!document.getElementById('userId').value && userData.profile) {
+                const firstName = userData.profile.firstName || '';
+                const lastName = userData.profile.lastName || '';
+                if (firstName && lastName) {
+                    document.getElementById('userId').value = `${firstName.toLowerCase()}_${lastName.toLowerCase()}`;
+                }
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const icon = document.querySelector('#passwordToggle i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function updateAvatar() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            
+            let avatar = '';
+            if (firstName) avatar += firstName[0].toUpperCase();
+            if (lastName) avatar += lastName[0].toUpperCase();
+            
+            // If we have an avatar field, use it
+            const avatarField = document.getElementById('avatar');
+            if (avatarField) {
+                avatarField.value = avatar;
+            }
+        }
+
+        function addAccount() {
+            const template = document.getElementById('accountTemplate');
+            const container = document.getElementById('accountsContainer');
+            
+            const clone = template.content.cloneNode(true);
+            
+            // Set up event listener for remove button
+            clone.querySelector('.remove-account-btn').addEventListener('click', function() {
+                this.closest('.account-container').remove();
+            });
+            
+            container.appendChild(clone);
+        }
+
+        function addTransaction() {
+            const template = document.getElementById('transactionTemplate');
+            const container = document.getElementById('transactionsContainer');
+            
+            const clone = template.content.cloneNode(true);
+            
+            // Set up event listener for remove button
+            clone.querySelector('.remove-transaction-btn').addEventListener('click', function() {
+                this.closest('.transaction-container').remove();
+            });
+            
+            // Set today's date
+            clone.querySelector('.transaction-date').valueAsDate = new Date();
+            
+            container.appendChild(clone);
+        }
+
+        async function previewUserData() {
+            const userData = collectFormData();
+            const jsonPreview = document.getElementById('jsonPreview');
+            jsonPreview.textContent = JSON.stringify(userData, null, 2);
+        }
+
+        function validateForm() {
+            // Basic validation for required fields
+            const userId = document.getElementById('userId').value.trim();
+            if (!userId) return { valid: false, message: "User ID is required" };
+            
+            // Check for special characters in userId
+            const validUserIdPattern = /^[a-z0-9_]+$/;
+            if (!validUserIdPattern.test(userId)) {
+                return { 
+                    valid: false, 
+                    message: "User ID should contain only lowercase letters, numbers, and underscores" 
+                };
+            }
+            
+            // Validate email format
+            const email = document.getElementById('email').value.trim();
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!emailPattern.test(email)) {
+                return { valid: false, message: "Please enter a valid email address" };
+            }
+            
+            // Password complexity
+            const password = document.getElementById('password').value;
+            if (password.length < 8) {
+                return { valid: false, message: "Password must be at least 8 characters long" };
+            }
+            
+            // Check that accounts have unique types
+            const accountTypes = [];
+            const accountContainers = document.querySelectorAll('#accountsContainer .account-container');
+            
+            for (const container of accountContainers) {
+                const type = container.querySelector('.account-type').value.trim();
+                if (!type) {
+                    return { valid: false, message: "Account type cannot be empty" };
+                }
+                if (accountTypes.includes(type)) {
+                    return { valid: false, message: `Duplicate account type: ${type}` };
+                }
+                accountTypes.push(type);
+            }
+            
+            // Validate transaction fields
+            const transactionContainers = document.querySelectorAll('#transactionsContainer .transaction-container');
+            for (const container of transactionContainers) {
+                const id = container.querySelector('.transaction-id').value.trim();
+                const account = container.querySelector('.transaction-account').value.trim();
+                
+                if (!id) {
+                    return { valid: false, message: "Transaction ID cannot be empty" };
+                }
+                
+                if (!account) {
+                    return { valid: false, message: "Transaction account cannot be empty" };
+                }
+                
+                // Ensure transaction account exists in account types
+                if (!accountTypes.includes(account)) {
+                    return { 
+                        valid: false, 
+                        message: `Transaction references non-existent account: ${account}. Available accounts: ${accountTypes.join(', ')}` 
+                    };
+                }
+            }
+            
+            return { valid: true };
+        }
+
+        function downloadCredentials(userId, username, password) {
+            // Create credential file in the proper format
+            const credentials = {
+                username: username,
+                password: password, // This should be the hashed password
+                email: document.getElementById('email').value
+            };
+            
+            // Create a download link
+            const credentialBlob = new Blob([JSON.stringify(credentials, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(credentialBlob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = `${userId}_credentials.json`;
+            
+            // Add to document, click it, then remove
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(url);
+        }
+
+        function collectFormData() {
+            // Collect basic user data
+            const userId = document.getElementById('userId').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            
+            // Build user object
+            const userData = {
+                credentials: {
+                    username: document.getElementById('username').value,
+                    password: document.getElementById('password').value, // Will be hashed before saving
+                    email: document.getElementById('email').value
+                },
+                profile: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    fullName: `${firstName} ${lastName}`,
+                    age: parseInt(document.getElementById('age').value),
+                    profession: document.getElementById('profession').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    joinDate: document.getElementById('joinDate').value,
+                    avatar: `${firstName[0]}${lastName[0]}`.toUpperCase(),
+                    accountNumber: document.getElementById('accountNumber').value
+                },
+                accounts: {},
+                recentTransactions: [],
+                preferences: {
+                    theme: document.getElementById('theme').value,
+                    notifications: true,
+                    language: document.getElementById('language').value
+                }
+            };
+            
+            // Collect accounts
+            const accountContainers = document.querySelectorAll('#accountsContainer .account-container');
+            accountContainers.forEach(container => {
+                const type = container.querySelector('.account-type').value;
+                const balance = parseFloat(container.querySelector('.account-balance').value);
+                const accountNumber = container.querySelector('.account-number').value;
+                const typeDesc = container.querySelector('.account-type-desc').value;
+                
+                userData.accounts[type] = {
+                    balance: balance,
+                    accountNumber: accountNumber,
+                    type: typeDesc
+                };
+            });
+            
+            // Collect transactions
+            const transactionContainers = document.querySelectorAll('#transactionsContainer .transaction-container');
+            transactionContainers.forEach(container => {
+                const transaction = {
+                    id: container.querySelector('.transaction-id').value,
+                    date: container.querySelector('.transaction-date').value,
+                    description: container.querySelector('.transaction-description').value,
+                    amount: parseFloat(container.querySelector('.transaction-amount').value),
+                    type: container.querySelector('.transaction-type').value,
+                    account: container.querySelector('.transaction-account').value
+                };
+                
+                // Optional fields
+                const category = container.querySelector('.transaction-category').value;
+                const icon = container.querySelector('.transaction-icon').value;
+                
+                if (category) transaction.category = category;
+                if (icon) transaction.icon = icon;
+                
+                userData.recentTransactions.push(transaction);
+            });
+            
+            return userData;
+        }
+
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function saveUser(event) {
+            event.preventDefault();
+            
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            
+            try {
+                // Validate form data first
+                const validation = validateForm();
+                if (!validation.valid) {
+                    throw new Error(validation.message);
+                }
+                
+                // Get user ID and other critical values
+                const userId = document.getElementById('userId').value.trim();
+                const username = document.getElementById('username').value.trim();
+                const plainPassword = document.getElementById('password').value; // Keep original for download
+                
+                // Collect form data
+                const userData = collectFormData();
+                console.log("User data to be saved:", userId, userData);
+                
+                // Hash password
+                const hashedPassword = await hashPassword(userData.credentials.password);
+                userData.credentials.password = hashedPassword;
+                
+                // Create separate credentials object
+                const credentials = {
+                    username: userData.credentials.username,
+                    password: hashedPassword,
+                    email: userData.credentials.email
+                };
+                
+                // Double check Azure manager initialization
+                if (!azureManager.initialized) {
+                    console.log("Azure manager not initialized, initializing now...");
+                    await azureManager.initialize();
+                }
+                
+                // Save to local fallback first to ensure we have a backup
+                console.log("Adding user to local fallback storage");
+                azureManager.localUsers[userId] = userData;
+                
+                // Save to Azure with detailed logging
+                console.log(`Attempting to save user ${userId} to Azure...`);
+                console.log(`Azure base URL: ${azureManager.baseUrl}`);
+                console.log(`Container name: ${azureManager.containerName}`);
+                
+                // Save user data to Azure
+                const userResult = await azureManager.saveUserData(userId, userData);
+                console.log("Azure user save result:", userResult);
+                
+                // Save credentials separately
+                const credResult = await azureManager.saveUserCredentials(userId, credentials);
+                console.log("Azure credential save result:", credResult);
+                
+                if (userResult.success && credResult.success) {
+                    // Create a success message with additional details
+                    showMessage(`User ${userId} has been successfully created! The user data and credentials are available for download.`, 'success');
+                    
+                    // Show download credentials button
+                    const formMessage = document.getElementById('formMessage');
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.textContent = 'Download Credentials';
+                    downloadBtn.className = 'download-btn';
+                    downloadBtn.style.marginTop = '10px';
+                    downloadBtn.addEventListener('click', async () => {
+                        downloadCredentials(userId, username, hashedPassword);
+                    });
+                    formMessage.appendChild(downloadBtn);
+                    
+                    // Reset form for next user creation
+                    if (confirm("User created successfully! Would you like to create another user?")) {
+                        document.getElementById('newUserForm').reset();
+                        document.getElementById('jsonPreview').textContent = "";
+                        // Add default accounts and transactions again
+                        document.getElementById('accountsContainer').innerHTML = '';
+                        document.getElementById('transactionsContainer').innerHTML = '';
+                        addAccount();
+                        addTransaction();
+                        // Set today's date as default again
+                        document.getElementById('joinDate').valueAsDate = new Date();
+                    }
+                } else {
+                    const errorMessage = userResult.error || credResult.error || 'Unknown error';
+                    console.error("Failed to save user to Azure:", errorMessage);
+                    showMessage(`Failed to save user to Azure: ${errorMessage}. However, the user has been saved to local storage and will be available when using local fallback.`, 'error');
+                    
+                    // Offer to download the credentials for local use
+                    const formMessage = document.getElementById('formMessage');
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.textContent = 'Download Credentials (Local Only)';
+                    downloadBtn.className = 'download-btn secondary';
+                    downloadBtn.style.marginTop = '10px';
+                    downloadBtn.addEventListener('click', async () => {
+                        downloadCredentials(userId, username, hashedPassword);
+                    });
+                    formMessage.appendChild(downloadBtn);
+                }
+            } catch (error) {
+                console.error('Error in save process:', error);
+                showMessage(`Error creating user: ${error.message}. Please check the console for details.`, 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save User';
+            }
+        }
+
+        // Open the JSON import modal
+        function openImportModal() {
+            const modal = document.getElementById('jsonImportModal');
+            modal.style.display = 'block';
+        }
+
+        // Close the JSON import modal
+        function closeImportModal() {
+            const modal = document.getElementById('jsonImportModal');
+            modal.style.display = 'none';
+        }
+
+        // Import user data from JSON
+        async function importUserData(jsonData) {
+            // Close the modal first
+            closeImportModal();
+            
+            // Parse the JSON data
+            let userData;
+            try {
+                userData = JSON.parse(jsonData);
+            } catch (error) {
+                return showMessage('Invalid JSON format. Please correct and try again.', 'error');
+            }
+            
+            // Fill the form with imported data
+            document.getElementById('userId').value = userData.userId || '';
+            document.getElementById('username').value = userData.credentials?.username || '';
+            document.getElementById('password').value = userData.credentials?.password || '';
+            document.getElementById('email').value = userData.credentials?.email || '';
+            document.getElementById('firstName').value = userData.profile?.firstName || '';
+            document.getElementById('lastName').value = userData.profile?.lastName || '';
+            document.getElementById('age').value = userData.profile?.age || '';
+            document.getElementById('profession').value = userData.profile?.profession || '';
+            document.getElementById('phone').value = userData.profile?.phone || '';
+            document.getElementById('address').value = userData.profile?.address || '';
+            document.getElementById('joinDate').value = userData.profile?.joinDate || '';
+            document.getElementById('accountNumber').value = userData.profile?.accountNumber || '';
+            document.getElementById('theme').value = userData.preferences?.theme || 'light';
+            document.getElementById('language').value = userData.preferences?.language || 'en';
+            
+            // Clear existing accounts and transactions
+            document.getElementById('accountsContainer').innerHTML = '';
+            document.getElementById('transactionsContainer').innerHTML = '';
+            
+            // Add default account and transaction
+            addAccount();
+            addTransaction();
+            
+            // Fill accounts
+            const accounts = userData.accounts;
+            for (const type in accounts) {
+                const account = accounts[type];
+                const container = addAccount();
+                container.querySelector('.account-type').value = type;
+                container.querySelector('.account-balance').value = account.balance;
+                container.querySelector('.account-number').value = account.accountNumber;
+                container.querySelector('.account-type-desc').value = account.type;
+            }
+            
+            // Fill transactions
+            const transactions = userData.recentTransactions;
+            for (const transaction of transactions) {
+                const container = addTransaction();
+                container.querySelector('.transaction-id').value = transaction.id;
+                container.querySelector('.transaction-date').value = transaction.date;
+                container.querySelector('.transaction-description').value = transaction.description;
+                container.querySelector('.transaction-amount').value = transaction.amount;
+                container.querySelector('.transaction-type').value = transaction.type;
+                container.querySelector('.transaction-account').value = transaction.account;
+                
+                // Optional fields
+                if (transaction.category) {
+                    container.querySelector('.transaction-category').value = transaction.category;
+                }
+                if (transaction.icon) {
+                    container.querySelector('.transaction-icon').value = transaction.icon;
+                }
+            }
+            
+            // Preview the imported data
+            previewUserData();
+        }
+
+        // Event listeners for modal buttons
+        document.getElementById('importCancelBtn').addEventListener('click', closeImportModal);
+        document.getElementById('importConfirmBtn').addEventListener('click', () => {
+            const jsonData = document.getElementById('jsonImportArea').value;
+            importUserData(jsonData);
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('jsonImportModal');
+            if (event.target == modal) {
+                closeImportModal();
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageElement = document.getElementById('formMessage');
+            messageElement.textContent = message;
+            messageElement.className = `form-message ${type}`;
+            messageElement.style.display = 'block';
+            
+            // Scroll to message
+            messageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
