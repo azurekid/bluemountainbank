@@ -6,7 +6,7 @@
 
 | Requirement | Recommended Value | Notes |
 |-------------|------------------|-------|
-| **Account Name** | `bluemountainbankdev` | Must be globally unique, 3-24 characters, lowercase |
+| **Account Name** | `bluemountainbankweb` | Must be globally unique, 3-24 characters, lowercase |
 | **Account Type** | General Purpose v2 | Latest version with all features |
 | **Performance** | Standard | Sufficient for banking app, cost-effective |
 | **Replication** | LRS (Local) for demo, GRS for production | LRS = cheaper, GRS = disaster recovery |
@@ -34,54 +34,6 @@ sp=rwdlac
 
 ## 🛠️ Step-by-Step Setup Instructions
 
-### **Option 1: Azure CLI (Recommended for Developers)**
-
-```bash
-# 1. Login to Azure
-az login
-
-# 2. Create Resource Group
-az group create \
-  --name bluemountain-banking \
-  --location eastus
-
-# 3. Create Storage Account
-az storage account create \
-  --name bluemountainbankdev \
-  --resource-group bluemountain-banking \
-  --location eastus \
-  --sku Standard_LRS \
-  --kind StorageV2 \
-  --access-tier Hot \
-  --https-only true \
-  --allow-blob-public-access false
-
-# 4. Create Container for User Data
-az storage container create \
-  --name userdata-dev \
-  --account-name bluemountainbankdev \
-  --public-access off \
-  --auth-mode login
-
-# 5. Create Container for Backups
-az storage container create \
-  --name backups \
-  --account-name bluemountainbankdev \
-  --public-access off \
-  --auth-mode login
-
-# 6. Generate SAS Token (Valid for 1 year)
-az storage account generate-sas \
-  --account-name bluemountainbankdev \
-  --services b \
-  --resource-types sco \
-  --permissions rwdlac \
-  --expiry 2025-12-31T23:59:59Z \
-  --start 2024-01-01T00:00:00Z \
-  --protocol https \
-  --output tsv
-```
-
 ### **Option 2: Azure Portal (GUI Method)**
 
 1. **Create Storage Account**
@@ -90,7 +42,7 @@ az storage account generate-sas \
    - Fill in the details:
      - **Subscription**: Your Azure subscription
      - **Resource Group**: Create new "bluemountain-banking"
-     - **Storage Account Name**: `bluemountainbankdev`
+     - **Storage Account Name**: `bluemountainbankweb`
      - **Region**: East US (or nearest to you)
      - **Performance**: Standard
      - **Redundancy**: Locally-redundant storage (LRS)
@@ -98,7 +50,7 @@ az storage account generate-sas \
 2. **Configure Advanced Settings**
    - **Security**: Enable "Require secure transfer"
    - **Data Lake Storage Gen2**: Disabled
-   - **Blob public access**: Disabled
+   - **Blob public access**: Enabled
    - **Minimum TLS version**: Version 1.2
 
 3. **Create Containers**
@@ -106,7 +58,7 @@ az storage account generate-sas \
    - Go to "Containers" in the left menu
    - Click "+ Container"
    - Create containers:
-     - `userdata-dev` (Private)
+     - `userdata` (Private)
      - `backups` (Private)
 
 4. **Generate SAS Token**
@@ -129,8 +81,8 @@ Edit `js/azure-config.js`:
 
 ```javascript
 const azureConfig = {
-    storageAccount: 'bluemountainbankdev',  // Your storage account name
-    containerName: 'userdata-dev',         // Your container name
+    storageAccount: 'bluemountainbankweb',  // Your storage account name
+    containerName: 'userdata',         // Your container name
     sasToken: 'sv=2021-06-08&ss=b&srt=sco&sp=rwdlac&se=2025-12-31T23:59:59Z&st=2024-01-01T00:00:00Z&spr=https&sig=YOUR_SIGNATURE_HERE'
 };
 ```
@@ -140,8 +92,8 @@ const azureConfig = {
 ```javascript
 // Initialize with your Azure configuration
 const storageManager = new AzureBlobStorageManager({
-    storageAccount: 'bluemountainbankdev',
-    containerName: 'userdata-dev',
+    storageAccount: 'bluemountainbankweb',
+    containerName: 'userdata',
     sasToken: 'your-sas-token-here'
 });
 
@@ -157,19 +109,6 @@ Open `azure-demo.html` in your browser and:
 3. If successful, click "Initialize Azure Storage"
 4. Test authentication and data operations
 
-## 💰 Cost Estimation
-
-### **Development/Demo Usage**
-- **Storage**: ~1 GB for user data = $0.02/month
-- **Transactions**: ~10,000 operations = $0.01/month
-- **Total**: **~$0.03/month** for development
-
-### **Production Usage (1000 users)**
-- **Storage**: ~10 GB = $0.20/month
-- **Transactions**: ~1M operations = $0.40/month
-- **Bandwidth**: ~50 GB = $4.50/month
-- **Total**: **~$5.10/month** for production
-
 ## 🔒 Security Best Practices
 
 ### **SAS Token Security**
@@ -182,14 +121,14 @@ const sasToken = 'sv=2021-06-08&ss=b&srt=sco...';
 ```
 
 ### **Production Security Checklist**
-- [ ] Enable Azure Storage encryption
+- [x] Enable Azure Storage encryption
 - [ ] Use managed identities instead of SAS tokens
-- [ ] Implement Azure Key Vault for secrets
-- [ ] Enable Storage Analytics logging
+- [x] Implement Azure Key Vault for secrets
+- [x] Enable Storage Analytics logging
 - [ ] Set up Azure Monitor alerts
-- [ ] Configure CORS for web applications
-- [ ] Implement rate limiting
-- [ ] Regular SAS token rotation (every 90 days)
+- [x] Configure CORS for web applications
+- [x] Implement rate limiting
+- [x] Regular SAS token rotation (every 90 days)
 
 ## 🚨 Troubleshooting Common Issues
 
@@ -197,7 +136,7 @@ const sasToken = 'sv=2021-06-08&ss=b&srt=sco...';
 ```bash
 # Check if container exists
 az storage container list \
-  --account-name bluemountainbankdev \
+  --account-name bluemountainbankweb \
   --auth-mode login
 ```
 
@@ -251,14 +190,14 @@ To migrate existing LocalStorage data to Azure:
 async function migrateToAzure() {
     const localManager = new LocalStorageManager();
     const azureManager = new AzureBlobStorageManager(azureConfig);
-    
+
     const localUsers = localManager.getAllUsers();
-    
+
     for (const [userId, userData] of Object.entries(localUsers)) {
         await azureManager.saveUserData(userId, userData);
         console.log(`Migrated user: ${userId}`);
     }
-    
+
     console.log('Migration complete!');
 }
 ```

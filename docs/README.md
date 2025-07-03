@@ -1,106 +1,97 @@
-# Blue Mountain Bank - Enhanced Security & Management
+# Blue Mountain Bank Job Application System - Enhanced Edition
 
-This repository contains the Blue Mountain Bank web application with enhanced security features and user management capabilities.
+A comprehensive job application system with modern glassmorphism design, Azure Blob Storage integration, email notifications, and admin management capabilities.
 
-## Recent Enhancements
+## 🚀 Features
 
-### Secure Credential Management
+### Core Functionality
+- **Modern Glassmorphism UI**: Beautiful, transparent glass-like design with blur effects
+- **Real Job Application Form**: Professional form with validation and file upload
+- **Azure Blob Storage Integration**: Secure file storage with SAS token authentication
+- **Email Notifications**: Automated confirmation and HR notification emails
+- **Admin Dashboard**: Complete application management interface with secure authentication
+- **Enhanced Accessibility**: WCAG 2.1 compliant with screen reader support
+- **Mobile Responsive**: Optimized for all device sizes
 
-1. **Separate Credential Storage**:
-   - User credentials are now stored in a dedicated `credentials` container
-   - Improved security by isolating authentication data from user profiles
+### Enhanced Features
+- **Secure Backend API**: Node.js/Express server with security middleware
+- **Admin Authentication**: Session-based admin access control with timeout
+- **CDN Integration**: Content Delivery Network support with automatic fallback
+- **Rate Limiting**: Protection against abuse and spam
+- **Form Validation**: Client and server-side validation
+- **File Validation**: Type, size, and duplicate checking
+- **Progress Tracking**: Real-time upload progress indicators
+- **Error Handling**: User-friendly error messages and recovery
+- **Accessibility**: Full keyboard navigation and screen reader support
 
-2. **Credential Migration Tool**:
-   - New tool at `/admin/migrate-credentials.html` to move credentials to the secure container
-   - Helps transition existing users to the new security model
+## 📁 Project Structure
 
-3. **Enhanced User Creation**:
-   - User creator now automatically saves credentials to the secure container
-   - Provides credential download functionality for administrators
+```
+bluemountainbank/
+├── admin/                        # Admin tools and utilities
+│   ├── index.html                # Main admin tools dashboard
+│   ├── create-user.html          # User creation tool
+│   ├── manage-credentials.html   # Credential management interface
+│   ├── migrate-credentials.html  # Credential migration tool
+│   └── [other admin tools]
+├── api/                          # Backend API server
+│   ├── server.js                 # Main API server with all endpoints
+│   ├── token-service.js          # SAS token generation service
+│   ├── email-service.js          # Email notification service
+│   ├── package.json              # Backend dependencies
+│   └── .env.example              # Environment configuration template
+├── css/
+│   ├── careers.css               # Enhanced glassmorphism careers page styles
+│   └── [other css files]
+├── docs/
+│   ├── ADMIN_AUTHENTICATION_GUIDE.md # Admin security documentation
+│   ├── AZURE_IMPLEMENTATION_SUMMARY.md # Azure integration overview
+│   ├── AZURE_SETUP_GUIDE.md      # Detailed Azure setup instructions
+│   ├── CDN_CONFIGURATION_GUIDE.md # CDN setup and integration instructions
+│   ├── CORS_CONFIGURATION_GUIDE.md # CORS setup guidelines
+│   └── CORS_IMPLEMENTATION_STATUS.md # Current CORS implementation status
+├── js/
+│   ├── api-manager.js            # Centralized API request handling
+│   ├── azure-blob-storage.js     # Core Azure Blob Storage functionality
+│   ├── azure-config.js           # Azure configuration and credentials
+│   ├── azure-proxy.js            # CORS proxy for Azure requests
+│   ├── azure-storage-manager.js  # Enhanced storage management
+│   ├── cdn-helper.js             # CDN asset loading with fallback
+│   ├── job-application.js        # Job application form logic
+│   └── [other js files]
+├── admin.html                    # Main admin dashboard (protected)
+├── careers.html                  # Enhanced careers page
+├── job-application.html          # Professional application form
+├── job-applications-admin.html   # Admin management interface
+├── login.html                    # User and admin login page
+├── health/
+│   └── cdn-status.json           # CDN availability status and configuration
+└── [other html files]
+```
 
-4. **Improved Authentication Flow**:
-   - First checks the secure credentials container
-   - Falls back to the user data container if needed
-   - Provides detailed authentication source tracking
+## 🔒 Admin Authentication
 
-### CORS & Connectivity Improvements
+The system includes a secure admin authentication system:
 
-1. **CORS Implementation Status**:
-   - Detailed documentation at `/docs/CORS_IMPLEMENTATION_STATUS.md`
-   - Clear roadmap for production-ready CORS configuration
+- **Protected Admin Areas**: All admin pages (`/admin.html` and `/admin/*`) require login
+- **Session Management**: 30-minute session timeout with visual countdown
+- **Automatic Redirect**: Unauthorized access redirects to login page
+- **Session Persistence**: Admin session preserved across admin tools
 
-2. **Client-Side Proxy**:
-   - Implemented at `/js/azure-proxy.js`
-   - Automatically routes requests through public CORS proxies
-   - Provides fallback options when primary proxy fails
+Default admin credentials (change before production):
+- Username: `admin`
+- Password: `admin123`
 
-3. **CORS Configuration Guide**:
-   - Step-by-step guide at `/docs/CORS_CONFIGURATION_GUIDE.md`
-   - Azure portal configuration instructions
+See `docs/ADMIN_AUTHENTICATION_GUIDE.md` for details.
 
-### User Experience Improvements
 
-1. **Enhanced Login Process**:
-   - Better error handling and user feedback
-   - Visual loading states during authentication
-   - Improved password handling and security
+## 🆘 Support
 
-2. **Admin Dashboard Updates**:
-   - New credential migration tool added to the admin dashboard
-   - Consistent styling and navigation throughout admin tools
+For support and questions:
+- Email: hr@bluemountainbank.com
+- Documentation: Check the README and inline code comments
+- Issues: Create an issue in the repository
 
-## Getting Started
+---
 
-1. Clone this repository
-2. Open `index.html` in your browser
-3. Login with:
-   - Regular users: Refer to the credentials in the `/sample-data` directory
-   - Admin: username `admin`, password `admin123`
-
-## Azure Setup
-
-To use Azure Blob Storage:
-
-1. Create an Azure Storage account
-2. Create containers named `userdata` and `credentials`
-3. Generate a SAS token with appropriate permissions
-4. Update the token in `/js/azure-storage-manager.js`
-5. Configure CORS settings following `/docs/CORS_CONFIGURATION_GUIDE.md`
-
-## Security Notes
-
-- For production, replace the public CORS proxies with your own proxy server
-- Implement server-side authentication instead of client-side validation
-- Use HTTPS for all communication with Azure Storage
-- Regularly rotate SAS tokens
-- Consider implementing multi-factor authentication
-
-## Tools & Features
-
-### Admin Tools
-
-- **Create User** (`/admin/create-user.html`): Create new users with complete profiles
-- **Manage Credentials** (`/admin/manage-credentials.html`): View and edit user credentials
-- **Migrate Credentials** (`/admin/migrate-credentials.html`): Move credentials to secure storage
-- **Debug User Data** (`/admin/debug-userdata.html`): Test user authentication and connectivity
-- **Error Debug Console** (`/admin/error-debug.html`): Advanced error debugging
-- **Azure Upload Tool** (`/admin/azure-upload-tool.html`): Upload sample data to Azure
-- **Azure Blob Manager** (`/admin/azure-blob-uploader.html`): Manage blob storage
-- **Storage Test Lab** (`/admin/test-storage.html`): Test local storage functionality
-- **Azure Live Demo** (`/admin/azure-demo.html`): Interactive Azure functionality demo
-- **Password Hash Generator** (`/admin/hash-passwords.html`): Generate SHA-256 hashes
-
-### User Features
-
-- **Login** (`/login.html`): Secure user authentication
-- **User Dashboard** (`/user-dashboard.html`): Account overview and management
-- **Rates** (`/rates.html`): Current interest rates
-- **Security** (`/security.html`): Security information
-
-## Documentation
-
-- `/docs/CORS_CONFIGURATION_GUIDE.md`: Azure CORS setup guide
-- `/docs/CORS_IMPLEMENTATION_STATUS.md`: CORS implementation status and security improvements
-- `/docs/ENHANCED_README.md`: Enhanced project documentation
-- `/docs/AZURE_IMPLEMENTATION_SUMMARY.md`: Azure implementation summary
-- `/docs/AZURE_SETUP_GUIDE.md`: Azure setup guide
+**Blue Mountain Bank Job Application System** - Providing a modern, accessible, and secure application experience for job seekers and HR teams.
