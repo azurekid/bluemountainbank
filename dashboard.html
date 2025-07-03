@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banking Dashboard - Blue Mountain Bank</title>
+    <!-- Admin role check script - prevent unauthorized access -->
+    <script>
+        // Immediately check admin role before any content loads
+        (function() {
+            const userRole = sessionStorage.getItem('userRole');
+            const currentUser = sessionStorage.getItem('currentUser');
+            
+            if (!userRole || userRole !== 'admin' || !currentUser) {
+                console.log('Unauthorized access attempt to admin dashboard');
+                // Redirect to login or user dashboard based on if user is logged in
+                if (currentUser) {
+                    window.location.replace('user-dashboard.html');
+                } else {
+                    window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname) + 
+                        '&message=' + encodeURIComponent('Please log in with an admin account to access this page.'));
+                }
+                return;
+            }
+        })();
+    </script>
+    <!-- CDN Helper Script -->
+    <script src="js/cdn-helper.js"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -211,6 +233,40 @@
         </div>
     </div>
 
+    <!-- Traditional script tag for compatibility -->
     <script src="js/script.js"></script>
+    
+    <!-- Example of using CDN helper for script loading -->
+    <script>
+        // Wait for DOM content to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Use CDN helper to load additional scripts
+            if (window.CDNHelper) {
+                console.log('Using CDN helper to load additional resources');
+                
+                // Preload common dashboard assets
+                window.CDNHelper.preloadAssets([
+                    'js/azure-storage-manager.js',
+                    'js/azure-proxy.js',
+                    'css/responsive.css'
+                ]).then(() => {
+                    console.log('Dashboard assets preloaded successfully');
+                });
+                
+                // Load dashboard-specific script
+                window.CDNHelper.loadScript('js/dashboard-charts.js')
+                    .then(() => {
+                        console.log('Dashboard charts script loaded');
+                        // Initialize dashboard charts if the function exists
+                        if (typeof initializeDashboardCharts === 'function') {
+                            initializeDashboardCharts();
+                        }
+                    })
+                    .catch(error => {
+                        console.warn('Failed to load dashboard charts:', error);
+                    });
+            }
+        });
+    </script>
 </body>
 </html>

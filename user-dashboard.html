@@ -4,6 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - Blue Mountain Bank</title>
+    <!-- User authentication check script -->
+    <script>
+        // Immediately check if user is logged in
+        (function() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            const loginTime = sessionStorage.getItem('loginTime');
+            
+            if (!currentUser || !loginTime) {
+                console.log('User not logged in - redirecting to login page');
+                window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname));
+                return;
+            }
+            
+            // Optional: Check if session has expired (e.g., after 2 hours)
+            const sessionAge = new Date() - new Date(loginTime);
+            if (sessionAge > 7200000) { // 2 hours in milliseconds
+                console.log('User session expired');
+                sessionStorage.removeItem('currentUser');
+                sessionStorage.removeItem('loginTime');
+                sessionStorage.removeItem('userRole');
+                window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname) + 
+                    '&message=' + encodeURIComponent('Your session has expired. Please log in again.'));
+                return;
+            }
+        })();
+    </script>
+    <!-- CDN Helper Script -->
+    <script src="js/cdn-helper.js"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/user-dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">

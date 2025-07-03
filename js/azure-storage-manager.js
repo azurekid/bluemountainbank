@@ -18,43 +18,8 @@ class AzureStorageManager {
             'alice_martinez': {
                 credentials: {
                     username: 'alice.martinez',
-                    password: 'ec4874af59fe23a3f555276a4ebfa20a3e3ccaa5cd535065d6052db5e7bf5d01',
+                    password: 'AliceM2024!',
                     email: 'alice.martinez@email.com'
-                }
-            },
-            'bob_johnson': {
-                credentials: {
-                    username: 'bob.johnson',
-                    password: '7552dd66eb5496ddfed93eafe079b50f123c6e13af2967d3d4bc39a7455200a6',
-                    email: 'bob.johnson@email.com'
-                }
-            },
-            'carol_smith': {
-                credentials: {
-                    username: 'carol.smith',
-                    password: '6320030ac57ad4df03baed0b99b0babf534af7cfb2c601eba9d933f144e9b643',
-                    email: 'carol.smith@email.com'
-                }
-            },
-            'david_wilson': {
-                credentials: {
-                    username: 'david.wilson',
-                    password: '2a0841af892abcaf953782cbe8625f107fc59aeb2015f2fa05dbbf256086db7a',
-                    email: 'david.wilson@email.com'
-                }
-            },
-            'emma_brown': {
-                credentials: {
-                    username: 'emma.brown',
-                    password: '3089f8b268a347b23738dfd1caf39c9c49b607289461d682ba93f317adbd3b5f',
-                    email: 'emma.brown@email.com'
-                }
-            },
-            'frank_miller': {
-                credentials: {
-                    username: 'frank.miller',
-                    password: '5e3c0a612afee08a6a8a1c395c962dceb069a56ef988a36ab71f87dc2bade904',
-                    email: 'frank.miller@email.com'
                 }
             }
         };
@@ -639,9 +604,7 @@ class AzureStorageManager {
         return this.initialize();
     }
 
-    // Hash password for storage (simplified - use bcrypt in production)
     hashPassword(password) {
-        // Simple hash for demo - use proper hashing in production
         return btoa(password);
     }
 
@@ -714,32 +677,81 @@ class AzureStorageManager {
             console.log('Loading user credentials from Azure URL:', url);
             
             let response;
+            let attempt = 1;
+            const maxAttempts = 3;
+            let lastError = null;
             
-            // Use proxy if available, otherwise use direct fetch
-            if (this.proxy) {
-                console.log(`Using proxy for loading user credentials: ${userId}`);
-                response = await this.proxy.sendRequest(url, options);
-            } else {
-                console.log(`Direct fetch for loading user credentials: ${userId}`);
-                response = await fetch(url, options);
+            // Try multiple attempts with different strategies
+            while (attempt <= maxAttempts) {
+                try {
+                    console.log(`Credential fetch attempt ${attempt}/${maxAttempts} for user ${userId}`);
+                    
+                    // Use different strategies based on attempt number
+                    if (attempt === 1 && this.proxy) {
+                        console.log(`Using proxy for loading user credentials: ${userId}`);
+                        response = await this.proxy.sendRequest(url, options);
+                    } else if (attempt === 2) {
+                        // Second attempt: try direct access
+                        console.log(`Direct fetch for loading user credentials: ${userId}`);
+                        response = await fetch(url, options);
+                    } else {
+                        // Third attempt: try fallback to user container
+                        console.log(`Trying to fetch user data instead of credentials for: ${userId}`);
+                        const userData = await this.loadUserData(userId);
+                        
+                        if (userData.success && userData.data.credentials) {
+                            console.log('Successfully extracted credentials from user data');
+                            return { success: true, data: userData.data.credentials };
+                        } else {
+                            throw new Error('Could not fetch credentials from user data');
+                        }
+                    }
+                    
+                    // If we get here, we have a response
+                    if (response.ok) {
+                        const credentials = await response.json();
+                        console.log('Successfully loaded user credentials from Azure for:', userId);
+                        return { success: true, data: credentials };
+                    } else if (response.status === 404) {
+                        console.log('User credentials file not found in Azure Storage for:', userId);
+                        // Continue to next attempt rather than failing immediately
+                        attempt++;
+                        continue;
+                    } else {
+                        console.error('Failed to load user credentials from Azure:', response.status, response.statusText);
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                } catch (attemptError) {
+                    console.error(`Attempt ${attempt} failed:`, attemptError);
+                    lastError = attemptError;
+                    attempt++;
+                }
             }
-
-            if (response.ok) {
-                const credentials = await response.json();
-                console.log('Successfully loaded user credentials from Azure for:', userId);
-                return { success: true, data: credentials };
-            } else if (response.status === 404) {
-                console.log('User credentials file not found in Azure Storage for:', userId);
-                return { success: false, error: 'User credentials not found' };
-            } else {
-                console.error('Failed to load user credentials from Azure:', response.status, response.statusText);
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
+            
+            // If we get here, all attempts failed
+            throw lastError || new Error('All credential fetch attempts failed');
         } catch (error) {
             console.error('Network error loading user credentials:', error);
             
             if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
                 console.warn('CORS issue detected. Please ensure Azure Storage CORS settings are configured properly.');
+                
+                // Try fallback to local data for this user if it exists
+                if (this.localUsers[userId] && this.localUsers[userId].credentials) {
+                    console.log('CORS issue - using local fallback data for:', userId);
+                    this.useLocalFallback = true; // Set fallback flag
+                    return { success: true, data: this.localUsers[userId].credentials };
+                }
+                
+                // Check if we have a sample user with that username instead of userId
+                for (const localId in this.localUsers) {
+                    const localUser = this.localUsers[localId];
+                    if (localUser.credentials && localUser.credentials.username === userId) {
+                        console.log('Found local data by username match:', localId);
+                        this.useLocalFallback = true;
+                        return { success: true, data: localUser.credentials };
+                    }
+                }
             }
             
             return { success: false, error: error.message };

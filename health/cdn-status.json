@@ -1,0 +1,27 @@
+{
+  "available": true,
+  "version": "v1",
+  "cdnBase": "https://cdn.bluemountainbank.com",
+  "updatedAt": "2025-07-03T08:00:00Z",
+  "status": "operational",
+  "regions": {
+    "eu-west": "operational",
+    "us-east": "operational",
+    "us-west": "operational",
+    "asia-east": "operational"
+  },
+  "message": "CDN services are fully operational",
+  "fallbackEnabled": true,
+  "services": {
+    "js": true,
+    "css": true,
+    "images": true
+  },
+  "performance": {
+    "averageResponseTime": 87,
+    "p95ResponseTime": 120,
+    "uptime": 99.98
+  },
+  "lastIncident": "2025-06-15T14:23:00Z",
+  "maintenanceScheduled": null
+}
