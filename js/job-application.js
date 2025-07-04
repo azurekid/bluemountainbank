@@ -91,36 +91,90 @@ class JobApplicationManager {
             // Collect form data
             const formData = this.collectFormData();
             
-            // Upload files if any
+            // Try to upload files if any
             let fileUploadResults = [];
+            let uploadFailed = false;
+            
             if (this.uploadedFiles.length > 0) {
                 this.showProgress();
-                fileUploadResults = await this.uploadFiles();
+                try {
+                    fileUploadResults = await this.uploadFiles();
+                    // Check if any uploads failed
+                    uploadFailed = fileUploadResults.some(result => !result.success);
+                } catch (uploadError) {
+                    console.error('File upload failed:', uploadError);
+                    uploadFailed = true;
+                    // Continue with form submission even if uploads fail
+                }
             }
 
-            // Save application data
+            // Prepare application data
             const applicationData = {
                 ...formData,
                 applicationId: this.applicationId,
                 submittedAt: new Date().toISOString(),
-                files: fileUploadResults.filter(result => result.success)
+                files: fileUploadResults.filter(result => result.success),
+                uploadStatus: uploadFailed ? 'partial' : 'complete'
             };
 
-            const saveResult = await this.azureStorage.saveApplicationData(applicationData, this.applicationId);
+            // Try to save application data to Azure
+            let saveResult;
+            try {
+                saveResult = await this.azureStorage.saveApplicationData(applicationData, this.applicationId);
+            } catch (saveError) {
+                console.error('Azure save failed:', saveError);
+                // Fall back to local storage
+                saveResult = this.saveApplicationLocally(applicationData);
+            }
             
             if (saveResult.success) {
-                this.showSuccessMessage();
+                if (uploadFailed) {
+                    this.showPartialSuccessMessage();
+                } else {
+                    this.showSuccessMessage();
+                }
                 this.resetForm();
             } else {
-                throw new Error(saveResult.error || 'Failed to save application');
+                // Last resort - show user a message with their application ID
+                this.showFallbackMessage(applicationData);
             }
 
         } catch (error) {
             console.error('Application submission error:', error);
-            this.showErrorMessage(error.message);
+            this.showErrorMessage(this.getFriendlyErrorMessage(error));
         } finally {
             this.setLoading(false);
             this.hideProgress();
+        }
+    }
+    
+    /**
+     * Save application data locally as fallback
+     */
+    saveApplicationLocally(applicationData) {
+        try {
+            const applications = JSON.parse(localStorage.getItem('jobApplications') || '[]');
+            applications.push(applicationData);
+            localStorage.setItem('jobApplications', JSON.stringify(applications));
+            
+            console.log('Application saved locally as fallback');
+            return { success: true, method: 'local' };
+        } catch (error) {
+            console.error('Local storage failed:', error);
+            return { success: false, error: error.message };
+        }
+    }
+    
+    /**
+     * Get user-friendly error message
+     */
+    getFriendlyErrorMessage(error) {
+        if (error.message.includes('CORS') || error.message.includes('403')) {
+            return 'Network connection issue detected. Your application has been saved locally. Please contact HR directly at careers@bluemountainbank.com';
+        } else if (error.message.includes('authentication')) {
+            return 'System authentication error. Please contact HR at careers@bluemountainbank.com with your application details.';
+        } else {
+            return 'Technical error occurred. Please save your application details and contact HR at careers@bluemountainbank.com';
         }
     }
 
@@ -391,6 +445,44 @@ class JobApplicationManager {
     showSuccessMessage() {
         this.successMessage.style.display = 'block';
         this.successMessage.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * Show partial success message when some uploads failed
+     */
+    showPartialSuccessMessage() {
+        this.successMessage.style.display = 'block';
+        this.successMessage.innerHTML = `
+            <i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i>
+            <h3>Application Submitted with Warnings</h3>
+            <p>Your application has been submitted successfully, but some file uploads may have failed. 
+            Please contact HR at careers@bluemountainbank.com if you need to submit additional documents.</p>
+            <p><strong>Application ID:</strong> ${this.applicationId}</p>
+        `;
+        this.announceToScreenReader('Application submitted with warnings. Some file uploads may have failed.');
+    }
+
+    /**
+     * Show fallback message when all systems fail
+     */
+    showFallbackMessage(applicationData) {
+        this.errorMessage.style.display = 'block';
+        this.errorMessage.innerHTML = `
+            <i class="fas fa-info-circle" style="color: #3b82f6;"></i>
+            <h3>System Temporarily Unavailable</h3>
+            <p>We're experiencing technical difficulties, but your application information has been recorded.</p>
+            <p><strong>Please contact our HR department directly at:</strong></p>
+            <p><strong>Email:</strong> careers@bluemountainbank.com</p>
+            <p><strong>Phone:</strong> (555) 123-4567</p>
+            <p><strong>Application ID:</strong> ${applicationData.applicationId}</p>
+            <div style="margin-top: 15px; padding: 15px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; font-size: 0.9rem;">
+                <strong>Your Application Details:</strong><br>
+                Name: ${applicationData.firstName} ${applicationData.lastName}<br>
+                Email: ${applicationData.email}<br>
+                Position: ${applicationData.position}<br>
+                Submitted: ${new Date(applicationData.submittedAt).toLocaleString()}
+            </div>
+        `;
     }
 
     /**

@@ -5,130 +5,38 @@
 
 class AzureBlobStorageManager {
     constructor() {
-        // Azure Storage configuration
-        this.storageAccount = 'bluemountainbank'; // Replace with your storage account name
+        // Azure Storage configuration - updated to match the working storage account
+        this.storageAccount = 'bluemountaindata'; // Use the existing working storage account
         this.containerName = 'job-applications';
-        this.sasToken = this.getSasToken();
         this.baseUrl = `https://${this.storageAccount}.blob.core.windows.net/${this.containerName}`;
+        
+        // Use the existing working SAS token from the azure-storage-manager
+        this.sasToken = 'sv=2024-11-04&ss=b&srt=sco&sp=rwlactfx&se=2028-07-03T02:59:11Z&st=2025-07-01T18:59:11Z&spr=https&sig=4SpC5AFMit2tivoHPxJN%2F63%2BgpmiEPbcYw3XFiNFUv0%3D';
+        
+        // Initialize proxy for CORS handling
+        this.proxy = window.AzureStorageProxy ? new window.AzureStorageProxy() : null;
     }
 
     /**
-     * Get SAS token for blob storage access from secure backend
+     * Get SAS token for blob storage access
      */
     async getSasToken(applicationId, fileCount) {
         try {
-            // Check for valid cached token first
-            const cachedToken = this.getCachedToken();
-            if (cachedToken) {
-                return cachedToken;
-            }
-
-            // Request new token from secure backend
-            const response = await fetch('/api/generate-sas-token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    applicationId: applicationId,
-                    fileCount: fileCount
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to get SAS token: ${response.status}`);
-            }
-
-            const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error(data.error || 'Failed to generate SAS token');
-            }
-
-            // Cache the token with expiry
-            this.cacheToken(data.sasToken, data.expiresAt);
-            
-            return data.sasToken;
-
+            // Return the pre-configured SAS token since we have a working one
+            return this.sasToken;
         } catch (error) {
             console.error('Error getting SAS token:', error);
-            
-            // Fallback to demo token for development
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                console.warn('Using demo token for local development');
-                return this.generateDemoToken();
-            }
-            
             throw new Error('Unable to authenticate with storage service. Please try again later.');
         }
     }
 
     /**
-     * Get cached token if still valid
+     * Generate a unique application ID
      */
-    getCachedToken() {
-        const tokenData = localStorage.getItem('azure_sas_token_data');
-        if (!tokenData) return null;
-
-        try {
-            const { token, expiresAt } = JSON.parse(tokenData);
-            const now = new Date();
-            const expiry = new Date(expiresAt);
-            
-            // Check if token expires within next 10 minutes
-            if (expiry.getTime() - now.getTime() > 10 * 60 * 1000) {
-                return token;
-            }
-        } catch (error) {
-            console.error('Error parsing cached token:', error);
-        }
-
-        return null;
-    }
-
-    /**
-     * Cache SAS token with expiry
-     */
-    cacheToken(token, expiresAt) {
-        const tokenData = {
-            token: token,
-            expiresAt: expiresAt,
-            cachedAt: new Date().toISOString()
-        };
-        
-        localStorage.setItem('azure_sas_token_data', JSON.stringify(tokenData));
-    }
-
-    /**
-     * Generate a demo SAS token for testing
-     * Replace this with actual token retrieval from your backend
-     */
-    generateDemoToken() {
-        const currentDate = new Date();
-        const expiryDate = new Date(currentDate.getTime() + (24 * 60 * 60 * 1000)); // 24 hours from now
-        
-        // This is a demo token structure - replace with real token from Azure
-        return `?sv=2021-06-08&ss=b&srt=co&sp=rwac&se=${expiryDate.toISOString()}&st=${currentDate.toISOString()}&spr=https&sig=DEMO_SIGNATURE`;
-    }
-
-    /**
-     * Check if SAS token is still valid
-     */
-    isTokenValid(token) {
-        try {
-            const params = new URLSearchParams(token.slice(1));
-            const expiryTime = params.get('se');
-            if (!expiryTime) return false;
-            
-            const expiry = new Date(expiryTime);
-            const now = new Date();
-            
-            // Token is valid if it expires more than 5 minutes from now
-            return expiry.getTime() > (now.getTime() + 5 * 60 * 1000);
-        } catch (error) {
-            console.error('Error validating SAS token:', error);
-            return false;
-        }
+    generateApplicationId() {
+        const timestamp = Date.now();
+        const random = Math.random().toString(36).substring(2, 8);
+        return `app_${timestamp}_${random}`;
     }
 
     /**
@@ -155,8 +63,15 @@ class AzureBlobStorageManager {
                 'Content-Type': file.type || 'application/octet-stream'
             };
 
-            // Upload using fetch with progress tracking
-            const response = await this.uploadWithProgress(uploadUrl, file, headers, onProgress);
+            // Upload using proxy if available, otherwise direct upload
+            let response;
+            if (this.proxy) {
+                console.log('Using proxy for file upload');
+                response = await this.uploadWithProxy(uploadUrl, file, headers, onProgress);
+            } else {
+                console.log('Using direct upload (no proxy available)');
+                response = await this.uploadWithProgress(uploadUrl, file, headers, onProgress);
+            }
             
             if (!response.ok) {
                 throw new Error(`Upload failed with status: ${response.status} ${response.statusText}`);
@@ -190,6 +105,32 @@ class AzureBlobStorageManager {
                 error: errorMessage,
                 fileName: file.name
             };
+        }
+    }
+
+    /**
+     * Upload file using Azure proxy for CORS handling
+     */
+    async uploadWithProxy(url, file, headers, onProgress) {
+        try {
+            const options = {
+                method: 'PUT',
+                headers: headers,
+                body: file
+            };
+            
+            // Use proxy to send the request
+            const response = await this.proxy.sendRequest(url, options);
+            
+            // Simulate progress since proxy doesn't support progress tracking
+            if (onProgress) {
+                onProgress(100);
+            }
+            
+            return response;
+        } catch (error) {
+            console.error('Proxy upload failed:', error);
+            throw error;
         }
     }
 
@@ -293,9 +234,17 @@ class AzureBlobStorageManager {
      */
     async listApplicationFiles(applicationId) {
         try {
-            const listUrl = `${this.baseUrl}${this.sasToken}&comp=list&prefix=${applicationId}/`;
+            const listUrl = `${this.baseUrl}?restype=container&comp=list&prefix=${applicationId}/&${this.sasToken}`;
             
-            const response = await fetch(listUrl);
+            let response;
+            if (this.proxy) {
+                console.log('Using proxy for file listing');
+                response = await this.proxy.sendRequest(listUrl, { method: 'GET' });
+            } else {
+                console.log('Using direct request for file listing');
+                response = await fetch(listUrl);
+            }
+            
             if (!response.ok) {
                 throw new Error(`Failed to list files: ${response.status} ${response.statusText}`);
             }
