@@ -304,10 +304,19 @@ class AzureStorageManager {
                     const userId = blobName.replace('.json', '');
                     userIds.push(userId);
                 }
+            } else if (credResponse.status === 403) {
+                console.warn('403 error accessing credentials container - likely CORS/proxy issue');
+                throw new Error('CORS_BLOCKED');
             }
         } catch (credError) {
             console.error('Error checking credentials container:', credError);
-            // Continue with regular user container if credential container fails
+            
+            // If it's a CORS/403 error, don't try the user container - go straight to local fallback
+            if (credError.message.includes('403') || credError.message.includes('CORS') || credError.message === 'CORS_BLOCKED') {
+                console.log('CORS/403 detected - switching to local authentication immediately');
+                throw credError;
+            }
+            // Continue with regular user container if other types of errors occurred
         }
 
         // If no credentials found or error occurred, try the regular user container

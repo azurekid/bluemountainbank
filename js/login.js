@@ -147,11 +147,41 @@ async function handleLogin(event) {
     } catch (error) {
         console.error('Login error:', error);
         
-        // Handle CORS errors with a more informative message
-        if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
-            showLoginError('Connection error. Please try again in a few moments or contact support.');
+        // Handle specific error types with appropriate messages
+        if (error.message.includes('403') || error.message.includes('Preflight')) {
+            showLoginError('Service temporarily unavailable due to network restrictions. Please try again in a few moments or contact support if the issue persists.');
+        } else if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+            showLoginError('Connection error detected. Attempting to use offline authentication...');
+            
+            // Try to authenticate using local data as a fallback
+            console.log('Attempting local fallback authentication due to CORS issues');
+            try {
+                const localAuth = await attemptLocalAuthentication(username, password);
+                if (localAuth.success) {
+                    // Store session info for local auth
+                    sessionStorage.setItem('currentUser', localAuth.userId);
+                    sessionStorage.setItem('loginTime', new Date().toISOString());
+                    sessionStorage.setItem('storageType', 'local');
+                    sessionStorage.setItem('dataSource', 'Local Fallback');
+                    sessionStorage.setItem('securityLevel', 'standard');
+                    sessionStorage.setItem('userRole', 'customer');
+                    
+                    showLoginSuccess('Login successful using offline mode! Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'user-dashboard.html';
+                    }, 1500);
+                    return;
+                } else {
+                    showLoginError('Unable to authenticate. Please check your credentials and try again.');
+                }
+            } catch (localError) {
+                console.error('Local authentication also failed:', localError);
+                showLoginError('Authentication system temporarily unavailable. Please try again later.');
+            }
+        } else if (error.message.includes('AzureStorageManager not loaded')) {
+            showLoginError('System initialization error. Please refresh the page and try again.');
         } else {
-            showLoginError('An error occurred during login. Please try again.');
+            showLoginError('An unexpected error occurred during login. Please try again.');
         }
         
         submitButton.innerHTML = originalButtonText;
@@ -326,4 +356,98 @@ function createMessageDiv(type) {
     }
     
     return messageDiv;
+}
+
+/**
+ * Attempt local authentication as a fallback when Azure/proxy fails
+ * @param {string} username - Username to authenticate
+ * @param {string} password - Password to authenticate
+ * @returns {Promise<Object>} - Authentication result
+ */
+async function attemptLocalAuthentication(username, password) {
+    console.log('Attempting local fallback authentication for:', username);
+    
+    // Local user data for fallback (matching Azure Storage Manager)
+    const localUsers = {
+        'alice_martinez': {
+            credentials: {
+                username: 'alice.martinez',
+                password: 'ec4874af59fe23a3f555276a4ebfa20a3e3ccaa5cd535065d6052db5e7bf5d01',
+                email: 'alice.martinez@email.com'
+            }
+        },
+        'bob_johnson': {
+            credentials: {
+                username: 'bob.johnson',
+                password: '7552dd66eb5496ddfed93eafe079b50f123c6e13af2967d3d4bc39a7455200a6',
+                email: 'bob.johnson@email.com'
+            }
+        },
+        'carol_smith': {
+            credentials: {
+                username: 'carol.smith',
+                password: '6320030ac57ad4df03baed0b99b0babf534af7cfb2c601eba9d933f144e9b643',
+                email: 'carol.smith@email.com'
+            }
+        },
+        'david_wilson': {
+            credentials: {
+                username: 'david.wilson',
+                password: '2a0841af892abcaf953782cbe8625f107fc59aeb2015f2fa05dbbf256086db7a',
+                email: 'david.wilson@email.com'
+            }
+        },
+        'emma_brown': {
+            credentials: {
+                username: 'emma.brown',
+                password: '3089f8b268a347b23738dfd1caf39c9c49b607289461d682ba93f317adbd3b5f',
+                email: 'emma.brown@email.com'
+            }
+        },
+        'frank_miller': {
+            credentials: {
+                username: 'frank.miller',
+                password: '5e3c0a612afee08a6a8a1c395c962dceb069a56ef988a36ab71f87dc2bade904',
+                email: 'frank.miller@email.com'
+            }
+        },
+        'david_okeyode': {
+            credentials: {
+                username: 'david.okeyode',
+                password: '7082e5be15d73caa2f7af76ed2c3f70a2fae2611cfb727b530997b2a75ff6994',
+                email: 'david.okeyode@bluemountainbank.nl'
+            }
+        }
+    };
+    
+    for (const [userId, userData] of Object.entries(localUsers)) {
+        if (userData.credentials.username === username) {
+            const passwordMatch = await verifyPasswordHash(password, userData.credentials.password);
+            
+            if (passwordMatch) {
+                console.log('Local authentication successful for:', username);
+                return { 
+                    success: true, 
+                    userId, 
+                    user: userData,
+                    dataSource: 'Local'
+                };
+            }
+        }
+    }
+    
+    return { success: false, message: "Invalid credentials" };
+}
+
+/**
+ * Verify password against hash (matching Azure Storage Manager implementation)
+ */
+async function verifyPasswordHash(password, hashedPassword) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashedInput = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    
+    return hashedInput === hashedPassword;
 }

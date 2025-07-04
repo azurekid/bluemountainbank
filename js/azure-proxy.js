@@ -1,23 +1,40 @@
 // Azure Storage Proxy to handle CORS issues
 class AzureStorageProxy {
     constructor() {
-        // List of public CORS proxies to try (in order)
+        // List of public CORS proxies to try (in order) - updated with more reliable options
         this.proxyEndpoints = [
-            "https://corsproxy.io/?",
-            "https://cors-anywhere.herokuapp.com/",
             "https://api.allorigins.win/raw?url=",
-            "https://proxy.cors.sh/" // Added additional proxy as backup
+            "https://cors-anywhere.herokuapp.com/",
+            "https://proxy.cors.sh/",
+            "https://corsproxy.io/?" // Moved to end due to recent 403 issues
         ];
         
         this.currentProxyIndex = 0;
         this.proxyFailureCount = 0;
-        this.maxFailures = 2; // Reduced to fail faster and try the next proxy sooner
+        this.maxFailures = 1; // Fail faster to try next proxy sooner
         this.directAccessAttempted = false;
         
         // Track which proxies have failed for which URLs
         this.failedProxies = new Map();
         
-        console.log("Azure Storage Proxy initialized with multiple fallback proxies");
+        // Track global proxy health
+        this.proxyHealth = new Map();
+        this.initializeProxyHealth();
+        
+        console.log("Azure Storage Proxy initialized with enhanced fallback strategy");
+    }
+    
+    /**
+     * Initialize proxy health tracking
+     */
+    initializeProxyHealth() {
+        this.proxyEndpoints.forEach((proxy, index) => {
+            this.proxyHealth.set(index, {
+                failures: 0,
+                lastFailure: null,
+                isBlocked: false
+            });
+        });
     }
 
     /**
@@ -36,9 +53,33 @@ class AzureStorageProxy {
             return url;
         }
         
-        // If this proxy has failed for this URL before, try the next one
-        while (failedForUrl.includes(this.currentProxyIndex)) {
-            this.switchProxy();
+        // Find the next healthy proxy
+        let attempts = 0;
+        while (attempts < this.proxyEndpoints.length) {
+            const proxyHealth = this.proxyHealth.get(this.currentProxyIndex);
+            
+            // Skip blocked or recently failed proxies
+            if (proxyHealth.isBlocked || 
+                (proxyHealth.lastFailure && Date.now() - proxyHealth.lastFailure < 60000)) { // 1 minute cooldown
+                this.switchProxy();
+                attempts++;
+                continue;
+            }
+            
+            // Skip if this proxy failed for this specific URL
+            if (failedForUrl.includes(this.currentProxyIndex)) {
+                this.switchProxy();
+                attempts++;
+                continue;
+            }
+            
+            break;
+        }
+        
+        // If no healthy proxy found, try direct access
+        if (attempts >= this.proxyEndpoints.length) {
+            console.log(`No healthy proxies available for ${urlKey}, attempting direct access`);
+            return url;
         }
         
         return this.proxyEndpoints[this.currentProxyIndex] + encodeURIComponent(url);
@@ -70,7 +111,7 @@ class AzureStorageProxy {
     /**
      * Track proxy failure for a specific URL
      */
-    trackProxyFailure(url) {
+    trackProxyFailure(url, statusCode = null) {
         const urlKey = this.getUrlKey(url);
         let failedForUrl = this.failedProxies.get(urlKey) || [];
         
@@ -79,7 +120,18 @@ class AzureStorageProxy {
             this.failedProxies.set(urlKey, failedForUrl);
         }
         
-        console.log(`Proxy ${this.currentProxyIndex} failed for ${urlKey}. Failed proxies for this URL: ${failedForUrl.length}/${this.proxyEndpoints.length}`);
+        // Update proxy health
+        const proxyHealth = this.proxyHealth.get(this.currentProxyIndex);
+        proxyHealth.failures++;
+        proxyHealth.lastFailure = Date.now();
+        
+        // Block proxy if it's consistently failing or returning 403
+        if (statusCode === 403 || proxyHealth.failures >= 3) {
+            proxyHealth.isBlocked = true;
+            console.warn(`Proxy ${this.currentProxyIndex} (${this.proxyEndpoints[this.currentProxyIndex]}) blocked due to repeated failures`);
+        }
+        
+        console.log(`Proxy ${this.currentProxyIndex} failed for ${urlKey}. Status: ${statusCode}. Failed proxies for this URL: ${failedForUrl.length}/${this.proxyEndpoints.length}`);
     }
 
     /**
@@ -92,9 +144,9 @@ class AzureStorageProxy {
         // Try to determine if this is a credentials request (more sensitive to CORS)
         const isCredentialsRequest = url.includes('/credentials/');
         
-        // For credentials container, start with a different proxy if needed
+        // For credentials container, start with allorigins if available
         if (isCredentialsRequest && !this.credentialsProxyStarted) {
-            this.currentProxyIndex = 1; // Start with the second proxy for credentials
+            this.currentProxyIndex = 0; // Start with allorigins for credentials
             this.credentialsProxyStarted = true;
         }
         
@@ -119,9 +171,31 @@ class AzureStorageProxy {
             
             const response = await fetch(proxiedUrl, fetchOptions);
             
+            // Check for proxy-specific errors
+            if (!response.ok && !isDirect) {
+                if (response.status === 403) {
+                    console.warn(`Proxy returned 403 - likely blocked or rate limited`);
+                    this.trackProxyFailure(url, 403);
+                    
+                    // Try next proxy immediately for 403 errors
+                    if (this.proxyEndpoints.length > 1) {
+                        this.switchProxy();
+                        return this.sendRequest(url, options);
+                    }
+                } else if (response.status >= 500) {
+                    console.warn(`Proxy server error: ${response.status}`);
+                    this.trackProxyFailure(url, response.status);
+                }
+            }
+            
             // Reset failure count on success
-            if (!isDirect) {
+            if (response.ok && !isDirect) {
                 this.proxyFailureCount = 0;
+                // Reset proxy health on success
+                const proxyHealth = this.proxyHealth.get(this.currentProxyIndex);
+                if (proxyHealth.failures > 0) {
+                    proxyHealth.failures = Math.max(0, proxyHealth.failures - 1);
+                }
             }
             
             return response;
