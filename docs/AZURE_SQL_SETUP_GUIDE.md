@@ -128,7 +128,7 @@ Server: bluemountainbank.database.windows.net
 Database: BlueMountainBankDB
 Authentication: SQL Login
 Username: bmb_admin
-Password: YourSecurePassword123!
+Password: S3cureP@55w0rd!
 ```
 
 ### 4.2 Run Schema Script
@@ -143,7 +143,7 @@ Execute the schema creation script:
 Or via command line:
 ```powershell
 # Install SQL command line tools first
-sqlcmd -S bluemountainbank.database.windows.net -d BlueMountainBankDB -U bmb_admin -P YourSecurePassword123! -i database/schema.sql
+sqlcmd -S bluemountainbank.database.windows.net -d BlueMountainBankDB -U bmb_admin -P S3cureP@55w0rd! -i database/schema.sql
 ```
 
 ## Step 5: Migrate Data
@@ -158,7 +158,7 @@ Driver={ODBC Driver 17 for SQL Server};
 Server=tcp:bluemountainbank.database.windows.net,1433;
 Database=BlueMountainBankDB;
 Uid=bmb_admin;
-Pwd=YourSecurePassword123!;
+Pwd=S3cureP@55w0rd!;
 Encrypt=yes;
 TrustServerCertificate=no;
 Connection Timeout=30;

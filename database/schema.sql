@@ -155,7 +155,7 @@ FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
 
 ALTER TABLE BankTransactions
 ADD CONSTRAINT FK_BankTransactions_Users 
-FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE NO ACTION;
 
 ALTER TABLE BankTransactions
 ADD CONSTRAINT FK_BankTransactions_BankAccounts 
@@ -163,7 +163,7 @@ FOREIGN KEY (AccountId) REFERENCES BankAccounts(AccountId) ON DELETE CASCADE;
 
 ALTER TABLE CreditCardTransactions
 ADD CONSTRAINT FK_CreditCardTransactions_Users 
-FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE NO ACTION;
 
 ALTER TABLE CreditCardTransactions
 ADD CONSTRAINT FK_CreditCardTransactions_CreditCards 

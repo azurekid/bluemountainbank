@@ -237,14 +237,14 @@ def main():
     # Azure SQL Database connection string
     # Replace with your actual Azure SQL Database connection details
     connection_string = """
-    Driver={ODBC Driver 17 for SQL Server};
-    Server=tcp:bluemountainbank.database.windows.net,1433;
-    Database=BlueMountainBankDB;
-    Uid=bmb_admin;
-    Pwd=YourSecurePassword123!;
-    Encrypt=yes;
-    TrustServerCertificate=no;
-    Connection Timeout=30;
+Driver={ODBC Driver 17 for SQL Server};
+Server=tcp:bluemountainbank.database.windows.net,1433;
+Database=BlueMountainBankDB;
+Uid=bmb_admin;
+Pwd=S3cureP@55w0rd!;
+Encrypt=yes;
+TrustServerCertificate=no;
+Connection Timeout=30;
     """
     
     # Sample data directory
