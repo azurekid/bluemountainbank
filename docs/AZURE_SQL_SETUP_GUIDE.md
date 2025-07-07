@@ -35,7 +35,7 @@ This guide will help you set up a free tier Azure SQL Database and migrate your 
    Location: Choose closest region
    Authentication: Use SQL authentication
    Server admin login: bmb_admin
-   Password: $3curePassword123!
+   Password: S3cureP@55w0rd!
    ```
 
 5. **Configure Database**
@@ -105,7 +105,7 @@ Edit `.env` file:
 AZURE_SQL_SERVER=bluemountainbank.database.windows.net
 AZURE_SQL_DATABASE=bluemountainbankdb
 AZURE_SQL_USERNAME=bmb_admin
-AZURE_SQL_PASSWORD=$3curePassword123!
+AZURE_SQL_PASSWORD=S3cureP@55w0rd!
 
 # Security
 JWT_SECRET=BMB_2025_Super_Secure_JWT_Secret_Key_For_Production_Use_Random_String_a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0

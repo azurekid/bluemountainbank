@@ -24,7 +24,7 @@ CREATE TABLE Users (
 -- User profiles (personal information)
 CREATE TABLE UserProfiles (
     ProfileId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER FOREIGN KEY REFERENCES Users(UserId) ON DELETE CASCADE,
+    UserId UNIQUEIDENTIFIER NOT NULL,
     FirstName NVARCHAR(50) NOT NULL,
     LastName NVARCHAR(50) NOT NULL,
     FullName AS (FirstName + ' ' + LastName) PERSISTED,
@@ -48,7 +48,7 @@ CREATE TABLE UserProfiles (
 -- User preferences (theme, settings, etc.)
 CREATE TABLE UserPreferences (
     PreferenceId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER FOREIGN KEY REFERENCES Users(UserId) ON DELETE CASCADE,
+    UserId UNIQUEIDENTIFIER NOT NULL,
     Theme NVARCHAR(20) DEFAULT 'light', -- 'light' or 'dark'
     DarkMode BIT DEFAULT 0,
     Language NVARCHAR(10) DEFAULT 'en-US',
@@ -63,7 +63,7 @@ CREATE TABLE UserPreferences (
 -- Bank accounts (checking, savings, etc.)
 CREATE TABLE BankAccounts (
     AccountId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER FOREIGN KEY REFERENCES Users(UserId) ON DELETE CASCADE,
+    UserId UNIQUEIDENTIFIER NOT NULL,
     AccountType NVARCHAR(50) NOT NULL, -- 'checking', 'savings', 'credit'
     AccountNumber NVARCHAR(20) UNIQUE NOT NULL,
     AccountName NVARCHAR(100) NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE BankAccounts (
 -- Credit cards
 CREATE TABLE CreditCards (
     CardId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER FOREIGN KEY REFERENCES Users(UserId) ON DELETE CASCADE,
+    UserId UNIQUEIDENTIFIER NOT NULL,
     CardType NVARCHAR(20) NOT NULL, -- 'primary', 'secondary', etc.
     CardBrand NVARCHAR(20) NOT NULL, -- 'visa', 'mastercard', 'amex'
     CardNumber NVARCHAR(19) NOT NULL, -- Encrypted in production
@@ -95,8 +95,8 @@ CREATE TABLE CreditCards (
 -- Bank transactions (checking, savings account transactions)
 CREATE TABLE BankTransactions (
     TransactionId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER FOREIGN KEY REFERENCES Users(UserId) ON DELETE CASCADE,
-    AccountId UNIQUEIDENTIFIER FOREIGN KEY REFERENCES BankAccounts(AccountId) ON DELETE CASCADE,
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    AccountId UNIQUEIDENTIFIER NOT NULL,
     TransactionDate DATE NOT NULL,
     Description NVARCHAR(500) NOT NULL,
     Amount DECIMAL(15,2) NOT NULL,
@@ -110,8 +110,8 @@ CREATE TABLE BankTransactions (
 -- Credit card transactions
 CREATE TABLE CreditCardTransactions (
     TransactionId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER FOREIGN KEY REFERENCES Users(UserId) ON DELETE CASCADE,
-    CardId UNIQUEIDENTIFIER FOREIGN KEY REFERENCES CreditCards(CardId) ON DELETE CASCADE,
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    CardId UNIQUEIDENTIFIER NOT NULL,
     TransactionDate DATE NOT NULL,
     Description NVARCHAR(500) NOT NULL,
     Amount DECIMAL(15,2) NOT NULL,
@@ -135,6 +135,39 @@ CREATE INDEX IX_BankTransactions_Date ON BankTransactions(TransactionDate);
 CREATE INDEX IX_CreditCardTransactions_UserId ON CreditCardTransactions(UserId);
 CREATE INDEX IX_CreditCardTransactions_CardId ON CreditCardTransactions(CardId);
 CREATE INDEX IX_CreditCardTransactions_Date ON CreditCardTransactions(TransactionDate);
+
+-- Add foreign key constraints after all tables are created
+ALTER TABLE UserProfiles
+ADD CONSTRAINT FK_UserProfiles_Users 
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
+
+ALTER TABLE UserPreferences
+ADD CONSTRAINT FK_UserPreferences_Users 
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
+
+ALTER TABLE BankAccounts
+ADD CONSTRAINT FK_BankAccounts_Users 
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
+
+ALTER TABLE CreditCards
+ADD CONSTRAINT FK_CreditCards_Users 
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
+
+ALTER TABLE BankTransactions
+ADD CONSTRAINT FK_BankTransactions_Users 
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
+
+ALTER TABLE BankTransactions
+ADD CONSTRAINT FK_BankTransactions_BankAccounts 
+FOREIGN KEY (AccountId) REFERENCES BankAccounts(AccountId) ON DELETE CASCADE;
+
+ALTER TABLE CreditCardTransactions
+ADD CONSTRAINT FK_CreditCardTransactions_Users 
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
+
+ALTER TABLE CreditCardTransactions
+ADD CONSTRAINT FK_CreditCardTransactions_CreditCards 
+FOREIGN KEY (CardId) REFERENCES CreditCards(CardId) ON DELETE CASCADE;
 
 -- Add triggers for UpdatedAt timestamps
 CREATE TRIGGER tr_Users_UpdatedAt ON Users
