@@ -8,6 +8,30 @@ This guide will help you set up a free tier Azure SQL Database and migrate your 
 - Node.js 16+ installed
 - PowerShell or command line access
 
+## Quick Start for Azure Cloud Shell
+
+If you're using Azure Cloud Shell, follow these steps:
+
+1. **Upload your project** to Azure Cloud Shell or clone from repository
+2. **Install dependencies:**
+   ```bash
+   cd ~/bluemountainbank/api
+   npm install
+   ```
+3. **Configure environment:**
+   ```bash
+   cd ~/bluemountainbank
+   cp .env.example .env
+   # Edit .env with your Azure SQL details
+   ```
+4. **Run migration:**
+   ```bash
+   cd ~/bluemountainbank
+   node database/migrate_to_azure_sql.js
+   ```
+
+## Detailed Setup Instructions
+
 ## Step 1: Create Azure SQL Database
 
 ### 1.1 Create Azure SQL Server and Database
@@ -103,17 +127,25 @@ If ODBC driver installation fails, you can use a Node.js-based migration script 
 
 ```bash
 # Install Node.js dependencies first
-cd /Users/rogier/bluemountainbank/api
+cd ~/bluemountainbank/api
 npm install
 
 # Run Node.js migration script (we'll create this)
-node ../database/migrate_to_azure_sql.js
+cd ~/bluemountainbank
+node database/migrate_to_azure_sql.js
 ```
 
 ### 2.2 Install Node.js Dependencies
 
+**For local development:**
 ```powershell
 cd /Users/rogier/bluemountainbank/api
+npm install
+```
+
+**For Azure Cloud Shell:**
+```bash
+cd ~/bluemountainbank/api
 npm install
 ```
 
@@ -129,8 +161,15 @@ This will install:
 
 Copy `.env.example` to `.env` and update with your Azure SQL details:
 
+**For local development:**
 ```powershell
 cd /Users/rogier/bluemountainbank
+cp .env.example .env
+```
+
+**For Azure Cloud Shell:**
+```bash
+cd ~/bluemountainbank
 cp .env.example .env
 ```
 
@@ -205,7 +244,24 @@ Connection Timeout=30;
 **Option 1: Node.js Migration (Recommended for Azure Cloud Shell)**
 
 ```bash
-cd /Users/rogier/bluemountainbank
+# First, install Node.js dependencies (required for mssql module)
+cd /home/rogier/bluemountainbank/api
+npm install
+
+# Then run the migration script from the project root
+cd /home/rogier/bluemountainbank
+node database/migrate_to_azure_sql.js
+```
+
+**For Azure Cloud Shell users specifically:**
+
+```bash
+# 1. Navigate to api directory and install dependencies
+cd ~/bluemountainbank/api
+npm install
+
+# 2. Go back to project root and run migration
+cd ~/bluemountainbank
 node database/migrate_to_azure_sql.js
 ```
 
@@ -353,9 +409,26 @@ const hashedPassword = await bcrypt.hash(password, 12);
    - For Azure Cloud Shell, always use Node.js migration
 
 5. **Azure Cloud Shell Issues**
-   - Ensure Node.js dependencies are installed: `npm install` in api folder
+   - **IMPORTANT**: Install dependencies first: `cd ~/bluemountainbank/api && npm install`
    - Use Node.js migration script instead of Python
+   - Run migration from project root: `cd ~/bluemountainbank && node database/migrate_to_azure_sql.js`
    - Check environment variables are set correctly
+   - If you get "Cannot find module 'mssql'" error, ensure you ran `npm install` in the `/api` directory first
+
+6. **Missing Node.js Modules Error**
+   ```
+   Error: Cannot find module 'mssql'
+   ```
+   **Solution:**
+   ```bash
+   # Navigate to api directory and install dependencies
+   cd ~/bluemountainbank/api
+   npm install
+   
+   # Then run migration from project root
+   cd ~/bluemountainbank
+   node database/migrate_to_azure_sql.js
+   ```
 
 ### Support
 

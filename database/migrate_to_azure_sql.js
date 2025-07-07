@@ -10,12 +10,12 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-// Azure SQL Database configuration from environment
+// Azure SQL Database configuration with hardcoded fallback
 const sqlConfig = {
-    server: process.env.AZURE_SQL_SERVER,
-    database: process.env.AZURE_SQL_DATABASE,
-    user: process.env.AZURE_SQL_USERNAME,
-    password: process.env.AZURE_SQL_PASSWORD,
+    server: process.env.AZURE_SQL_SERVER || 'bluemountainbank.database.windows.net',
+    database: process.env.AZURE_SQL_DATABASE || 'BlueMountainBankDB',
+    user: process.env.AZURE_SQL_USERNAME || 'bmb_admin',
+    password: process.env.AZURE_SQL_PASSWORD || 'S3cureP@55w0rd!',
     pool: {
         max: 2,
         min: 0,
@@ -38,12 +38,19 @@ class NodeJSMigrator {
     async connect() {
         try {
             console.log('🔌 Connecting to Azure SQL Database...');
+            console.log(`   Server: ${sqlConfig.server}`);
+            console.log(`   Database: ${sqlConfig.database}`);
             this.pool = await sql.connect(sqlConfig);
             this.isConnected = true;
             console.log('✅ Connected to Azure SQL Database');
             return true;
         } catch (error) {
             console.error('❌ Failed to connect to database:', error.message);
+            console.log('\n🔧 Common connection issues:');
+            console.log('   • Check if server name is correct and globally unique');
+            console.log('   • Verify credentials (username/password)');
+            console.log('   • Ensure your IP is whitelisted in Azure SQL firewall');
+            console.log('   • Confirm database exists and is accessible');
             return false;
         }
     }
@@ -287,24 +294,26 @@ class NodeJSMigrator {
 
 async function main() {
     console.log('🏦 Blue Mountain Bank - Node.js Azure SQL Migration Tool');
-    console.log('=' * 60);
+    console.log('============================================================');
     
-    // Check environment variables
-    if (!sqlConfig.server || !sqlConfig.database || !sqlConfig.user || !sqlConfig.password) {
-        console.log('❌ Missing environment variables. Please check your .env file.');
-        console.log('Required variables:');
-        console.log('  - AZURE_SQL_SERVER');
-        console.log('  - AZURE_SQL_DATABASE');
-        console.log('  - AZURE_SQL_USERNAME');
-        console.log('  - AZURE_SQL_PASSWORD');
-        process.exit(1);
-    }
+    // Display connection info
+    console.log('📊 Connection Configuration:');
+    console.log(`   Server: ${sqlConfig.server}`);
+    console.log(`   Database: ${sqlConfig.database}`);
+    console.log(`   Username: ${sqlConfig.user}`);
+    console.log(`   Using ${process.env.AZURE_SQL_SERVER ? 'environment variables' : 'hardcoded credentials'}`);
+    console.log('');
     
     const migrator = new NodeJSMigrator();
     
     try {
         const connected = await migrator.connect();
         if (!connected) {
+            console.log('❌ Connection failed. Please check:');
+            console.log('   1. Azure SQL Database is running');
+            console.log('   2. Firewall allows your IP address');
+            console.log('   3. Credentials are correct');
+            console.log('   4. Database name exists');
             process.exit(1);
         }
         
@@ -312,6 +321,11 @@ async function main() {
         
     } catch (error) {
         console.error('❌ Migration failed:', error.message);
+        console.log('\n🔧 Troubleshooting tips:');
+        console.log('   1. Verify your Azure SQL Database credentials');
+        console.log('   2. Check if the database schema has been created');
+        console.log('   3. Ensure your IP is whitelisted in Azure SQL firewall');
+        console.log('   4. Confirm the server name is correct and globally unique');
         process.exit(1);
     } finally {
         await migrator.disconnect();

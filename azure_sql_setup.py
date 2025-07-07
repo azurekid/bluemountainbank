@@ -176,21 +176,44 @@ class AzureSQLSetup:
         """Prepare data migration"""
         self.print_step(6, "Preparing Data Migration")
         
-        migration_file = self.database_dir / 'migrate_to_azure_sql.py'
+        migration_file_js = self.database_dir / 'migrate_to_azure_sql.js'
+        migration_file_py = self.database_dir / 'migrate_to_azure_sql.py'
         
-        if migration_file.exists():
-            print("✅ Migration script found")
+        # Check if Node.js migration script exists
+        if migration_file_js.exists():
+            print("✅ Node.js migration script found")
             print("\n⚠️  Before running migration:")
             print("1. Ensure your Azure SQL Database is accessible")
             print("2. Verify firewall rules allow your IP address")
             print("3. Confirm database schema has been created")
-            print("4. Update connection string in migrate_to_azure_sql.py if needed")
+            print("4. Verify Node.js dependencies are installed")
             
-            response = input("\nDo you want to run the migration now? (y/n): ")
+            # Check if mssql module is available
+            try:
+                os.chdir(self.api_dir)
+                result = subprocess.run(['node', '-e', 'require("mssql")'], 
+                                      capture_output=True, text=True)
+                if result.returncode != 0:
+                    print("\n❌ mssql module not found. Installing dependencies...")
+                    install_result = subprocess.run(['npm', 'install'], 
+                                                  capture_output=True, text=True)
+                    if install_result.returncode == 0:
+                        print("✅ Dependencies installed successfully")
+                    else:
+                        print("❌ Failed to install dependencies")
+                        print("Please run: cd api && npm install")
+                        return
+                else:
+                    print("✅ mssql module is available")
+            except Exception as e:
+                print(f"❌ Error checking dependencies: {e}")
+                return
+            
+            response = input("\nDo you want to run the Node.js migration now? (y/n): ")
             if response.lower() == 'y':
                 try:
                     os.chdir(self.database_dir.parent)
-                    result = subprocess.run([sys.executable, str(migration_file)], 
+                    result = subprocess.run(['node', str(migration_file_js)], 
                                           capture_output=True, text=True)
                     
                     print(result.stdout)
@@ -206,9 +229,41 @@ class AzureSQLSetup:
                     print(f"❌ Error running migration: {e}")
             else:
                 print("⏭️  Migration skipped. Run manually when ready:")
-                print(f"   python {migration_file}")
+                print(f"   cd {self.api_dir} && npm install")
+                print(f"   cd {self.database_dir.parent}")
+                print(f"   node {migration_file_js}")
+                
+        elif migration_file_py.exists():
+            print("✅ Python migration script found")
+            print("\n⚠️  Before running migration:")
+            print("1. Ensure your Azure SQL Database is accessible")
+            print("2. Verify firewall rules allow your IP address")
+            print("3. Confirm database schema has been created")
+            print("4. Update connection string in migrate_to_azure_sql.py if needed")
+            
+            response = input("\nDo you want to run the Python migration now? (y/n): ")
+            if response.lower() == 'y':
+                try:
+                    os.chdir(self.database_dir.parent)
+                    result = subprocess.run([sys.executable, str(migration_file_py)], 
+                                          capture_output=True, text=True)
+                    
+                    print(result.stdout)
+                    if result.stderr:
+                        print("Errors:", result.stderr)
+                    
+                    if result.returncode == 0:
+                        print("✅ Data migration completed successfully")
+                    else:
+                        print("❌ Migration failed. Check the output above.")
+                        
+                except Exception as e:
+                    print(f"❌ Error running migration: {e}")
+            else:
+                print("⏭️  Migration skipped. Run manually when ready:")
+                print(f"   python {migration_file_py}")
         else:
-            print(f"❌ Migration script not found: {migration_file}")
+            print(f"❌ Migration script not found: {migration_file_js} or {migration_file_py}")
     
     def start_server(self):
         """Start the API server"""
