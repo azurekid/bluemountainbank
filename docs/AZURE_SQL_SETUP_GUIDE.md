@@ -103,12 +103,12 @@ Edit `.env` file:
 ```env
 # Database Connection
 AZURE_SQL_SERVER=bluemountainbank.database.windows.net
-AZURE_SQL_DATABASE=BlueMountainBankDB
+AZURE_SQL_DATABASE=bluemountainbankdb
 AZURE_SQL_USERNAME=bmb_admin
-AZURE_SQL_PASSWORD=YourSecurePassword123!
+AZURE_SQL_PASSWORD=$3curePassword123!
 
 # Security
-JWT_SECRET=your-super-secret-jwt-key-here-make-it-long-and-random
+JWT_SECRET=BMB_2025_Super_Secure_JWT_Secret_Key_For_Production_Use_Random_String_a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0
 JWT_EXPIRES_IN=24h
 
 # Application
