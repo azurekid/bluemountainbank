@@ -67,12 +67,47 @@ This guide will help you set up a free tier Azure SQL Database and migrate your 
 
 ### 2.1 Install Python Dependencies (for migration)
 
-```powershell
-# Install Python ODBC driver (if not already installed)
-# Download from: https://docs.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server
+**For macOS:**
+
+```bash
+# Install Microsoft ODBC Driver 17 for SQL Server on macOS
+# Method 1: Using Homebrew (recommended)
+brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release
+brew update
+brew install mssql-tools18
+
+# Method 2: Manual installation
+# Download from: https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos
 
 # Install Python packages
 pip install pyodbc
+
+# If pyodbc installation fails, try:
+pip install --upgrade pip
+pip install pyodbc --no-cache-dir
+```
+
+**For Windows:**
+
+```powershell
+# Download and install ODBC Driver 17 for SQL Server from:
+# https://docs.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server
+
+# Install Python packages
+pip install pyodbc
+```
+
+**Alternative: Use Node.js Migration Script**
+
+If ODBC driver installation fails, you can use a Node.js-based migration script instead:
+
+```bash
+# Install Node.js dependencies first
+cd /Users/rogier/bluemountainbank/api
+npm install
+
+# Run Node.js migration script (we'll create this)
+node ../database/migrate_to_azure_sql.js
 ```
 
 ### 2.2 Install Node.js Dependencies
@@ -167,28 +202,38 @@ Connection Timeout=30;
 
 ### 5.2 Run Migration
 
-```powershell
+**Option 1: Node.js Migration (Recommended for Azure Cloud Shell)**
+
+```bash
+cd /Users/rogier/bluemountainbank
+node database/migrate_to_azure_sql.js
+```
+
+**Option 2: Python Migration (if ODBC driver is installed)**
+
+```bash
 cd /Users/rogier/bluemountainbank
 python database/migrate_to_azure_sql.py
 ```
 
 Expected output:
 ```
-🏦 Blue Mountain Bank - Azure SQL Migration Tool
-==================================================
-✅ pyodbc package found
+🏦 Blue Mountain Bank - Node.js Azure SQL Migration Tool
+============================================================
+🔌 Connecting to Azure SQL Database...
 ✅ Connected to Azure SQL Database
 
-Processing alice_martinez.json...
-  Total transactions: 49
-  ✅ Successfully migrated user: alice.martinez
+🚀 Starting migration of 6 users...
+✅ Successfully migrated user: alice.martinez
+✅ Successfully migrated user: bob.johnson
+✅ Successfully migrated user: carol.smith
+✅ Successfully migrated user: david.wilson
+✅ Successfully migrated user: emma.brown
+✅ Successfully migrated user: frank.miller
 
-Processing bob_johnson.json...
-  ✅ Successfully migrated user: bob.johnson
-
-... (all users)
-
-🎉 Migration complete! Successfully migrated: 6/6 users
+🎉 Migration complete!
+✅ Successfully migrated: 6/6 users
+🔌 Database connection closed
 ```
 
 ## Step 6: Start the Application
@@ -301,6 +346,16 @@ const hashedPassword = await bcrypt.hash(password, 12);
    - Check ODBC driver installation
    - Verify database permissions
    - Ensure schema was created
+
+4. **ODBC Driver Issues (macOS/Linux)**
+   - Use Node.js migration instead: `node database/migrate_to_azure_sql.js`
+   - Install driver with: `brew install mssql-tools18` (macOS)
+   - For Azure Cloud Shell, always use Node.js migration
+
+5. **Azure Cloud Shell Issues**
+   - Ensure Node.js dependencies are installed: `npm install` in api folder
+   - Use Node.js migration script instead of Python
+   - Check environment variables are set correctly
 
 ### Support
 
