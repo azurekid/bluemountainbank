@@ -13,7 +13,7 @@ require('dotenv').config();
 // Azure SQL Database configuration with hardcoded fallback
 const sqlConfig = {
     server: process.env.AZURE_SQL_SERVER || 'bluemountainbank.database.windows.net',
-    database: process.env.AZURE_SQL_DATABASE || 'BlueMountainBankDB',
+    database: process.env.AZURE_SQL_DATABASE || 'bluemountainbankdb',
     user: process.env.AZURE_SQL_USERNAME || 'bmb_admin',
     password: process.env.AZURE_SQL_PASSWORD || 'S3cureP@55w0rd!',
     pool: {
