@@ -12,10 +12,10 @@ require('dotenv').config();
 
 // Azure SQL Database configuration with hardcoded fallback
 const sqlConfig = {
-    server: 'bluemountainbank.database.windows.net',
-    database: 'bluemountainbankdb',
-    user: 'bmb_admin',
-    password: 'S3cureP@55w0rd!',
+    server: process.env.AZURE_SQL_SERVER || 'bluemountainbank.database.windows.net',
+    database: process.env.AZURE_SQL_DATABASE || 'BlueMountainBankDB',
+    user: process.env.AZURE_SQL_USERNAME || 'bmb_admin',
+    password: process.env.AZURE_SQL_PASSWORD || 'S3cureP@55w0rd!',
     pool: {
         max: 2,
         min: 0,
@@ -40,6 +40,7 @@ class NodeJSMigrator {
             console.log('🔌 Connecting to Azure SQL Database...');
             console.log(`   Server: ${sqlConfig.server}`);
             console.log(`   Database: ${sqlConfig.database}`);
+            console.log(`   User: ${sqlConfig.user}`);
             this.pool = await sql.connect(sqlConfig);
             this.isConnected = true;
             console.log('✅ Connected to Azure SQL Database');
@@ -47,10 +48,42 @@ class NodeJSMigrator {
         } catch (error) {
             console.error('❌ Failed to connect to database:', error.message);
             console.log('\n🔧 Common connection issues:');
-            console.log('   • Check if server name is correct and globally unique');
-            console.log('   • Verify credentials (username/password)');
-            console.log('   • Ensure your IP is whitelisted in Azure SQL firewall');
-            console.log('   • Confirm database exists and is accessible');
+            
+            if (error.message.includes('Login failed')) {
+                console.log('   🔐 AUTHENTICATION ERROR:');
+                console.log('     • Username or password is incorrect');
+                console.log('     • Check your Azure SQL Database admin credentials');
+                console.log('     • Verify the username format (should not include @server)');
+            }
+            
+            if (error.message.includes('server was not found')) {
+                console.log('   🌐 SERVER NOT FOUND:');
+                console.log('     • Server name is incorrect or doesn\'t exist');
+                console.log('     • Check the exact server name in Azure Portal');
+                console.log('     • Ensure the server name is globally unique');
+            }
+            
+            if (error.message.includes('Cannot open database')) {
+                console.log('   🗄️  DATABASE ERROR:');
+                console.log('     • Database name is incorrect');
+                console.log('     • Database doesn\'t exist on this server');
+                console.log('     • Check database name in Azure Portal');
+            }
+            
+            if (error.message.includes('blocked') || error.message.includes('firewall')) {
+                console.log('   🔥 FIREWALL ERROR:');
+                console.log('     • Your IP address is not whitelisted');
+                console.log('     • Add your current IP to Azure SQL firewall rules');
+                console.log('     • Enable "Allow Azure services" if needed');
+            }
+            
+            console.log('\n💡 Next steps:');
+            console.log('   1. Go to Azure Portal → SQL databases');
+            console.log('   2. Find your database and check the exact names');
+            console.log('   3. Go to SQL server → Networking → Firewall rules');
+            console.log('   4. Add your current IP address');
+            console.log('   5. Verify admin username/password');
+            
             return false;
         }
     }
@@ -301,19 +334,35 @@ async function main() {
     console.log(`   Server: ${sqlConfig.server}`);
     console.log(`   Database: ${sqlConfig.database}`);
     console.log(`   Username: ${sqlConfig.user}`);
+    console.log(`   Password: ${sqlConfig.password.substring(0, 3)}***`);
     console.log(`   Using ${process.env.AZURE_SQL_SERVER ? 'environment variables' : 'hardcoded credentials'}`);
     console.log('');
+    
+    // Validate configuration
+    if (!sqlConfig.server || !sqlConfig.database || !sqlConfig.user || !sqlConfig.password) {
+        console.log('❌ Missing required configuration. Please check:');
+        console.log('   • AZURE_SQL_SERVER');
+        console.log('   • AZURE_SQL_DATABASE'); 
+        console.log('   • AZURE_SQL_USERNAME');
+        console.log('   • AZURE_SQL_PASSWORD');
+        process.exit(1);
+    }
     
     const migrator = new NodeJSMigrator();
     
     try {
         const connected = await migrator.connect();
         if (!connected) {
-            console.log('❌ Connection failed. Please check:');
-            console.log('   1. Azure SQL Database is running');
-            console.log('   2. Firewall allows your IP address');
-            console.log('   3. Credentials are correct');
-            console.log('   4. Database name exists');
+            console.log('\n❌ Connection failed. Please verify:');
+            console.log('   1. Azure SQL Database server exists and is running');
+            console.log('   2. Database name is correct (case-sensitive)');
+            console.log('   3. Username and password are correct');
+            console.log('   4. Your IP address is whitelisted in Azure SQL firewall');
+            console.log('   5. Server name is globally unique and accessible');
+            console.log('\n💡 To fix this:');
+            console.log('   • Check Azure Portal for exact server/database names');
+            console.log('   • Verify firewall settings allow your current IP');
+            console.log('   • Confirm admin credentials match what you set during setup');
             process.exit(1);
         }
         
