@@ -527,56 +527,102 @@
     margin: 0;
 }
 
-/* User Footer Styles */
-.user-footer {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 20px 0;
-    margin-top: 40px;
-    position: relative;
-    z-index: 10;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
+/* Personal Information Summary Styles */
+.personal-info-summary {
+    display: grid;
     gap: 15px;
 }
 
-.footer-content p {
-    color: rgba(255, 255, 255, 0.8);
-    margin: 0;
-    font-size: 0.9rem;
-}
-
-.footer-links {
+.personal-info-item {
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.footer-links a {
+.personal-info-item:last-child {
+    border-bottom: none;
+}
+
+.personal-info-label {
     color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
     font-size: 0.9rem;
-    transition: all 0.3s ease;
-    padding: 5px 10px;
-    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.footer-links a:hover {
+.personal-info-value {
     color: white;
+    font-weight: 500;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
     background: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.personal-info-value:hover {
+    background: rgba(255, 255, 255, 0.2);
     transform: translateY(-1px);
 }
 
-/* Responsive Design */
+.credit-cards-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.credit-card-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.card-summary-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-summary-type {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.card-summary-number {
+    font-family: 'Courier New', monospace;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-status {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+.card-active {
+    background: rgba(34, 197, 94, 0.3);
+    color: #86efac;
+}
+
+.card-inactive {
+    background: rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+}
+
 @media (max-width: 768px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
@@ -622,6 +668,23 @@
         flex-direction: column;
         text-align: center;
         gap: 15px;
+    }
+    
+    .personal-info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .personal-info-value {
+        align-self: stretch;
+        text-align: center;
+    }
+    
+    .credit-card-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
     }
 }
 

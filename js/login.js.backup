@@ -181,36 +181,8 @@ async function handleLogin(event) {
     } catch (error) {
         console.error('Login error:', error);
         
-        // Always reset the button state
-        submitButton.innerHTML = originalButtonText;
-        submitButton.disabled = false;
-        
         // Handle specific error types with appropriate messages
-        if (error.message.includes('timeout') || error.message.includes('Azure initialization timeout')) {
-            console.log('Azure timeout detected, falling back to local authentication');
-            try {
-                const localAuth = await attemptLocalAuthentication(username, password);
-                if (localAuth.success) {
-                    sessionStorage.setItem('currentUser', localAuth.userId);
-                    sessionStorage.setItem('loginTime', new Date().toISOString());
-                    sessionStorage.setItem('storageType', 'local');
-                    sessionStorage.setItem('dataSource', 'Local Fallback (Azure Timeout)');
-                    sessionStorage.setItem('securityLevel', 'standard');
-                    sessionStorage.setItem('userRole', 'customer');
-                    
-                    showLoginSuccess('Login successful! Redirecting to your dashboard...');
-                    setTimeout(() => {
-                        window.location.href = 'user-dashboard.html';
-                    }, 1500);
-                    return;
-                } else {
-                    showLoginError('Unable to authenticate. Please check your credentials and try again.');
-                }
-            } catch (localError) {
-                console.error('Local fallback also failed:', localError);
-                showLoginError('Authentication system temporarily unavailable. Please try the direct access page for testing.');
-            }
-        } else if (error.message.includes('403') || error.message.includes('Preflight')) {
+        if (error.message.includes('403') || error.message.includes('Preflight')) {
             showLoginError('Service temporarily unavailable due to network restrictions. Please try again in a few moments or contact support if the issue persists.');
         } else if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
             showLoginError('Connection error detected. Attempting to use offline authentication...');

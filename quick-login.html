@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Login for Testing</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; text-align: center; }
+        button { padding: 15px 30px; margin: 10px; font-size: 16px; cursor: pointer; }
+        .user-button { background: #007bff; color: white; border: none; border-radius: 5px; }
+        .nav-button { background: #28a745; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Quick Login for Testing</h1>
+    <p>Click a button to simulate login as different users:</p>
+    
+    <button class="user-button" onclick="loginAs('alice')">Login as Alice Martinez</button>
+    <button class="user-button" onclick="loginAs('bob')">Login as Bob Johnson</button>
+    <button class="user-button" onclick="loginAs('minimal')">Login as Test User (Minimal Data)</button>
+    
+    <br><br>
+    
+    <button class="nav-button" onclick="goToPersonalInfo()">Go to Personal Info Page</button>
+    <button class="nav-button" onclick="goToDashboard()">Go to Dashboard</button>
+    
+    <br><br>
+    
+    <button onclick="clearSession()">Clear Session</button>
+    <button onclick="checkSession()">Check Session</button>
+    
+    <div id="status" style="margin-top: 20px;"></div>
+
+    <script>
+        function loginAs(userType) {
+            let userData;
+            
+            if (userType === 'alice') {
+                userData = {
+                    "userId": "alice_martinez",
+                    "credentials": {
+                        "username": "alice.martinez",
+                        "email": "alice.martinez@email.com"
+                    },
+                    "profile": {
+                        "firstName": "Alice",
+                        "lastName": "Martinez",
+                        "fullName": "Alice Martinez",
+                        "age": 28,
+                        "profession": "Software Engineer",
+                        "phone": "(555) 123-4567",
+                        "address": "1234 Tech Avenue, San Francisco, CA 94105",
+                        "joinDate": "2022-03-15",
+                        "avatar": "AM",
+                        "accountNumber": "****-1234"
+                    },
+                    "personalInfo": {
+                        "ssn": "527-84-6731",
+                        "dateOfBirth": "1996-04-15",
+                        "mothersMaidenName": "Rodriguez",
+                        "creditCards": {
+                            "primary": {
+                                "type": "visa",
+                                "number": "4532015112830366",
+                                "expiryMonth": 8,
+                                "expiryYear": 2028,
+                                "cvv": 347,
+                                "name": "Primary Visa Card",
+                                "isActive": true
+                            },
+                            "rewards": {
+                                "type": "mastercard",
+                                "number": "5425233430109903",
+                                "expiryMonth": 12,
+                                "expiryYear": 2029,
+                                "cvv": 892,
+                                "name": "Rewards Mastercard",
+                                "isActive": true
+                            }
+                        }
+                    }
+                };
+            } else if (userType === 'bob') {
+                userData = {
+                    "userId": "bob_johnson",
+                    "credentials": {
+                        "username": "bob.johnson",
+                        "email": "bob.johnson@email.com"
+                    },
+                    "profile": {
+                        "firstName": "Bob",
+                        "lastName": "Johnson",
+                        "fullName": "Bob Johnson",
+                        "age": 45,
+                        "profession": "Marketing Director",
+                        "phone": "(555) 987-6543",
+                        "address": "5678 Business Blvd, Austin, TX 78701",
+                        "joinDate": "2020-01-20",
+                        "avatar": "BJ",
+                        "accountNumber": "****-5678"
+                    },
+                    "personalInfo": {
+                        "ssn": "123-45-6789",
+                        "dateOfBirth": "1979-08-22",
+                        "mothersMaidenName": "Williams",
+                        "creditCards": {
+                            "primary": {
+                                "type": "mastercard",
+                                "number": "5555555555554444",
+                                "expiryMonth": 3,
+                                "expiryYear": 2026,
+                                "cvv": 123,
+                                "name": "Primary Mastercard",
+                                "isActive": true
+                            }
+                        }
+                    }
+                };
+            } else {
+                userData = {
+                    "userId": "test_user",
+                    "credentials": {
+                        "username": "test.user",
+                        "email": "test@example.com"
+                    },
+                    "profile": {
+                        "firstName": "Test",
+                        "lastName": "User",
+                        "fullName": "Test User",
+                        "age": 30,
+                        "profession": "Tester",
+                        "phone": "(555) 000-0000",
+                        "address": "123 Test St, Test City, TS 12345",
+                        "joinDate": "2024-01-01",
+                        "avatar": "TU",
+                        "accountNumber": "****-0000"
+                    },
+                    "personalInfo": {}
+                };
+            }
+            
+            // Set session storage
+            sessionStorage.setItem('currentUser', JSON.stringify(userData));
+            sessionStorage.setItem('loginTime', new Date().toISOString());
+            sessionStorage.setItem('userRole', 'user');
+            
+            document.getElementById('status').innerHTML = `
+                <div style="color: green; background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                    <strong>Login Successful!</strong><br>
+                    Logged in as: ${userData.profile.fullName}<br>
+                    User ID: ${userData.userId}
+                </div>
+            `;
+        }
+        
+        function goToPersonalInfo() {
+            window.open('personal-info.html', '_blank');
+        }
+        
+        function goToDashboard() {
+            window.open('user-dashboard.html', '_blank');
+        }
+        
+        function clearSession() {
+            sessionStorage.clear();
+            document.getElementById('status').innerHTML = `
+                <div style="color: red; background: #ffe8e8; padding: 10px; border-radius: 5px;">
+                    Session cleared
+                </div>
+            `;
+        }
+        
+        function checkSession() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            const loginTime = sessionStorage.getItem('loginTime');
+            
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                document.getElementById('status').innerHTML = `
+                    <div style="background: #e8f4f8; padding: 10px; border-radius: 5px; text-align: left;">
+                        <strong>Current Session:</strong><br>
+                        User: ${user.profile?.fullName || 'Unknown'}<br>
+                        Login Time: ${loginTime || 'Unknown'}<br>
+                        <details>
+                            <summary>Full User Data</summary>
+                            <pre style="text-align: left; overflow-x: auto;">${JSON.stringify(user, null, 2)}</pre>
+                        </details>
+                    </div>
+                `;
+            } else {
+                document.getElementById('status').innerHTML = `
+                    <div style="color: red; background: #ffe8e8; padding: 10px; border-radius: 5px;">
+                        No active session
+                    </div>
+                `;
+            }
+        }
+        
+        // Check session on page load
+        document.addEventListener('DOMContentLoaded', checkSession);
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Sensitive Data Generator</title>
+</head>
+<body>
+    <h1>Test Sensitive Data Generator</h1>
+    
+    <div id="testResults">
+        <h2>Generated Data:</h2>
+        <div id="results"></div>
+    </div>
+    
+    <button onclick="generateTestData()">Generate Test Data</button>
+    <button onclick="testPersonalInfo()">Test Personal Info Generation</button>
+
+    <script src="js/sensitive-data-generator.js"></script>
+    <script>
+        function generateTestData() {
+            const generator = new SensitiveDataGenerator();
+            const results = document.getElementById('results');
+            
+            const ssn = generator.generateValidSSN();
+            const visa = generator.generateValidCreditCard('visa');
+            const mastercard = generator.generateValidCreditCard('mastercard');
+            const dob = generator.generateRandomDateOfBirth();
+            const maidenName = generator.generateRandomMaidenName();
+            
+            results.innerHTML = `
+                <p><strong>SSN:</strong> ${ssn} (Valid: ${generator.validateSSN(ssn)})</p>
+                <p><strong>Date of Birth:</strong> ${dob}</p>
+                <p><strong>Mother's Maiden Name:</strong> ${maidenName}</p>
+                <p><strong>Visa Card:</strong> ${visa} (Valid: ${generator.validateCreditCard(visa)})</p>
+                <p><strong>Mastercard:</strong> ${mastercard} (Valid: ${generator.validateCreditCard(mastercard)})</p>
+                <p><strong>Masked SSN:</strong> ${generator.maskSSN(ssn)}</p>
+                <p><strong>Masked Visa:</strong> ${generator.maskCreditCard(visa)}</p>
+            `;
+        }
+        
+        function testPersonalInfo() {
+            const generator = new SensitiveDataGenerator();
+            const personalInfo = generator.generateSamplePersonalInfo();
+            const dob = generator.generateRandomDateOfBirth();
+            const maidenName = generator.generateRandomMaidenName();
+            
+            console.log('Generated personal info:', personalInfo);
+            console.log('Date of birth:', dob);
+            console.log('Maiden name:', maidenName);
+            
+            document.getElementById('results').innerHTML = `
+                <h3>Sample Personal Info:</h3>
+                <pre>${JSON.stringify({...personalInfo, dateOfBirth: dob, mothersMaidenName: maidenName}, null, 2)}</pre>
+            `;
+        }
+        
+        // Test on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('SensitiveDataGenerator available:', typeof SensitiveDataGenerator);
+            generateTestData();
+        });
+    </script>
+</body>
+</html>

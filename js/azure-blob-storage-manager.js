@@ -59,6 +59,31 @@ class AzureBlobStorageManager {
                     avatar: "AM",
                     accountNumber: "****-1234"
                 },
+                personalInfo: {
+                    ssn: "527-84-6731",
+                    dateOfBirth: "1996-04-15",
+                    mothersMaidenName: "Rodriguez",
+                    creditCards: {
+                        primary: {
+                            type: "visa",
+                            number: "4532015112830366",
+                            expiryMonth: 8,
+                            expiryYear: 2028,
+                            cvv: 347,
+                            name: "Primary Visa Card",
+                            isActive: true
+                        },
+                        rewards: {
+                            type: "mastercard",
+                            number: "5425233430109903",
+                            expiryMonth: 12,
+                            expiryYear: 2029,
+                            cvv: 892,
+                            name: "Rewards Mastercard",
+                            isActive: true
+                        }
+                    }
+                },
                 accounts: {
                     checking: {
                         balance: 8750.43,
@@ -121,6 +146,31 @@ class AzureBlobStorageManager {
                     joinDate: "2020-08-22",
                     avatar: "BJ",
                     accountNumber: "****-5678"
+                },
+                personalInfo: {
+                    ssn: "472-91-3856",
+                    dateOfBirth: "1979-11-03",
+                    mothersMaidenName: "Thompson",
+                    creditCards: {
+                        business: {
+                            type: "visa",
+                            number: "4111111111111111",
+                            expiryMonth: 3,
+                            expiryYear: 2029,
+                            cvv: 123,
+                            name: "Business Visa Card",
+                            isActive: true
+                        },
+                        personal: {
+                            type: "mastercard",
+                            number: "5555555555554444",
+                            expiryMonth: 9,
+                            expiryYear: 2027,
+                            cvv: 456,
+                            name: "Personal Mastercard",
+                            isActive: true
+                        }
+                    }
                 },
                 accounts: {
                     checking: {

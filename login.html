@@ -50,6 +50,14 @@
                     <i class="fas fa-lock"></i>
                     Secure Login
                 </button>
+                
+                <!-- Hidden developer mode toggle (press Ctrl+D+E+V) -->
+                <div id="devMode" style="display: none; margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; border: 1px solid #ddd;">
+                    <h5 style="margin: 0 0 10px 0; color: #666;">🔧 Developer Mode</h5>
+                    <button type="button" onclick="quickLogin('alice')" style="margin: 5px; padding: 8px 12px; background: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer;">Login as Alice</button>
+                    <button type="button" onclick="quickLogin('bob')" style="margin: 5px; padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer;">Login as Bob</button>
+                    <button type="button" onclick="goToDirect()" style="margin: 5px; padding: 8px 12px; background: #6c757d; color: white; border: none; border-radius: 3px; cursor: pointer;">Direct Access</button>
+                </div>
             </form>
 
             <div class="security-info">
@@ -62,11 +70,11 @@
         </div>
     </div>
 
-    <script src="js/local-storage-manager.js"></script>
-    <script src="js/azure-proxy.js"></script>
-    <script src="js/azure-storage-manager.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/login.js"></script>
+    <script src="js/local-storage-manager.js?v=2.0"></script>
+    <script src="js/azure-proxy.js?v=2.0"></script>
+    <script src="js/azure-storage-manager.js?v=2.0"></script>
+    <script src="js/script.js?v=2.0"></script>
+    <script src="js/login.js?v=2.0"></script>
     
     <script>
         // Check for message and redirect parameters when page loads
@@ -107,6 +115,39 @@
                 }
             }
         });
+        
+        // Developer mode activation (Ctrl+D+E+V sequence)
+        let devSequence = '';
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey) {
+                devSequence += e.key.toLowerCase();
+                if (devSequence.includes('dev')) {
+                    document.getElementById('devMode').style.display = 'block';
+                    console.log('Developer mode activated');
+                    devSequence = '';
+                }
+                setTimeout(() => { devSequence = ''; }, 2000);
+            }
+        });
+        
+        // Quick login functions for developer mode
+        window.quickLogin = function(user) {
+            const userCredentials = {
+                alice: { username: 'alice.martinez', password: 'AliceSecure2025!' },
+                bob: { username: 'bob.johnson', password: 'BobPass2025!' }
+            };
+            
+            if (userCredentials[user]) {
+                document.getElementById('username').value = userCredentials[user].username;
+                document.getElementById('password').value = userCredentials[user].password;
+                // Trigger login
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        };
+        
+        window.goToDirect = function() {
+            window.location.href = 'direct-access.html';
+        };
     </script>
 </body>
 </html>

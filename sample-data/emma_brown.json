@@ -36,209 +36,2047 @@
   },
   "recentTransactions": [
     {
-      "id": "tx_005_001",
+      "id": "cc_payment_bank_1752599817",
+      "date": "2025-07-15",
+      "description": "Credit Card Payment",
+      "amount": -915,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "payment",
+      "icon": "fas fa-credit-card"
+    },
+    {
+      "id": "bill_Electric_Bill_-_PG&E_1751735817",
+      "date": "2025-07-05",
+      "description": "Electric Bill - PG&E",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Car_Insurance_1751735817",
+      "date": "2025-07-05",
+      "description": "Car Insurance",
+      "amount": -190,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Gym_Membership_-_24_Hour_Fitness_1751735817",
+      "date": "2025-07-05",
+      "description": "Gym Membership - 24 Hour Fitness",
+      "amount": -45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "fitness",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "salary_1751390217",
       "date": "2025-07-01",
-      "description": "Salary - Global Marketing Inc",
-      "amount": 5250.00,
+      "description": "Salary Deposit - Marketing Manager",
+      "amount": 6500,
       "type": "deposit",
       "account": "checking",
       "category": "income",
       "icon": "fas fa-money-bill-wave"
     },
     {
-      "id": "tx_005_002",
+      "id": "bill_Phone_-_Verizon_1751303817",
       "date": "2025-06-30",
-      "description": "Rent - Manhattan Apartments",
-      "amount": -3200.00,
+      "description": "Phone - Verizon",
+      "amount": -75,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Internet_-_Comcast_1751131017",
+      "date": "2025-06-28",
+      "description": "Internet - Comcast",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Spotify_Premium_1751131017",
+      "date": "2025-06-28",
+      "description": "Spotify Premium",
+      "amount": -9.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "misc_Spotify_Premium_1751044617",
+      "date": "2025-06-27",
+      "description": "Spotify Premium",
+      "amount": -9.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Rent_Payment_-_Bay_Area_Apartments_1750871817",
+      "date": "2025-06-25",
+      "description": "Rent Payment - Bay Area Apartments",
+      "amount": -3299,
       "type": "withdrawal",
       "account": "checking",
       "category": "housing",
-      "icon": "fas fa-building"
+      "icon": "fas fa-file-invoice-dollar"
     },
     {
-      "id": "tx_005_003",
-      "date": "2025-06-29",
-      "description": "Designer Clothing - Nordstrom",
-      "amount": -456.78,
+      "id": "bill_Health_Insurance_1750267017",
+      "date": "2025-06-18",
+      "description": "Health Insurance",
+      "amount": -318,
       "type": "withdrawal",
       "account": "checking",
-      "category": "shopping",
-      "icon": "fas fa-shopping-bag"
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
     },
     {
-      "id": "tx_005_004",
-      "date": "2025-06-28",
-      "description": "Yoga Class - CorePower",
-      "amount": -35.00,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "health",
-      "icon": "fas fa-spa"
-    },
-    {
-      "id": "tx_005_005",
-      "date": "2025-06-27",
-      "description": "Fine Dining - Le Bernardin",
-      "amount": -180.50,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "dining",
-      "icon": "fas fa-wine-glass-alt"
-    },
-    {
-      "id": "tx_005_006",
-      "date": "2025-06-26",
-      "description": "Investment Transfer",
-      "amount": -2000.00,
-      "type": "transfer",
-      "account": "checking",
-      "category": "investment",
-      "icon": "fas fa-chart-line"
-    },
-    {
-      "id": "tx_005_007",
-      "date": "2025-06-25",
-      "description": "Taxi - NYC Yellow Cab",
-      "amount": -25.40,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "transportation",
-      "icon": "fas fa-taxi"
-    },
-    {
-      "id": "tx_005_008",
-      "date": "2025-06-24",
-      "description": "Skincare - Sephora",
-      "amount": -89.99,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "personal",
-      "icon": "fas fa-magic"
-    },
-    {
-      "id": "tx_005_009",
-      "date": "2025-06-23",
-      "description": "Wine Shop - Vintage Cellars",
-      "amount": -125.67,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "dining",
-      "icon": "fas fa-wine-bottle"
-    },
-    {
-      "id": "tx_005_010",
-      "date": "2025-06-22",
-      "description": "Broadway Show Tickets",
-      "amount": -240.00,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "entertainment",
-      "icon": "fas fa-theater-masks"
-    },
-    {
-      "id": "tx_005_011",
-      "date": "2025-06-21",
-      "description": "Bonus - Q2 Performance",
-      "amount": 1500.00,
+      "id": "misc_Mobile_Deposit_1750094217",
+      "date": "2025-06-16",
+      "description": "Mobile Deposit",
+      "amount": 206,
       "type": "deposit",
       "account": "checking",
-      "category": "income",
-      "icon": "fas fa-trophy"
+      "category": "deposit",
+      "icon": "fas fa-exchange-alt"
     },
     {
-      "id": "tx_005_012",
-      "date": "2025-06-20",
-      "description": "Personal Trainer",
-      "amount": -120.00,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "health",
-      "icon": "fas fa-dumbbell"
-    },
-    {
-      "id": "tx_005_013",
-      "date": "2025-06-19",
-      "description": "Luxury Spa Day",
-      "amount": -350.00,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "health",
-      "icon": "fas fa-spa"
-    },
-    {
-      "id": "tx_005_014",
-      "date": "2025-06-18",
-      "description": "Art Gallery Opening",
-      "amount": -75.00,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "entertainment",
-      "icon": "fas fa-palette"
-    },
-    {
-      "id": "tx_005_015",
-      "date": "2025-06-17",
-      "description": "Professional Networking Event",
-      "amount": -95.00,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "business",
-      "icon": "fas fa-handshake"
-    },
-    {
-      "id": "tx_005_016",
-      "date": "2025-06-16",
-      "description": "Luxury Shopping - Tiffany & Co",
-      "amount": -890.00,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "shopping",
-      "icon": "fas fa-gem"
-    },
-    {
-      "id": "tx_005_017",
+      "id": "cc_payment_bank_1750007817",
       "date": "2025-06-15",
-      "description": "Salary - Global Marketing Inc",
-      "amount": 5250.00,
+      "description": "Credit Card Payment",
+      "amount": -804,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "payment",
+      "icon": "fas fa-credit-card"
+    },
+    {
+      "id": "misc_Transfer_to_Savings_1749921417",
+      "date": "2025-06-14",
+      "description": "Transfer to Savings",
+      "amount": -500,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transfer",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "salary_1748798217",
+      "date": "2025-06-01",
+      "description": "Salary Deposit - Marketing Manager",
+      "amount": 6500,
       "type": "deposit",
       "account": "checking",
       "category": "income",
       "icon": "fas fa-money-bill-wave"
-    },
-    {
-      "id": "tx_005_018",
-      "date": "2025-06-14",
-      "description": "High-end Grocery - Dean & DeLuca",
-      "amount": -156.78,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "groceries",
-      "icon": "fas fa-shopping-cart"
-    },
-    {
-      "id": "tx_005_019",
-      "date": "2025-06-13",
-      "description": "Private Pilates Session",
-      "amount": -85.00,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "health",
-      "icon": "fas fa-spa"
-    },
-    {
-      "id": "tx_005_020",
-      "date": "2025-06-12",
-      "description": "Executive Travel - Uber",
-      "amount": -45.60,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "transportation",
-      "icon": "fas fa-car"
     }
   ],
   "preferences": {
     "theme": "light",
     "notifications": true,
     "language": "en"
-  }
+  },
+  "personalInfo": {
+    "ssn": "322-75-8182",
+    "dateOfBirth": "1985-11-10",
+    "mothersMaidenName": "Rodriguez",
+    "creditCards": {
+      "primary": {
+        "type": "visa",
+        "number": "4000000000000101",
+        "expiryMonth": 6,
+        "expiryYear": 2028,
+        "cvv": 347,
+        "name": "Primary Visa Card",
+        "isActive": true,
+        "balance": -2426.4100000000008,
+        "limit": 5000,
+        "transactions": [
+          {
+            "id": "cc_primary_1751735817_4554",
+            "date": "2025-07-05",
+            "description": "Lowes",
+            "amount": -24.95,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1751217417_7995",
+            "date": "2025-06-29",
+            "description": "Courtyard by Marriott",
+            "amount": -211.69,
+            "type": "purchase",
+            "category": "hotels",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1751131017_5378",
+            "date": "2025-06-28",
+            "description": "Valero",
+            "amount": -58.84,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1751044617_8621",
+            "date": "2025-06-27",
+            "description": "Exxon Mobil",
+            "amount": -46.76,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1750958217_9990",
+            "date": "2025-06-26",
+            "description": "Valero",
+            "amount": -43.4,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1750871817_3981",
+            "date": "2025-06-25",
+            "description": "Dominos Pizza",
+            "amount": -44.86,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1750785417_1711",
+            "date": "2025-06-24",
+            "description": "Fresh Market",
+            "amount": -83.96,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1750612617_8136",
+            "date": "2025-06-22",
+            "description": "Arco",
+            "amount": -61.36,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1750353417_8606",
+            "date": "2025-06-19",
+            "description": "Dominos Pizza",
+            "amount": -82.95,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1750353417_2534",
+            "date": "2025-06-19",
+            "description": "Target",
+            "amount": -115.88,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1750180617_2022",
+            "date": "2025-06-17",
+            "description": "Taco Bell",
+            "amount": -23.14,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1750094217_3155",
+            "date": "2025-06-16",
+            "description": "Cheesecake Factory",
+            "amount": -22.71,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1750094217_4664",
+            "date": "2025-06-16",
+            "description": "PG&E Electric",
+            "amount": -120.91,
+            "type": "purchase",
+            "category": "utilities",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_payment_primary_1750007817",
+            "date": "2025-06-15",
+            "description": "Payment - Thank You",
+            "amount": 1240,
+            "type": "payment",
+            "category": "payment",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1749489417_5117",
+            "date": "2025-06-09",
+            "description": "McDonalds",
+            "amount": -31.33,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1749316617_7849",
+            "date": "2025-06-07",
+            "description": "Charter Communications",
+            "amount": -100.28,
+            "type": "purchase",
+            "category": "utilities",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1749143817_2989",
+            "date": "2025-06-05",
+            "description": "Amazon.com",
+            "amount": -318.89,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1749143817_6874",
+            "date": "2025-06-05",
+            "description": "Hilton Hotels",
+            "amount": -317.49,
+            "type": "purchase",
+            "category": "hotels",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1748884617_7722",
+            "date": "2025-06-02",
+            "description": "Safeway",
+            "amount": -87.71,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1748711817_8012",
+            "date": "2025-05-31",
+            "description": "Trader Joes",
+            "amount": -175.69,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1748711817_1749",
+            "date": "2025-05-31",
+            "description": "CVS Pharmacy",
+            "amount": -141.76,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1748625417_4298",
+            "date": "2025-05-30",
+            "description": "Trader Joes",
+            "amount": -159.66,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1748625417_7457",
+            "date": "2025-05-30",
+            "description": "HBO Max",
+            "amount": -34.69,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1748279817_1220",
+            "date": "2025-05-26",
+            "description": "JetBlue Airways",
+            "amount": -421.66,
+            "type": "purchase",
+            "category": "airlines",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1748107017_6232",
+            "date": "2025-05-24",
+            "description": "Starbucks",
+            "amount": -16.38,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1748020617_9046",
+            "date": "2025-05-23",
+            "description": "Whole Foods Market",
+            "amount": -96.38,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1747934217_4288",
+            "date": "2025-05-22",
+            "description": "Valero",
+            "amount": -48.54,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1747847817_8913",
+            "date": "2025-05-21",
+            "description": "Home Depot",
+            "amount": -223.28,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1747847817_5107",
+            "date": "2025-05-21",
+            "description": "CVS Pharmacy",
+            "amount": -246.79,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1747502217_3899",
+            "date": "2025-05-17",
+            "description": "Macys",
+            "amount": -186.06,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1747415817_4325",
+            "date": "2025-05-16",
+            "description": "Starbucks",
+            "amount": -70.61,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_payment_primary_1747415817",
+            "date": "2025-05-16",
+            "description": "Payment - Thank You",
+            "amount": 1454,
+            "type": "payment",
+            "category": "payment",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1746983817_8201",
+            "date": "2025-05-11",
+            "description": "McDonalds",
+            "amount": -43.27,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1746897417_6623",
+            "date": "2025-05-10",
+            "description": "Subway",
+            "amount": -62.44,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1746811017_7701",
+            "date": "2025-05-09",
+            "description": "Olive Garden",
+            "amount": -46.3,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1746811017_2822",
+            "date": "2025-05-09",
+            "description": "YouTube Premium",
+            "amount": -34.76,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1746292617_7387",
+            "date": "2025-05-03",
+            "description": "Walmart",
+            "amount": -33.48,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1746206217_6551",
+            "date": "2025-05-02",
+            "description": "Hulu",
+            "amount": -36.48,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1745687817_6798",
+            "date": "2025-04-26",
+            "description": "Trader Joes",
+            "amount": -85.61,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1745601417_4168",
+            "date": "2025-04-25",
+            "description": "Panera Bread",
+            "amount": -56.27,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1745515017_8965",
+            "date": "2025-04-24",
+            "description": "Kroger",
+            "amount": -78.07,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1745255817_8819",
+            "date": "2025-04-21",
+            "description": "Lowes",
+            "amount": -100.24,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1745169417_9388",
+            "date": "2025-04-20",
+            "description": "HBO Max",
+            "amount": -27.82,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1745169417_4366",
+            "date": "2025-04-20",
+            "description": "AT&T",
+            "amount": -247.22,
+            "type": "purchase",
+            "category": "utilities",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1744737417_3184",
+            "date": "2025-04-15",
+            "description": "AMC Theatres",
+            "amount": -26.69,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1744564617_1362",
+            "date": "2025-04-13",
+            "description": "Cheesecake Factory",
+            "amount": -76.83,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1744564617_8737",
+            "date": "2025-04-13",
+            "description": "Arco",
+            "amount": -69.95,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1744219017_2113",
+            "date": "2025-04-09",
+            "description": "Safeway",
+            "amount": -137.92,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "primary",
+            "pending": false
+          },
+          {
+            "id": "cc_primary_1744132617_7078",
+            "date": "2025-04-08",
+            "description": "Walgreens",
+            "amount": -338.45,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "primary",
+            "pending": false
+          }
+        ]
+      },
+      "rewards": {
+        "type": "mastercard",
+        "number": "5105105105105100",
+        "expiryMonth": 1,
+        "expiryYear": 2028,
+        "cvv": 148,
+        "name": "Rewards Mastercard",
+        "isActive": true,
+        "balance": -2419.8399999999992,
+        "limit": 8000,
+        "transactions": [
+          {
+            "id": "cc_rewards_1751822217_9195",
+            "date": "2025-07-06",
+            "description": "Safeway",
+            "amount": 173.31,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1751476617_9114",
+            "date": "2025-07-02",
+            "description": "Taco Bell",
+            "amount": 27.98,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1751390217_9411",
+            "date": "2025-07-01",
+            "description": "AMC Theatres",
+            "amount": 40.64,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1751390217_3697",
+            "date": "2025-07-01",
+            "description": "Charter Communications",
+            "amount": 223.14,
+            "type": "purchase",
+            "category": "utilities",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1751303817_9978",
+            "date": "2025-06-30",
+            "description": "McDonalds",
+            "amount": 77.95,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1751131017_8773",
+            "date": "2025-06-28",
+            "description": "Red Lobster",
+            "amount": 70.63,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1751044617_5848",
+            "date": "2025-06-27",
+            "description": "Fresh Market",
+            "amount": 40.98,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1750785417_2984",
+            "date": "2025-06-24",
+            "description": "76",
+            "amount": 63.15,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1750612617_7557",
+            "date": "2025-06-22",
+            "description": "Cheesecake Factory",
+            "amount": 84.64,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1750439817_8051",
+            "date": "2025-06-20",
+            "description": "Fresh Market",
+            "amount": 192.21,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1750094217_3780",
+            "date": "2025-06-16",
+            "description": "Panera Bread",
+            "amount": 55.61,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1750094217_8925",
+            "date": "2025-06-16",
+            "description": "Nordstrom",
+            "amount": 349.97,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1750007817_4737",
+            "date": "2025-06-15",
+            "description": "Panera Bread",
+            "amount": 62.31,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_payment_rewards_1750007817",
+            "date": "2025-06-15",
+            "description": "Payment - Thank You",
+            "amount": -1427,
+            "type": "payment",
+            "category": "payment",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1749575817_3137",
+            "date": "2025-06-10",
+            "description": "AMC Theatres",
+            "amount": 18.05,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1749316617_7870",
+            "date": "2025-06-07",
+            "description": "Walgreens",
+            "amount": 124.44,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1749230217_1794",
+            "date": "2025-06-06",
+            "description": "Walmart",
+            "amount": 222.73,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748971017_1791",
+            "date": "2025-06-03",
+            "description": "Costco Wholesale",
+            "amount": 98.31,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748884617_3909",
+            "date": "2025-06-02",
+            "description": "Olive Garden",
+            "amount": 48.58,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748884617_6116",
+            "date": "2025-06-02",
+            "description": "Walmart",
+            "amount": 231.29,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748884617_3416",
+            "date": "2025-06-02",
+            "description": "Lowes",
+            "amount": 297.81,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748452617_4417",
+            "date": "2025-05-28",
+            "description": "CVS Pharmacy",
+            "amount": 144.72,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748366217_5170",
+            "date": "2025-05-27",
+            "description": "Walmart",
+            "amount": 101.82,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748279817_1740",
+            "date": "2025-05-26",
+            "description": "Target Groceries",
+            "amount": 75.78,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748279817_4295",
+            "date": "2025-05-26",
+            "description": "BP",
+            "amount": 44.16,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748279817_7591",
+            "date": "2025-05-26",
+            "description": "Walgreens",
+            "amount": 252.37,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1748193417_2179",
+            "date": "2025-05-25",
+            "description": "Amazon Prime",
+            "amount": 20.13,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1747847817_9160",
+            "date": "2025-05-21",
+            "description": "Cheesecake Factory",
+            "amount": 25.75,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1747847817_1823",
+            "date": "2025-05-21",
+            "description": "Dominos Pizza",
+            "amount": 27.89,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1747761417_7792",
+            "date": "2025-05-20",
+            "description": "Olive Garden",
+            "amount": 49.62,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1747675017_1600",
+            "date": "2025-05-19",
+            "description": "Cheesecake Factory",
+            "amount": 67.98,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1747502217_1989",
+            "date": "2025-05-17",
+            "description": "American Airlines",
+            "amount": 371.11,
+            "type": "purchase",
+            "category": "airlines",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_payment_rewards_1747415817",
+            "date": "2025-05-16",
+            "description": "Payment - Thank You",
+            "amount": -1453,
+            "type": "payment",
+            "category": "payment",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1747329417_4718",
+            "date": "2025-05-15",
+            "description": "Southern California Edison",
+            "amount": 224.22,
+            "type": "purchase",
+            "category": "utilities",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1747243017_7440",
+            "date": "2025-05-14",
+            "description": "Costco Wholesale",
+            "amount": 124.24,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1747070217_6034",
+            "date": "2025-05-12",
+            "description": "Exxon Mobil",
+            "amount": 38.38,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1746724617_1730",
+            "date": "2025-05-08",
+            "description": "Walmart",
+            "amount": 62.15,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1746724617_3268",
+            "date": "2025-05-08",
+            "description": "Nordstrom",
+            "amount": 92.45,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1746724617_9792",
+            "date": "2025-05-08",
+            "description": "Disney+",
+            "amount": 29.73,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1746724617_7253",
+            "date": "2025-05-08",
+            "description": "AT&T",
+            "amount": 92.49,
+            "type": "purchase",
+            "category": "utilities",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1746292617_9423",
+            "date": "2025-05-03",
+            "description": "Valero",
+            "amount": 55.3,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1746206217_1097",
+            "date": "2025-05-02",
+            "description": "Target Groceries",
+            "amount": 175.51,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1745947017_2811",
+            "date": "2025-04-29",
+            "description": "BP",
+            "amount": 53.85,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1745687817_2960",
+            "date": "2025-04-26",
+            "description": "Safeway",
+            "amount": 43.13,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1745687817_7035",
+            "date": "2025-04-26",
+            "description": "HBO Max",
+            "amount": 34.48,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1745601417_2478",
+            "date": "2025-04-25",
+            "description": "BP",
+            "amount": 40.13,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1745255817_3719",
+            "date": "2025-04-21",
+            "description": "Olive Garden",
+            "amount": 28.09,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1745255817_2049",
+            "date": "2025-04-21",
+            "description": "Hyatt Regency",
+            "amount": 264.37,
+            "type": "purchase",
+            "category": "hotels",
+            "cardType": "rewards",
+            "pending": false
+          },
+          {
+            "id": "cc_rewards_1744132617_4724",
+            "date": "2025-04-08",
+            "description": "Doubletree",
+            "amount": 256.26,
+            "type": "purchase",
+            "category": "hotels",
+            "cardType": "rewards",
+            "pending": false
+          }
+        ]
+      },
+      "backup": {
+        "type": "amex",
+        "number": "343434343434343",
+        "expiryMonth": 11,
+        "expiryYear": 2026,
+        "cvv": 7937,
+        "name": "Travel Amex Card",
+        "isActive": true,
+        "balance": -2696.71,
+        "limit": 10000,
+        "transactions": [
+          {
+            "id": "cc_backup_1751822217_7656",
+            "date": "2025-07-06",
+            "description": "Starbucks",
+            "amount": 59.51,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1751735817_3705",
+            "date": "2025-07-05",
+            "description": "Target Groceries",
+            "amount": 188.74,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1751735817_1201",
+            "date": "2025-07-05",
+            "description": "Chipotle Mexican Grill",
+            "amount": 25.39,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1751649417_9411",
+            "date": "2025-07-04",
+            "description": "Cheesecake Factory",
+            "amount": 26.47,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1751649417_6937",
+            "date": "2025-07-04",
+            "description": "HBO Max",
+            "amount": 35.5,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1751563017_2747",
+            "date": "2025-07-03",
+            "description": "Best Buy",
+            "amount": 271.13,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1751131017_9001",
+            "date": "2025-06-28",
+            "description": "Nordstrom",
+            "amount": 138.71,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1750612617_4250",
+            "date": "2025-06-22",
+            "description": "Amazon Prime",
+            "amount": 34.66,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1750439817_7009",
+            "date": "2025-06-20",
+            "description": "Chevron",
+            "amount": 70.43,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1750439817_6112",
+            "date": "2025-06-20",
+            "description": "Embassy Suites",
+            "amount": 409.73,
+            "type": "purchase",
+            "category": "hotels",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1750094217_7797",
+            "date": "2025-06-16",
+            "description": "American Airlines",
+            "amount": 443.18,
+            "type": "purchase",
+            "category": "airlines",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_payment_backup_1750007817",
+            "date": "2025-06-15",
+            "description": "Payment - Thank You",
+            "amount": -1450,
+            "type": "payment",
+            "category": "payment",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1749921417_4508",
+            "date": "2025-06-14",
+            "description": "Starbucks",
+            "amount": 59.56,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1749921417_2027",
+            "date": "2025-06-14",
+            "description": "AT&T",
+            "amount": 236.11,
+            "type": "purchase",
+            "category": "utilities",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1749662217_3038",
+            "date": "2025-06-11",
+            "description": "Nordstrom",
+            "amount": 117.58,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1749575817_8074",
+            "date": "2025-06-10",
+            "description": "Walmart",
+            "amount": 91.28,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1749575817_3156",
+            "date": "2025-06-10",
+            "description": "YouTube Premium",
+            "amount": 40.44,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1749316617_5118",
+            "date": "2025-06-07",
+            "description": "Harris Teeter",
+            "amount": 72.01,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1749230217_4089",
+            "date": "2025-06-06",
+            "description": "Walmart Supercenter",
+            "amount": 103.84,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1748971017_8406",
+            "date": "2025-06-03",
+            "description": "Netflix",
+            "amount": 35.21,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1748884617_7625",
+            "date": "2025-06-02",
+            "description": "Southern California Edison",
+            "amount": 219.66,
+            "type": "purchase",
+            "category": "utilities",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1748539017_6588",
+            "date": "2025-05-29",
+            "description": "Chipotle Mexican Grill",
+            "amount": 44.0,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1748452617_3009",
+            "date": "2025-05-28",
+            "description": "Chevron",
+            "amount": 62.61,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1748279817_1979",
+            "date": "2025-05-26",
+            "description": "Arco",
+            "amount": 38.0,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1748107017_7938",
+            "date": "2025-05-24",
+            "description": "Chipotle Mexican Grill",
+            "amount": 74.0,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1748107017_4740",
+            "date": "2025-05-24",
+            "description": "Home Depot",
+            "amount": 195.41,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1747761417_8002",
+            "date": "2025-05-20",
+            "description": "Arco",
+            "amount": 51.94,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1747502217_9890",
+            "date": "2025-05-17",
+            "description": "Costco Wholesale",
+            "amount": 173.53,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1747502217_8870",
+            "date": "2025-05-17",
+            "description": "McDonalds",
+            "amount": 45.96,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1747415817_3664",
+            "date": "2025-05-16",
+            "description": "Walmart Supercenter",
+            "amount": 154.76,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1747415817_8472",
+            "date": "2025-05-16",
+            "description": "Home Depot",
+            "amount": 340.22,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_payment_backup_1747415817",
+            "date": "2025-05-16",
+            "description": "Payment - Thank You",
+            "amount": -1352,
+            "type": "payment",
+            "category": "payment",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1747070217_1890",
+            "date": "2025-05-12",
+            "description": "Cheesecake Factory",
+            "amount": 38.52,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1747070217_3185",
+            "date": "2025-05-12",
+            "description": "Walgreens",
+            "amount": 47.06,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1746811017_5555",
+            "date": "2025-05-09",
+            "description": "Walmart",
+            "amount": 86.69,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1746638217_9890",
+            "date": "2025-05-07",
+            "description": "Harris Teeter",
+            "amount": 184.36,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1746465417_7571",
+            "date": "2025-05-05",
+            "description": "Amazon Prime",
+            "amount": 31.18,
+            "type": "purchase",
+            "category": "entertainment",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1746379017_2484",
+            "date": "2025-05-04",
+            "description": "Macys",
+            "amount": 154.48,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1746292617_1262",
+            "date": "2025-05-03",
+            "description": "Whole Foods Market",
+            "amount": 188.22,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1746119817_5562",
+            "date": "2025-05-01",
+            "description": "Subway",
+            "amount": 21.65,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1746033417_7574",
+            "date": "2025-04-30",
+            "description": "Harris Teeter",
+            "amount": 142.89,
+            "type": "purchase",
+            "category": "groceries",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1745774217_6473",
+            "date": "2025-04-27",
+            "description": "Southern California Edison",
+            "amount": 164.48,
+            "type": "purchase",
+            "category": "utilities",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1745428617_7001",
+            "date": "2025-04-23",
+            "description": "Chipotle Mexican Grill",
+            "amount": 49.4,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1745428617_8706",
+            "date": "2025-04-23",
+            "description": "Red Lobster",
+            "amount": 50.81,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1744737417_1982",
+            "date": "2025-04-15",
+            "description": "Embassy Suites",
+            "amount": 194.1,
+            "type": "purchase",
+            "category": "hotels",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1744564617_5359",
+            "date": "2025-04-13",
+            "description": "Shell",
+            "amount": 70.09,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1744478217_6010",
+            "date": "2025-04-12",
+            "description": "McDonalds",
+            "amount": 43.49,
+            "type": "purchase",
+            "category": "restaurants",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1744219017_4068",
+            "date": "2025-04-09",
+            "description": "Lowes",
+            "amount": 95.78,
+            "type": "purchase",
+            "category": "shopping",
+            "cardType": "backup",
+            "pending": false
+          },
+          {
+            "id": "cc_backup_1744132617_9743",
+            "date": "2025-04-08",
+            "description": "Arco",
+            "amount": 75.94,
+            "type": "purchase",
+            "category": "gas",
+            "cardType": "backup",
+            "pending": false
+          }
+        ]
+      }
+    }
+  },
+  "allTransactions": [
+    {
+      "id": "cc_payment_bank_1752599817",
+      "date": "2025-07-15",
+      "description": "Credit Card Payment",
+      "amount": -915,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "payment",
+      "icon": "fas fa-credit-card"
+    },
+    {
+      "id": "bill_Electric_Bill_-_PG&E_1751735817",
+      "date": "2025-07-05",
+      "description": "Electric Bill - PG&E",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Car_Insurance_1751735817",
+      "date": "2025-07-05",
+      "description": "Car Insurance",
+      "amount": -190,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Gym_Membership_-_24_Hour_Fitness_1751735817",
+      "date": "2025-07-05",
+      "description": "Gym Membership - 24 Hour Fitness",
+      "amount": -45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "fitness",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "salary_1751390217",
+      "date": "2025-07-01",
+      "description": "Salary Deposit - Marketing Manager",
+      "amount": 6500,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "bill_Phone_-_Verizon_1751303817",
+      "date": "2025-06-30",
+      "description": "Phone - Verizon",
+      "amount": -75,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Internet_-_Comcast_1751131017",
+      "date": "2025-06-28",
+      "description": "Internet - Comcast",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Spotify_Premium_1751131017",
+      "date": "2025-06-28",
+      "description": "Spotify Premium",
+      "amount": -9.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "misc_Spotify_Premium_1751044617",
+      "date": "2025-06-27",
+      "description": "Spotify Premium",
+      "amount": -9.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Rent_Payment_-_Bay_Area_Apartments_1750871817",
+      "date": "2025-06-25",
+      "description": "Rent Payment - Bay Area Apartments",
+      "amount": -3299,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "housing",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Health_Insurance_1750267017",
+      "date": "2025-06-18",
+      "description": "Health Insurance",
+      "amount": -318,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Mobile_Deposit_1750094217",
+      "date": "2025-06-16",
+      "description": "Mobile Deposit",
+      "amount": 206,
+      "type": "deposit",
+      "account": "checking",
+      "category": "deposit",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "cc_payment_bank_1750007817",
+      "date": "2025-06-15",
+      "description": "Credit Card Payment",
+      "amount": -804,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "payment",
+      "icon": "fas fa-credit-card"
+    },
+    {
+      "id": "misc_Transfer_to_Savings_1749921417",
+      "date": "2025-06-14",
+      "description": "Transfer to Savings",
+      "amount": -500,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transfer",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "salary_1748798217",
+      "date": "2025-06-01",
+      "description": "Salary Deposit - Marketing Manager",
+      "amount": 6500,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "bill_Electric_Bill_-_PG&E_1748711817",
+      "date": "2025-05-31",
+      "description": "Electric Bill - PG&E",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Gym_Membership_-_24_Hour_Fitness_1748711817",
+      "date": "2025-05-31",
+      "description": "Gym Membership - 24 Hour Fitness",
+      "amount": -45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "fitness",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Phone_-_Verizon_1748539017",
+      "date": "2025-05-29",
+      "description": "Phone - Verizon",
+      "amount": -75,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Health_Insurance_1748279817",
+      "date": "2025-05-26",
+      "description": "Health Insurance",
+      "amount": -318,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Gym_Membership_-_24_Hour_Fitness_1748193417",
+      "date": "2025-05-25",
+      "description": "Gym Membership - 24 Hour Fitness",
+      "amount": -45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "fitness",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Car_Insurance_1747847817",
+      "date": "2025-05-21",
+      "description": "Car Insurance",
+      "amount": -190,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Rent_Payment_-_Bay_Area_Apartments_1747675017",
+      "date": "2025-05-19",
+      "description": "Rent Payment - Bay Area Apartments",
+      "amount": -3299,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "housing",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "cc_payment_bank_1747415817",
+      "date": "2025-05-16",
+      "description": "Credit Card Payment",
+      "amount": -1492,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "payment",
+      "icon": "fas fa-credit-card"
+    },
+    {
+      "id": "misc_ATM_Withdrawal_1747243017",
+      "date": "2025-05-14",
+      "description": "ATM Withdrawal",
+      "amount": -100,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "cash",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Internet_-_Comcast_1747156617",
+      "date": "2025-05-13",
+      "description": "Internet - Comcast",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Car_Insurance_1746551817",
+      "date": "2025-05-06",
+      "description": "Car Insurance",
+      "amount": -190,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "salary_1746206217",
+      "date": "2025-05-02",
+      "description": "Salary Deposit - Marketing Manager",
+      "amount": 6500,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "misc_Mobile_Deposit_1746206217",
+      "date": "2025-05-02",
+      "description": "Mobile Deposit",
+      "amount": 206,
+      "type": "deposit",
+      "account": "checking",
+      "category": "deposit",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Rent_Payment_-_Bay_Area_Apartments_1746119817",
+      "date": "2025-05-01",
+      "description": "Rent Payment - Bay Area Apartments",
+      "amount": -3299,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "housing",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Transfer_to_Savings_1746119817",
+      "date": "2025-05-01",
+      "description": "Transfer to Savings",
+      "amount": -500,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transfer",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "misc_Spotify_Premium_1745428617",
+      "date": "2025-04-23",
+      "description": "Spotify Premium",
+      "amount": -9.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Health_Insurance_1745169417",
+      "date": "2025-04-20",
+      "description": "Health Insurance",
+      "amount": -318,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Phone_-_Verizon_1744996617",
+      "date": "2025-04-18",
+      "description": "Phone - Verizon",
+      "amount": -75,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Netflix_1744910217",
+      "date": "2025-04-17",
+      "description": "Netflix",
+      "amount": -15.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "misc_Mobile_Deposit_1744823817",
+      "date": "2025-04-16",
+      "description": "Mobile Deposit",
+      "amount": 206,
+      "type": "deposit",
+      "account": "checking",
+      "category": "deposit",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Internet_-_Comcast_1744391817",
+      "date": "2025-04-11",
+      "description": "Internet - Comcast",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Electric_Bill_-_PG&E_1744305417",
+      "date": "2025-04-10",
+      "description": "Electric Bill - PG&E",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    }
+  ]
 }

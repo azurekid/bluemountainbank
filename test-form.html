@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Test - Blue Mountain Bank</title>
+    <style>
+        body { padding: 20px; font-family: Arial, sans-serif; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        .error { color: red; margin-top: 5px; }
+        .success { color: green; padding: 10px; background: #f0f8ff; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Job Application Test Form</h1>
+    
+    <form id="jobApplicationForm">
+        <div class="form-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone *</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <fieldset style="border: 2px solid #ff6b6b; border-radius: 8px; padding: 15px; margin: 15px 0; background: #fff5f5;">
+            <legend style="color: #ff6b6b; font-weight: bold; padding: 0 10px;">⚠️ Sensitive Information (Learning Purpose Only)</legend>
+            
+            <div class="form-group">
+                <label for="ssn">Social Security Number (XXX-XX-XXXX)</label>
+                <input type="text" id="ssn" name="ssn" placeholder="123-45-6789" maxlength="11" 
+                       pattern="[0-9]{3}-[0-9]{2}-[0-9]{4}" title="Please enter SSN in format XXX-XX-XXXX">
+                <small style="color: #666;">Generated SSN will be validated using official algorithms</small>
+            </div>
+
+            <div class="form-group">
+                <label for="creditCard">Credit Card Number</label>
+                <input type="text" id="creditCard" name="creditCard" placeholder="4532 0151 1283 0366" maxlength="19" 
+                       title="Enter credit card number">
+                <small style="color: #666;">Generated card will pass Luhn algorithm validation</small>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label for="expiryMonth">Expiry Month</label>
+                    <select id="expiryMonth" name="expiryMonth">
+                        <option value="">Month</option>
+                        <option value="01">01 - January</option>
+                        <option value="02">02 - February</option>
+                        <option value="03">03 - March</option>
+                        <option value="04">04 - April</option>
+                        <option value="05">05 - May</option>
+                        <option value="06">06 - June</option>
+                        <option value="07">07 - July</option>
+                        <option value="08">08 - August</option>
+                        <option value="09">09 - September</option>
+                        <option value="10">10 - October</option>
+                        <option value="11">11 - November</option>
+                        <option value="12">12 - December</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="expiryYear">Expiry Year</label>
+                    <select id="expiryYear" name="expiryYear">
+                        <option value="">Year</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cvv">CVV (3-4 digits)</label>
+                <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" 
+                       pattern="[0-9]{3,4}" title="Please enter 3 or 4 digit CVV">
+            </div>
+
+            <div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 4px solid #ffc107;">
+                <small><strong>Educational Notice:</strong> This form demonstrates sensitive data handling for learning purposes. 
+                In production, never collect SSN/credit card data without proper encryption, compliance, and security measures.</small>
+            </div>
+        </fieldset>
+        
+        <div class="form-group">
+            <label for="coverLetter">Cover Letter</label>
+            <textarea id="coverLetter" name="coverLetter" rows="4"></textarea>
+        </div>
+        
+        <button type="button" id="generateBtn" style="background: #17a2b8; margin-right: 10px;">
+            Generate Valid Test Data
+        </button>
+        <button type="submit" id="submitBtn">Submit Application</button>
+    </form>
+    
+    <div class="success" id="successMessage" style="display: none;">
+        Application submitted successfully!
+    </div>
+    
+    <div id="debug" style="margin-top: 20px; background: #f5f5f5; padding: 10px;"></div>
+    
+    <script src="js/sensitive-data-generator.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const debug = document.getElementById('debug');
+            debug.innerHTML = '<h3>Debug Info:</h3>';
+            
+            const form = document.getElementById('jobApplicationForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const generateBtn = document.getElementById('generateBtn');
+            const sensitiveDataGenerator = new SensitiveDataGenerator();
+            
+            debug.innerHTML += `<p>Form found: ${!!form}</p>`;
+            debug.innerHTML += `<p>Submit button found: ${!!submitBtn}</p>`;
+            debug.innerHTML += `<p>Generate button found: ${!!generateBtn}</p>`;
+
+            // Add input formatting for SSN and Credit Card
+            const ssnInput = document.getElementById('ssn');
+            const creditCardInput = document.getElementById('creditCard');
+
+            // Format SSN input
+            ssnInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 6) {
+                    value = value.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
+                } else if (value.length >= 4) {
+                    value = value.replace(/(\d{3})(\d{2})/, '$1-$2');
+                } else if (value.length >= 3) {
+                    value = value.replace(/(\d{3})/, '$1-');
+                }
+                e.target.value = value.substring(0, 11); // Limit to XXX-XX-XXXX format
+            });
+
+            // Format credit card input
+            creditCardInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                value = value.replace(/(\d{4})/g, '$1 ').trim();
+                e.target.value = value.substring(0, 19); // Limit to XXXX XXXX XXXX XXXX format
+            });
+
+            // Generate test data button
+            generateBtn.addEventListener('click', () => {
+                debug.innerHTML += '<p><strong>Generating valid test data...</strong></p>';
+                
+                // Generate SSN
+                const validSSN = sensitiveDataGenerator.generateValidSSN();
+                ssnInput.value = validSSN;
+                debug.innerHTML += `<p>Generated SSN: ${validSSN} (Valid: ${sensitiveDataGenerator.validateSSN(validSSN)})</p>`;
+                
+                // Generate Credit Card
+                const cardTypes = ['visa', 'mastercard', 'amex'];
+                const randomType = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+                const validCard = sensitiveDataGenerator.generateValidCreditCard(randomType);
+                const formattedCard = sensitiveDataGenerator.formatCreditCard(validCard);
+                creditCardInput.value = formattedCard;
+                debug.innerHTML += `<p>Generated ${randomType.toUpperCase()} Card: ${formattedCard} (Valid: ${sensitiveDataGenerator.validateCreditCard(validCard)})</p>`;
+                
+                // Generate expiry date
+                const currentYear = new Date().getFullYear();
+                const randomMonth = Math.floor(Math.random() * 12) + 1;
+                const randomYear = currentYear + Math.floor(Math.random() * 5) + 1;
+                
+                document.getElementById('expiryMonth').value = randomMonth.toString().padStart(2, '0');
+                document.getElementById('expiryYear').value = randomYear.toString();
+                
+                // Generate CVV
+                const cvvLength = randomType === 'amex' ? 4 : 3;
+                const validCVV = Math.floor(Math.random() * Math.pow(10, cvvLength)).toString().padStart(cvvLength, '0');
+                document.getElementById('cvv').value = validCVV;
+                
+                debug.innerHTML += `<p>Generated expiry: ${randomMonth.toString().padStart(2, '0')}/${randomYear}</p>`;
+                debug.innerHTML += `<p>Generated CVV: ${validCVV}</p>`;
+                debug.innerHTML += '<p style="color: green;"><strong>✅ All test data generated successfully!</strong></p>';
+            });
+            
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    debug.innerHTML += '<p><strong>Form submit event triggered!</strong></p>';
+                    
+                    // Simple validation
+                    const requiredFields = ['firstName', 'lastName', 'email', 'phone'];
+                    let isValid = true;
+                    let missingFields = [];
+                    
+                    requiredFields.forEach(fieldId => {
+                        const field = document.getElementById(fieldId);
+                        if (!field) {
+                            debug.innerHTML += `<p class="error">Field not found: ${fieldId}</p>`;
+                            isValid = false;
+                        } else if (!field.value.trim()) {
+                            missingFields.push(fieldId);
+                            isValid = false;
+                        }
+                    });
+
+                    // Validate sensitive data if provided
+                    const ssnValue = document.getElementById('ssn').value;
+                    const creditCardValue = document.getElementById('creditCard').value;
+                    
+                    if (ssnValue) {
+                        const ssnValid = sensitiveDataGenerator.validateSSN(ssnValue);
+                        debug.innerHTML += `<p style="color: ${ssnValid ? 'green' : 'red'};">SSN Validation: ${ssnValid ? '✅ Valid' : '❌ Invalid'} (${ssnValue})</p>`;
+                        if (!ssnValid) {
+                            debug.innerHTML += '<p class="error">Please enter a valid SSN or use the "Generate Valid Test Data" button</p>';
+                        }
+                    }
+                    
+                    if (creditCardValue) {
+                        const cardValid = sensitiveDataGenerator.validateCreditCard(creditCardValue);
+                        debug.innerHTML += `<p style="color: ${cardValid ? 'green' : 'red'};">Credit Card Validation: ${cardValid ? '✅ Valid (Luhn check passed)' : '❌ Invalid (Luhn check failed)'} (${sensitiveDataGenerator.formatCreditCard(creditCardValue)})</p>`;
+                        if (!cardValid) {
+                            debug.innerHTML += '<p class="error">Please enter a valid credit card number or use the "Generate Valid Test Data" button</p>';
+                        }
+                    }
+                    
+                    if (isValid) {
+                        debug.innerHTML += '<p><strong style="color: green;">Validation passed!</strong></p>';
+                        document.getElementById('successMessage').style.display = 'block';
+                        
+                        // Collect data
+                        const formData = new FormData(form);
+                        const data = Object.fromEntries(formData.entries());
+                        
+                        // Mask sensitive data for display
+                        const displayData = { ...data };
+                        if (displayData.ssn) {
+                            displayData.ssn = sensitiveDataGenerator.maskSSN(displayData.ssn);
+                        }
+                        if (displayData.creditCard) {
+                            displayData.creditCard = sensitiveDataGenerator.maskCreditCard(displayData.creditCard);
+                        }
+                        if (displayData.cvv) {
+                            displayData.cvv = '***';
+                        }
+                        
+                        debug.innerHTML += `<p>Form data (sensitive fields masked): <pre>${JSON.stringify(displayData, null, 2)}</pre></p>`;
+                        
+                        // Show security notice
+                        debug.innerHTML += `
+                            <div style="background: #d1ecf1; border: 1px solid #bee5eb; border-radius: 5px; padding: 15px; margin: 10px 0;">
+                                <h4 style="color: #0c5460; margin-top: 0;">🔒 Security Notice</h4>
+                                <p style="color: #0c5460; margin-bottom: 0;">
+                                    In a real application, sensitive data like SSN and credit cards would be:
+                                    <br>• Encrypted before transmission
+                                    <br>• Stored securely with proper access controls
+                                    <br>• Handled according to PCI DSS and other compliance standards
+                                    <br>• Never logged or displayed in plain text
+                                </p>
+                            </div>
+                        `;
+                    } else {
+                        debug.innerHTML += `<p class="error">Validation failed. Missing fields: ${missingFields.join(', ')}</p>`;
+                    }
+                });
+                
+                debug.innerHTML += '<p>Event listener added successfully</p>';
+            } else {
+                debug.innerHTML += '<p class="error">ERROR: Form not found!</p>';
+            }
+        });
+    </script>
+</body>
+</html>

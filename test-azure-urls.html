@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure URL Test</title>
+</head>
+<body>
+    <h1>Azure Blob Storage URL Test</h1>
+    <div id="results"></div>
+
+    <script src="js/azure-blob-storage.js"></script>
+    <script>
+        async function testUrls() {
+            const manager = new AzureBlobStorageManager();
+            const results = document.getElementById('results');
+            
+            // Test connection
+            console.log('Testing Azure connection...');
+            const connectionTest = await manager.testConnection();
+            results.innerHTML += `<p><strong>Connection Test:</strong> ${connectionTest.success ? 'SUCCESS' : 'FAILED'} - ${connectionTest.message}</p>`;
+            
+            // Test URL construction for various operations
+            const testAppId = 'test_app_123';
+            const testBlobName = `${testAppId}/test_file.pdf`;
+            
+            // URLs that should be constructed
+            const testUrl = `${manager.baseUrl}?${manager.sasToken}&comp=list&maxresults=1`;
+            const uploadUrl = `${manager.baseUrl}/${testBlobName}?${manager.sasToken}`;
+            const deleteUrl = `${manager.baseUrl}/${testBlobName}?${manager.sasToken}`;
+            const listUrl = `${manager.baseUrl}?restype=container&comp=list&prefix=${testAppId}/&${manager.sasToken}`;
+            
+            results.innerHTML += `<h3>Generated URLs:</h3>`;
+            results.innerHTML += `<p><strong>Test URL:</strong> ${testUrl}</p>`;
+            results.innerHTML += `<p><strong>Upload URL:</strong> ${uploadUrl}</p>`;
+            results.innerHTML += `<p><strong>Delete URL:</strong> ${deleteUrl}</p>`;
+            results.innerHTML += `<p><strong>List URL:</strong> ${listUrl}</p>`;
+            
+            // Check for common URL issues
+            const urls = [testUrl, uploadUrl, deleteUrl, listUrl];
+            urls.forEach((url, index) => {
+                const urlNames = ['Test', 'Upload', 'Delete', 'List'];
+                const hasDoubleQuestionMarks = url.includes('??');
+                const hasMissingQuestionMark = !url.includes('?');
+                const hasValidStructure = url.includes('?') && !url.includes('??');
+                
+                results.innerHTML += `<p><strong>${urlNames[index]} URL Analysis:</strong> ${hasValidStructure ? '✓ Valid' : '✗ Invalid'}</p>`;
+                if (hasDoubleQuestionMarks) {
+                    results.innerHTML += `<p style="color: red;">⚠️ ${urlNames[index]} URL has double question marks!</p>`;
+                }
+                if (hasMissingQuestionMark) {
+                    results.innerHTML += `<p style="color: red;">⚠️ ${urlNames[index]} URL missing question mark!</p>`;
+                }
+            });
+        }
+
+        // Run tests when page loads
+        window.addEventListener('DOMContentLoaded', testUrls);
+    </script>
+</body>
+</html>

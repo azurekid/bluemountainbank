@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Validation Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .valid { background-color: #d4edda; border: 1px solid #c3e6cb; }
+        .invalid { background-color: #f8d7da; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>Credit Card Generation & Validation Test</h1>
+    
+    <button onclick="testCreditCards()">Generate & Test Credit Cards</button>
+    <button onclick="testKnownValid()">Test Known Valid Cards</button>
+    
+    <div id="results"></div>
+
+    <script src="js/sensitive-data-generator.js"></script>
+    <script>
+        function testCreditCards() {
+            const generator = new SensitiveDataGenerator();
+            const results = document.getElementById('results');
+            let html = '<h2>Generated Credit Card Test Results:</h2>';
+            
+            const types = ['visa', 'mastercard', 'amex', 'discover'];
+            
+            types.forEach(type => {
+                html += `<h3>${type.toUpperCase()} Cards:</h3>`;
+                
+                for (let i = 0; i < 5; i++) {
+                    try {
+                        const cardNumber = generator.generateValidCreditCard(type);
+                        const isValid = generator.validateCreditCard(cardNumber);
+                        
+                        html += `<div class="result ${isValid ? 'valid' : 'invalid'}">
+                            Card: ${cardNumber}<br>
+                            Valid: ${isValid ? 'YES' : 'NO'}
+                        </div>`;
+                    } catch (error) {
+                        html += `<div class="result invalid">
+                            Error generating ${type}: ${error.message}
+                        </div>`;
+                    }
+                }
+            });
+            
+            results.innerHTML = html;
+        }
+        
+        function testKnownValid() {
+            const generator = new SensitiveDataGenerator();
+            const results = document.getElementById('results');
+            
+            // Known valid test cards
+            const testCards = [
+                '4111111111111111', // Visa
+                '4000000000000002', // Visa
+                '5555555555554444', // Mastercard
+                '5105105105105100', // Mastercard
+                '378282246310005',  // Amex
+                '371449635398431',  // Amex
+                '6011111111111117', // Discover
+                '6011000990139424'  // Discover
+            ];
+            
+            let html = '<h2>Known Valid Cards Test:</h2>';
+            
+            testCards.forEach(card => {
+                const isValid = generator.validateCreditCard(card);
+                html += `<div class="result ${isValid ? 'valid' : 'invalid'}">
+                    Card: ${card}<br>
+                    Valid: ${isValid ? 'YES' : 'NO'}
+                </div>`;
+            });
+            
+            results.innerHTML = html;
+        }
+        
+        // Test manually
+        function manualLuhnTest(number) {
+            const digits = number.split('').map(Number);
+            let sum = 0;
+            let alternate = false;
+            
+            // Process from right to left
+            for (let i = digits.length - 1; i >= 0; i--) {
+                let digit = digits[i];
+                
+                if (alternate) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit = digit - 9;
+                    }
+                }
+                
+                sum += digit;
+                alternate = !alternate;
+            }
+            
+            return sum % 10 === 0;
+        }
+        
+        // Test on load
+        document.addEventListener('DOMContentLoaded', testKnownValid);
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+/* Dark Mode Styles */
+.dark-mode {
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.9) 0%, rgba(52, 73, 94, 0.9) 100%) !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-mode .header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+}
+
+.dark-mode .footer {
+    background: rgba(44, 62, 80, 0.95) !important;
+    color: #e0e0e0 !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.dark-mode .user-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+}
+
+.dark-mode .user-main {
+    background: transparent !important;
+}
+
+.dark-mode .welcome-section {
+    background: rgba(44, 62, 80, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-mode .account-card {
+    background: linear-gradient(135deg, rgba(52, 73, 94, 0.95) 0%, rgba(44, 62, 80, 0.95) 100%) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .dashboard-section {
+    background: rgba(44, 62, 80, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .section-title {
+    color: #e0e0e0 !important;
+}
+
+.dark-mode .transaction-item {
+    background: rgba(52, 73, 94, 0.5) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .transaction-item:hover {
+    background: rgba(61, 86, 110, 0.7) !important;
+}
+
+.dark-mode .personal-info-item {
+    background: rgba(52, 73, 94, 0.5) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .personal-info-item:hover {
+    background: rgba(61, 86, 110, 0.7) !important;
+}
+
+.dark-mode .action-card {
+    background: rgba(52, 73, 94, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .action-card:hover {
+    background: rgba(61, 86, 110, 0.95) !important;
+    transform: translateY(-5px) !important;
+}
+
+.dark-mode .quick-actions .action-card {
+    background: linear-gradient(135deg, rgba(52, 73, 94, 0.95) 0%, rgba(44, 62, 80, 0.95) 100%) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.dark-mode .user-footer {
+    background: rgba(44, 62, 80, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-mode .footer-links a {
+    color: #bdc3c7 !important;
+}
+
+.dark-mode .footer-links a:hover {
+    color: #e0e0e0 !important;
+}
+
+/* Apply dark mode based on user preferences */
+body[data-theme="dark"] {
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.9) 0%, rgba(52, 73, 94, 0.9) 100%);
+    color: #e0e0e0;
+}
+
+body[data-theme="dark"] .header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+body[data-theme="dark"] .footer {
+    background: rgba(44, 62, 80, 0.95);
+    color: #e0e0e0;
+}

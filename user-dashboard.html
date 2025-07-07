@@ -34,6 +34,7 @@
     <script src="js/cdn-helper.js"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/user-dashboard.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -93,6 +94,19 @@
                         <!-- Quick actions will be dynamically loaded here -->
                     </div>
                 </div>
+
+                <div class="dashboard-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user-shield"></i>
+                        Personal Information
+                        <a href="personal-info.html" style="font-size: 0.8em; color: #007bff; margin-left: 10px;">
+                            <i class="fas fa-external-link-alt"></i> Manage
+                        </a>
+                    </h3>
+                    <div class="personal-info-summary" id="personalInfoSummary">
+                        <!-- Personal info summary will be dynamically loaded here -->
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -117,9 +131,10 @@
         </div>
     </div>
 
-    <script src="js/local-storage-manager.js"></script>
-    <script src="js/azure-storage-manager.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/local-storage-manager.js?v=2.0"></script>
+    <script src="js/azure-storage-manager.js?v=2.0"></script>
+    <script src="js/storage-factory.js?v=2.0"></script>
+    <script src="js/script.js?v=2.0"></script>
     <script>
         // Dashboard management
         class UserDashboard {
@@ -138,9 +153,10 @@
                 }
 
                 try {
-                    // Initialize Azure storage manager
-                    this.storageManager = new AzureStorageManager();
-                    await this.storageManager.initialize();
+                    // Initialize storage using StorageFactory for consistency
+                    const storageFactory = new StorageFactory();
+                    this.storageManager = await storageFactory.getStorageManager();
+                    console.log('Storage manager initialized:', this.storageManager.constructor.name);
                     
                     console.log('Loading user data for userId:', currentUserId);
                     
@@ -175,6 +191,9 @@
                 // Update page title
                 document.title = `${this.currentUser.profile.fullName} - Dashboard - Blue Mountain Bank`;
 
+                // Apply user theme preferences
+                this.applyUserTheme();
+
                 // Show loading screen briefly for smooth transition
                 const loadingScreen = document.getElementById('loadingScreen');
                 loadingScreen.style.display = 'flex';
@@ -184,6 +203,7 @@
                     this.populateAccounts();
                     this.populateTransactions();
                     this.populateQuickActions();
+                    this.populatePersonalInfo();
                     
                     // Hide loading screen
                     loadingScreen.classList.add('hidden');
@@ -191,6 +211,24 @@
                         loadingScreen.style.display = 'none';
                     }, 500);
                 }, 800);
+            }
+
+            applyUserTheme() {
+                // Check user preferences for theme
+                const preferences = this.currentUser.preferences || {};
+                const theme = preferences.theme || 'light';
+                const darkMode = preferences.darkMode || false;
+
+                // Apply dark mode if enabled
+                if (theme === 'dark' || darkMode) {
+                    document.body.classList.add('dark-mode');
+                    document.body.setAttribute('data-theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    document.body.setAttribute('data-theme', 'light');
+                }
+
+                console.log('Applied theme:', theme, 'Dark mode:', darkMode);
             }
 
             populateUserInfo() {
@@ -366,11 +404,13 @@
             getQuickActionsForUser() {
                 const profession = this.currentUser.profile.profession.toLowerCase();
                 
-                // Base actions for all users
+                // Base actions for all users (including Personal Info)
                 const baseActions = [
+                    { icon: 'fas fa-user-shield', title: 'Personal Info', href: 'personal-info.html' },
+                    { icon: 'fas fa-credit-card', title: 'Credit Card Transactions', href: 'credit-card-transactions.html' },
                     { icon: 'fas fa-exchange-alt', title: 'Transfer Money' },
-                    { icon: 'fas fa-credit-card', title: 'Pay Bills' },
-                    { icon: 'fas fa-cog', title: 'Settings' }
+                    { icon: 'fas fa-money-bill', title: 'Pay Bills' },
+                    { icon: 'fas fa-cog', title: 'Settings', href: 'settings.html' }
                 ];
 
                 // Profession-specific actions
@@ -427,6 +467,14 @@
                 const card = document.createElement('div');
                 card.className = 'action-card';
                 
+                // If action has a href, make it clickable
+                if (action.href) {
+                    card.style.cursor = 'pointer';
+                    card.addEventListener('click', () => {
+                        window.location.href = action.href;
+                    });
+                }
+                
                 card.innerHTML = `
                     <div class="action-icon">
                         <i class="${action.icon}"></i>
@@ -435,6 +483,122 @@
                 `;
 
                 return card;
+            }
+
+            populatePersonalInfo() {
+                const container = document.getElementById('personalInfoSummary');
+                const personalInfo = this.currentUser.personalInfo;
+                
+                if (!personalInfo) {
+                    container.innerHTML = `
+                        <div class="personal-info-item">
+                            <div class="personal-info-label">
+                                <i class="fas fa-info-circle"></i>
+                                No personal information available
+                            </div>
+                            <div class="personal-info-value" onclick="window.location.href='personal-info.html'">
+                                Add Information
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+
+                // SSN
+                if (personalInfo.ssn) {
+                    const maskedSSN = this.maskSSN(personalInfo.ssn);
+                    html += `
+                        <div class="personal-info-item">
+                            <div class="personal-info-label">
+                                <i class="fas fa-id-card"></i>
+                                Social Security Number
+                            </div>
+                            <div class="personal-info-value" onclick="window.location.href='personal-info.html'">
+                                ${maskedSSN}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Date of Birth
+                if (personalInfo.dateOfBirth) {
+                    const dob = new Date(personalInfo.dateOfBirth);
+                    const formattedDOB = dob.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                    });
+                    html += `
+                        <div class="personal-info-item">
+                            <div class="personal-info-label">
+                                <i class="fas fa-birthday-cake"></i>
+                                Date of Birth
+                            </div>
+                            <div class="personal-info-value" onclick="window.location.href='personal-info.html'">
+                                ${formattedDOB}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Credit Cards
+                if (personalInfo.creditCards) {
+                    const creditCards = Object.entries(personalInfo.creditCards);
+                    if (creditCards.length > 0) {
+                        html += `
+                            <div class="personal-info-item">
+                                <div class="personal-info-label">
+                                    <i class="fas fa-credit-card"></i>
+                                    Credit Cards (${creditCards.length})
+                                </div>
+                                <div class="credit-cards-summary">
+                        `;
+                        
+                        creditCards.forEach(([cardId, cardData]) => {
+                            const maskedNumber = this.maskCreditCard(cardData.number);
+                            const statusClass = cardData.isActive ? 'card-active' : 'card-inactive';
+                            const statusText = cardData.isActive ? 'Active' : 'Inactive';
+                            
+                            html += `
+                                <div class="credit-card-summary" onclick="window.location.href='personal-info.html'">
+                                    <div class="card-summary-left">
+                                        <span class="card-summary-type">${cardData.type.toUpperCase()}</span>
+                                        <span class="card-summary-number">${maskedNumber}</span>
+                                    </div>
+                                    <span class="card-status ${statusClass}">${statusText}</span>
+                                </div>
+                            `;
+                        });
+                        
+                        html += `
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+
+                container.innerHTML = html;
+            }
+
+            maskSSN(ssn) {
+                if (!ssn) return '***-**-****';
+                const clean = ssn.replace(/\D/g, '');
+                if (clean.length === 9) {
+                    return `***-**-${clean.substring(5)}`;
+                }
+                return '***-**-****';
+            }
+
+            maskCreditCard(cardNumber) {
+                if (!cardNumber) return '**** **** **** ****';
+                const clean = cardNumber.replace(/\D/g, '');
+                if (clean.length >= 13) {
+                    const lastFour = clean.substring(clean.length - 4);
+                    return `**** **** **** ${lastFour}`;
+                }
+                return '**** **** **** ****';
             }
 
             formatCurrency(amount) {

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Information - Blue Mountain Bank</title>
+    <!-- User authentication check script -->
+    <script>
+        // Immediately check if user is logged in
+        (function() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            const loginTime = sessionStorage.getItem('loginTime');
+            
+            if (!currentUser || !loginTime) {
+                console.log('User not logged in - redirecting to login page');
+                window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname));
+                return;
+            }
+            
+            // Optional: Check if session has expired (e.g., after 2 hours)
+            const sessionAge = new Date() - new Date(loginTime);
+            if (sessionAge > 7200000) { // 2 hours in milliseconds
+                console.log('User session expired');
+                sessionStorage.removeItem('currentUser');
+                sessionStorage.removeItem('loginTime');
+                sessionStorage.removeItem('userRole');
+                window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname) + 
+                    '&message=' + encodeURIComponent('Your session has expired. Please log in again.'));
+                return;
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/user-dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .personal-info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .info-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+            flex: 1;
+        }
+
+        .info-value {
+            flex: 2;
+            text-align: right;
+        }
+
+        .sensitive-value {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+        }
+
+        .hidden-value {
+            background: #ffebcd;
+            border: 1px solid #ffa500;
+        }
+
+        .toggle-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 12px;
+        }
+
+        .toggle-btn:hover {
+            background: #0056b3;
+        }
+
+        .edit-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        .edit-btn:hover {
+            background: #1e7e34;
+        }
+
+        .credit-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            min-height: 100px;
+        }
+
+        .card-type {
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .card-number {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .card-name {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .card-expiry {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .card-inactive {
+            opacity: 0.6;
+            background: linear-gradient(135deg, #999 0%, #666 100%);
+        }
+
+        .security-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: #856404;
+        }
+
+        .security-warning h4 {
+            margin-bottom: 10px;
+            color: #b45309;
+        }
+
+        .add-card-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .add-card-btn:hover {
+            background: #117a8b;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .validation-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .validation-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .validation-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .personal-info-container {
+                padding: 10px;
+            }
+            
+            .info-section {
+                padding: 20px;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="personal-info-container">
+        <div class="breadcrumb">
+            <a href="user-dashboard.html"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+
+        <div class="info-header">
+            <h1><i class="fas fa-user-shield"></i> Personal Information Management</h1>
+            <p>Securely manage your sensitive personal information</p>
+        </div>
+
+        <div class="security-warning">
+            <h4><i class="fas fa-exclamation-triangle"></i> Security Notice</h4>
+            <p>This page displays sensitive financial information. Always ensure you're on a secure connection and never share this information with anyone.</p>
+            <ul>
+                <li>All data is encrypted and stored securely</li>
+                <li>Click the eye icon to toggle visibility of sensitive fields</li>
+                <li>Generated data is for educational purposes only</li>
+            </ul>
+        </div>
+
+        <div class="info-grid">
+            <!-- Personal Identification Section -->
+            <div class="info-section">
+                <h3><i class="fas fa-id-card"></i> Personal Identification</h3>
+                
+                <div class="info-item">
+                    <div class="info-label">Social Security Number</div>
+                    <div class="info-value">
+                        <span class="sensitive-value hidden-value" id="ssnDisplay">***-**-****</span>
+                        <button class="toggle-btn" onclick="toggleVisibility('ssn')">
+                            <i class="fas fa-eye" id="ssnEye"></i>
+                        </button>
+                        <button class="edit-btn" onclick="editSSN()">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Date of Birth</div>
+                    <div class="info-value">
+                        <span id="dobDisplay">Loading...</span>
+                        <button class="edit-btn" onclick="editDOB()">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Mother's Maiden Name</div>
+                    <div class="info-value">
+                        <span class="sensitive-value hidden-value" id="maidenNameDisplay">*******</span>
+                        <button class="toggle-btn" onclick="toggleVisibility('maidenName')">
+                            <i class="fas fa-eye" id="maidenNameEye"></i>
+                        </button>
+                        <button class="edit-btn" onclick="editMaidenName()">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credit Cards Section -->
+            <div class="info-section">
+                <h3><i class="fas fa-credit-card"></i> Credit Cards</h3>
+                <div id="creditCardsContainer">
+                    <!-- Credit cards will be populated here -->
+                </div>
+                <button class="add-card-btn" onclick="addNewCard()">
+                    <i class="fas fa-plus"></i> Add New Credit Card
+                </button>
+            </div>
+        </div>
+
+        <!-- Security Features Section -->
+        <div class="info-section">
+            <h3><i class="fas fa-shield-alt"></i> Security Features</h3>
+            <div class="info-item">
+                <div class="info-label">Data Validation</div>
+                <div class="info-value">
+                    <button class="btn-primary" onclick="validateAllData()">
+                        <i class="fas fa-check-circle"></i> Validate All Data
+                    </button>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Generate Test Data</div>
+                <div class="info-value">
+                    <button class="btn-primary" onclick="generateNewTestData()">
+                        <i class="fas fa-random"></i> Generate New Test Data
+                    </button>
+                    <button class="btn-secondary" onclick="toggleAllVisibility()" style="margin-left: 10px;">
+                        <i class="fas fa-eye" id="toggleAllIcon"></i> <span id="toggleAllText">Show All</span>
+                    </button>
+                </div>
+            </div>
+            <div id="validationResults"></div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Edit Information</h3>
+            <form id="editForm">
+                <div id="modalFields">
+                    <!-- Dynamic form fields will be added here -->
+                </div>
+                <button type="submit" class="btn-primary">Save Changes</button>
+                <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+            </form>
+            <div id="modalValidation"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/sensitive-data-generator.js?v=2.0"></script>
+    <script src="js/azure-storage-manager.js?v=2.0"></script>
+    <script src="js/local-storage-manager.js?v=2.0"></script>
+    <script src="js/storage-factory.js?v=2.0"></script>
+    <script>
+        class PersonalInfoManager {
+            constructor() {
+                this.currentUser = null;
+                this.storageManager = null;
+                this.sensitiveDataGenerator = new SensitiveDataGenerator();
+                this.visibilityStates = {
+                    ssn: false,
+                    maidenName: false
+                };
+                
+                console.log('PersonalInfoManager constructor called');
+                console.log('Initial visibility states:', this.visibilityStates);
+                
+                this.init();
+            }
+
+            async init() {
+                try {
+                    console.log('PersonalInfoManager initializing...');
+                    console.log('StorageFactory available:', typeof StorageFactory);
+                    console.log('window.StorageFactory available:', typeof window.StorageFactory);
+                    
+                    // Check if StorageFactory is available
+                    if (typeof StorageFactory === 'undefined') {
+                        throw new Error('StorageFactory is not defined. Make sure storage-factory.js is loaded.');
+                    }
+                    
+                    // Initialize storage
+                    const storageFactory = new StorageFactory();
+                    console.log('StorageFactory instance created:', storageFactory);
+                    console.log('getStorageManager method:', typeof storageFactory.getStorageManager);
+                    
+                    this.storageManager = await storageFactory.getStorageManager();
+                    console.log('Storage manager initialized:', this.storageManager);
+                    
+                    // Load current user data
+                    const currentUserId = sessionStorage.getItem('currentUser');
+                    if (currentUserId) {
+                        // Initialize user object with the userId
+                        this.currentUser = { userId: currentUserId };
+                        console.log('Current user ID from session:', currentUserId);
+                        await this.loadUserData();
+                    } else {
+                        console.log('No current user found, redirecting to login');
+                        window.location.href = 'login.html';
+                    }
+                } catch (error) {
+                    console.error('Failed to initialize personal info manager:', error);
+                    // Still show interface even if storage fails
+                    const currentUserId = sessionStorage.getItem('currentUser');
+                    if (currentUserId) {
+                        this.currentUser = { userId: currentUserId };
+                        this.updateDisplay();
+                    }
+                }
+            }
+
+            async loadUserData() {
+                try {
+                    // Ensure we have a storage manager
+                    if (!this.storageManager) {
+                        console.warn('No storage manager available, using session data only');
+                        this.updateDisplay();
+                        return;
+                    }
+                    
+                    // Get fresh data from storage
+                    const userData = await this.storageManager.getUserData(this.currentUser.userId);
+                    if (userData) {
+                        this.currentUser = { userId: this.currentUser.userId, ...userData };
+                        console.log('Loaded fresh user data from storage:', this.currentUser);
+                    } else {
+                        console.log('No data found in storage, using basic user structure');
+                        // Ensure we have basic structure
+                        if (!this.currentUser.personalInfo) {
+                            this.currentUser.personalInfo = {};
+                        }
+                    }
+                    this.updateDisplay();
+                } catch (error) {
+                    console.error('Failed to load user data from storage:', error);
+                    // Fall back to session data
+                    this.updateDisplay();
+                }
+            }
+
+            updateDisplay() {
+                console.log('updateDisplay called with user data:', this.currentUser);
+                
+                // Ensure personalInfo exists
+                if (!this.currentUser.personalInfo) {
+                    this.currentUser.personalInfo = {};
+                    console.log('Created empty personalInfo object');
+                }
+                
+                // Update personal identification
+                const personalInfo = this.currentUser.personalInfo;
+                console.log('Personal info data:', personalInfo);
+                
+                // SSN
+                const ssnElement = document.getElementById('ssnDisplay');
+                if (ssnElement) {
+                    if (personalInfo.ssn) {
+                        const shouldShowSSN = this.visibilityStates.ssn;
+                        console.log(`SSN visibility state: ${shouldShowSSN}`);
+                        console.log(`SSN value: ${personalInfo.ssn}`);
+                        
+                        const displayValue = shouldShowSSN ? 
+                            personalInfo.ssn : this.sensitiveDataGenerator.maskSSN(personalInfo.ssn);
+                        
+                        ssnElement.textContent = displayValue;
+                        ssnElement.setAttribute('data-value', personalInfo.ssn);
+                        console.log(`SSN display set to: ${displayValue}`);
+                    } else {
+                        ssnElement.textContent = 'Not provided';
+                        ssnElement.removeAttribute('data-value');
+                        console.log('SSN not provided');
+                    }
+                    console.log('SSN display updated:', ssnElement.textContent);
+                }
+
+                // Date of Birth
+                const dobElement = document.getElementById('dobDisplay');
+                if (dobElement) {
+                    if (personalInfo.dateOfBirth) {
+                        try {
+                            const date = new Date(personalInfo.dateOfBirth);
+                            dobElement.textContent = date.toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            });
+                            dobElement.setAttribute('data-value', personalInfo.dateOfBirth);
+                        } catch (error) {
+                            console.error('Error formatting date:', error);
+                            dobElement.textContent = 'Invalid date';
+                        }
+                    } else {
+                        dobElement.textContent = 'Not provided';
+                        dobElement.removeAttribute('data-value');
+                    }
+                    console.log('DOB display updated:', dobElement.textContent);
+                }
+
+                // Mother's Maiden Name
+                const maidenNameElement = document.getElementById('maidenNameDisplay');
+                if (maidenNameElement) {
+                    if (personalInfo.mothersMaidenName) {
+                        const shouldShowMaidenName = this.visibilityStates.maidenName;
+                        console.log(`Maiden name visibility state: ${shouldShowMaidenName}`);
+                        console.log(`Maiden name value: ${personalInfo.mothersMaidenName}`);
+                        
+                        const displayValue = shouldShowMaidenName ? 
+                            personalInfo.mothersMaidenName : '*'.repeat(personalInfo.mothersMaidenName.length);
+                        
+                        maidenNameElement.textContent = displayValue;
+                        maidenNameElement.setAttribute('data-value', personalInfo.mothersMaidenName);
+                        console.log(`Maiden name display set to: ${displayValue}`);
+                    } else {
+                        maidenNameElement.textContent = 'Not provided';
+                        maidenNameElement.removeAttribute('data-value');
+                        console.log('Maiden name not provided');
+                    }
+                    console.log('Maiden name display updated:', maidenNameElement.textContent);
+                }
+
+                // Credit Cards
+                this.updateCreditCardsDisplay();
+            }
+
+            updateCreditCardsDisplay() {
+                console.log('Updating credit cards display...');
+                const container = document.getElementById('creditCardsContainer');
+                if (!container) {
+                    console.error('Credit cards container not found');
+                    return;
+                }
+                
+                container.innerHTML = '';
+
+                const creditCards = this.currentUser.personalInfo?.creditCards || {};
+                console.log('Credit cards data:', creditCards);
+                
+                if (Object.keys(creditCards).length === 0) {
+                    container.innerHTML = '<p>No credit cards on file</p>';
+                    return;
+                }
+                
+                Object.entries(creditCards).forEach(([cardId, cardData]) => {
+                    console.log('Creating card element for:', cardId, cardData);
+                    const cardElement = this.createCreditCardElement(cardId, cardData);
+                    container.appendChild(cardElement);
+                });
+            }
+
+            createCreditCardElement(cardId, cardData) {
+                const card = document.createElement('div');
+                card.className = `credit-card ${!cardData.isActive ? 'card-inactive' : ''}`;
+                
+                const maskedNumber = this.sensitiveDataGenerator.maskCreditCard(cardData.number);
+                const formattedExpiry = `${cardData.expiryMonth.toString().padStart(2, '0')}/${cardData.expiryYear.toString().substr(-2)}`;
+                
+                card.innerHTML = `
+                    <div class="card-type">${cardData.name} (${cardData.type.toUpperCase()})</div>
+                    <div class="card-number" id="cardNumber_${cardId}">${maskedNumber}</div>
+                    <div class="card-details">
+                        <div class="card-name">${this.currentUser.profile?.fullName || 'Cardholder'}</div>
+                        <div class="card-expiry">${formattedExpiry}</div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button class="toggle-btn" onclick="personalInfoManager.toggleCardVisibility('${cardId}')">
+                            <i class="fas fa-eye" id="cardEye_${cardId}"></i>
+                        </button>
+                        <button class="edit-btn" onclick="personalInfoManager.editCreditCard('${cardId}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        ${!cardData.isActive ? 
+                            `<button class="edit-btn" style="background: #28a745;" onclick="personalInfoManager.activateCard('${cardId}')">
+                                <i class="fas fa-play"></i> Activate
+                            </button>` : 
+                            `<button class="edit-btn" style="background: #dc3545;" onclick="personalInfoManager.deactivateCard('${cardId}')">
+                                <i class="fas fa-pause"></i> Deactivate
+                            </button>`
+                        }
+                    </div>
+                `;
+                
+                card.setAttribute('data-card-number', cardData.number);
+                card.setAttribute('data-card-cvv', cardData.cvv);
+                return card;
+            }
+
+            toggleVisibility(field) {
+                console.log(`toggleVisibility called for field: ${field}`);
+                console.log(`Current state for ${field}:`, this.visibilityStates[field]);
+                
+                this.visibilityStates[field] = !this.visibilityStates[field];
+                console.log(`New state for ${field}:`, this.visibilityStates[field]);
+                
+                const eyeIcon = document.getElementById(`${field}Eye`);
+                console.log('Eye icon element:', eyeIcon);
+                
+                if (eyeIcon) {
+                    eyeIcon.className = this.visibilityStates[field] ? 'fas fa-eye-slash' : 'fas fa-eye';
+                    console.log('Updated eye icon class:', eyeIcon.className);
+                } else {
+                    console.error(`Eye icon not found for field: ${field}`);
+                }
+                
+                this.updateDisplay();
+            }
+
+            toggleCardVisibility(cardId) {
+                const cardElement = document.getElementById(`cardNumber_${cardId}`);
+                const eyeIcon = document.getElementById(`cardEye_${cardId}`);
+                const cardNumber = cardElement.parentElement.getAttribute('data-card-number');
+                
+                if (cardElement.textContent.includes('*')) {
+                    cardElement.textContent = this.sensitiveDataGenerator.formatCreditCard(cardNumber);
+                    eyeIcon.className = 'fas fa-eye-slash';
+                } else {
+                    cardElement.textContent = this.sensitiveDataGenerator.maskCreditCard(cardNumber);
+                    eyeIcon.className = 'fas fa-eye';
+                }
+            }
+
+            toggleAllVisibility() {
+                console.log('toggleAllVisibility called');
+                const allHidden = !this.visibilityStates.ssn && !this.visibilityStates.maidenName;
+                console.log('All currently hidden:', allHidden);
+                
+                // Toggle all to the opposite state
+                this.visibilityStates.ssn = allHidden;
+                this.visibilityStates.maidenName = allHidden;
+                
+                console.log('New visibility states:', this.visibilityStates);
+                
+                // Update eye icons
+                const ssnEye = document.getElementById('ssnEye');
+                const maidenNameEye = document.getElementById('maidenNameEye');
+                const toggleAllIcon = document.getElementById('toggleAllIcon');
+                const toggleAllText = document.getElementById('toggleAllText');
+                
+                if (ssnEye) {
+                    ssnEye.className = allHidden ? 'fas fa-eye-slash' : 'fas fa-eye';
+                }
+                if (maidenNameEye) {
+                    maidenNameEye.className = allHidden ? 'fas fa-eye-slash' : 'fas fa-eye';
+                }
+                if (toggleAllIcon && toggleAllText) {
+                    toggleAllIcon.className = allHidden ? 'fas fa-eye-slash' : 'fas fa-eye';
+                    toggleAllText.textContent = allHidden ? 'Hide All' : 'Show All';
+                }
+                
+                // Update display
+                this.updateDisplay();
+            }
+
+            async validateAllData() {
+                const results = document.getElementById('validationResults');
+                const personalInfo = this.currentUser.personalInfo || {};
+                
+                let validationHtml = '<h4>Validation Results:</h4>';
+                
+                // Validate SSN
+                if (personalInfo.ssn) {
+                    const ssnValid = this.sensitiveDataGenerator.validateSSN(personalInfo.ssn);
+                    validationHtml += `<div class="validation-message ${ssnValid ? 'validation-success' : 'validation-error'}">
+                        <i class="fas ${ssnValid ? 'fa-check' : 'fa-times'}"></i> 
+                        SSN: ${ssnValid ? 'Valid' : 'Invalid'} (${personalInfo.ssn})
+                    </div>`;
+                }
+
+                // Validate Credit Cards
+                const creditCards = personalInfo.creditCards || {};
+                Object.entries(creditCards).forEach(([cardId, cardData]) => {
+                    const cardValid = this.sensitiveDataGenerator.validateCreditCard(cardData.number);
+                    validationHtml += `<div class="validation-message ${cardValid ? 'validation-success' : 'validation-error'}">
+                        <i class="fas ${cardValid ? 'fa-check' : 'fa-times'}"></i> 
+                        ${cardData.name}: ${cardValid ? 'Valid' : 'Invalid'} (${this.sensitiveDataGenerator.maskCreditCard(cardData.number)})
+                    </div>`;
+                });
+
+                results.innerHTML = validationHtml;
+            }
+
+            async generateNewTestData() {
+                if (confirm('This will replace your current sensitive data with new test data. Continue?')) {
+                    console.log('Generating new test data...');
+                    const newData = this.sensitiveDataGenerator.generateSamplePersonalInfo();
+                    console.log('Generated data:', newData);
+                    
+                    // Generate additional data
+                    const dateOfBirth = this.sensitiveDataGenerator.generateRandomDateOfBirth();
+                    const mothersMaidenName = this.sensitiveDataGenerator.generateRandomMaidenName();
+                    
+                    // Update current user data
+                    this.currentUser.personalInfo = {
+                        ...this.currentUser.personalInfo,
+                        ssn: newData.ssn,
+                        dateOfBirth: dateOfBirth,
+                        mothersMaidenName: mothersMaidenName,
+                        creditCards: newData.creditCards
+                    };
+
+                    console.log('Updated user data:', this.currentUser);
+
+                    // Save to storage
+                    try {
+                        await this.saveUserData();
+                        console.log('Data saved successfully');
+                        
+                        // Refresh display
+                        this.updateDisplay();
+                        console.log('Display updated');
+                        
+                        alert('New test data generated successfully!');
+                    } catch (error) {
+                        console.error('Error saving data:', error);
+                        alert('Error saving data: ' + error.message);
+                    }
+                }
+            }
+
+            editSSN() {
+                this.openEditModal('SSN', 'ssn', 'text', 'Enter SSN (XXX-XX-XXXX format)');
+            }
+
+            editDOB() {
+                this.openEditModal('Date of Birth', 'dateOfBirth', 'date', 'Select your date of birth');
+            }
+
+            editMaidenName() {
+                this.openEditModal('Mother\'s Maiden Name', 'mothersMaidenName', 'text', 'Enter mother\'s maiden name');
+            }
+
+            openEditModal(title, field, inputType, placeholder) {
+                const modal = document.getElementById('editModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalFields = document.getElementById('modalFields');
+                
+                modalTitle.textContent = `Edit ${title}`;
+                
+                const currentValue = this.currentUser.personalInfo?.[field] || '';
+                
+                modalFields.innerHTML = `
+                    <div class="form-group">
+                        <label for="editValue">${title}</label>
+                        <input type="${inputType}" id="editValue" name="editValue" 
+                               value="${currentValue}" placeholder="${placeholder}" required>
+                    </div>
+                `;
+                
+                // Store the field being edited
+                modalFields.setAttribute('data-field', field);
+                
+                modal.style.display = 'block';
+            }
+
+            async activateCard(cardId) {
+                this.currentUser.personalInfo.creditCards[cardId].isActive = true;
+                await this.saveUserData();
+                this.updateDisplay();
+            }
+
+            async deactivateCard(cardId) {
+                this.currentUser.personalInfo.creditCards[cardId].isActive = false;
+                await this.saveUserData();
+                this.updateDisplay();
+            }
+
+            async saveUserData() {
+                // Keep session storage with just the userId for consistency 
+                sessionStorage.setItem('currentUser', this.currentUser.userId);
+                
+                // Try to save to storage manager if available
+                if (this.storageManager) {
+                    try {
+                        await this.storageManager.saveUserData(this.currentUser.userId, this.currentUser);
+                        console.log('Data saved to storage successfully');
+                    } catch (error) {
+                        console.warn('Failed to save to storage manager:', error);
+                        // Continue anyway since session storage is updated
+                    }
+                } else {
+                    console.warn('No storage manager available, only session storage updated');
+                }
+            }
+
+            closeModal() {
+                document.getElementById('editModal').style.display = 'none';
+                document.getElementById('modalValidation').innerHTML = '';
+            }
+        }
+
+        // Global functions
+        function toggleVisibility(field) {
+            personalInfoManager.toggleVisibility(field);
+        }
+
+        function toggleAllVisibility() {
+            personalInfoManager.toggleAllVisibility();
+        }
+
+        function editSSN() {
+            personalInfoManager.editSSN();
+        }
+
+        function editDOB() {
+            personalInfoManager.editDOB();
+        }
+
+        function editMaidenName() {
+            personalInfoManager.editMaidenName();
+        }
+
+        function validateAllData() {
+            personalInfoManager.validateAllData();
+        }
+
+        function generateNewTestData() {
+            personalInfoManager.generateNewTestData();
+        }
+
+        function closeModal() {
+            personalInfoManager.closeModal();
+        }
+
+        function addNewCard() {
+            // Implementation for adding new credit card
+            alert('Add new credit card feature - implementation pending');
+        }
+
+        // Initialize when page loads
+        let personalInfoManager;
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing PersonalInfoManager...');
+            personalInfoManager = new PersonalInfoManager();
+            
+            // Handle form submission
+            const editForm = document.getElementById('editForm');
+            if (editForm) {
+                editForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const field = document.getElementById('modalFields').getAttribute('data-field');
+                    const value = document.getElementById('editValue').value;
+                    const validation = document.getElementById('modalValidation');
+                    
+                    // Validate the input
+                    let isValid = true;
+                    let message = '';
+                    
+                    if (field === 'ssn') {
+                        isValid = personalInfoManager.sensitiveDataGenerator.validateSSN(value);
+                        message = isValid ? 'SSN is valid!' : 'Invalid SSN format or number';
+                    }
+                    
+                    if (isValid) {
+                        // Update the data
+                        if (!personalInfoManager.currentUser.personalInfo) {
+                            personalInfoManager.currentUser.personalInfo = {};
+                        }
+                        personalInfoManager.currentUser.personalInfo[field] = value;
+                        
+                        // Save to storage
+                        await personalInfoManager.saveUserData();
+                        
+                        // Update display
+                        personalInfoManager.updateDisplay();
+                        
+                        // Close modal
+                        personalInfoManager.closeModal();
+                        
+                        alert('Information updated successfully!');
+                    } else {
+                        validation.innerHTML = `<div class="validation-message validation-error">${message}</div>`;
+                    }
+                });
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                personalInfoManager.closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -6,29 +6,31 @@ class StorageFactory {
     }
 
     detectStorageType() {
-        // Check for Azure storage manager availability
+        // Check for Azure storage manager availability first
         if (typeof AzureStorageManager !== 'undefined') {
+            console.log('Azure storage manager detected, using Azure storage');
             return 'azure';
         }
 
         // Check for environment variable or URL parameter
         const urlParams = new URLSearchParams(window.location.search);
         const storageParam = urlParams.get('storage');
-        if (storageParam) {
-            return storageParam;
+        if (storageParam && storageParam === 'localStorage') {
+            console.log('localStorage forced via URL parameter');
+            return 'localStorage';
         }
 
-        // Default to localStorage
+        // Default to localStorage (no IndexedDB fallback)
+        console.log('Defaulting to localStorage');
         return 'localStorage';
     }
 
     async initialize() {
+        console.log(`Initializing storage type: ${this.storageType}`);
+        
         switch (this.storageType) {
             case 'azure':
                 await this.initializeAzure();
-                break;
-            case 'indexeddb':
-                await this.initializeIndexedDB();
                 break;
             case 'localStorage':
             default:
@@ -48,20 +50,9 @@ class StorageFactory {
             console.log('☁️ Using Azure Blob Storage for data persistence');
             this.manager = new AzureStorageManager();
             await this.manager.initializeData();
+            console.log('✅ Azure storage initialized successfully');
         } catch (error) {
-            console.error('Failed to initialize Azure storage, falling back to localStorage:', error);
-            this.storageType = 'localStorage';
-            this.initializeLocalStorage();
-        }
-    }
-
-    async initializeIndexedDB() {
-        try {
-            console.log('💾 Using IndexedDB for data persistence');
-            this.manager = new IndexedDBManager();
-            await this.manager.initializeData();
-        } catch (error) {
-            console.error('Failed to initialize IndexedDB, falling back to localStorage:', error);
+            console.error('❌ Failed to initialize Azure storage, falling back to localStorage:', error);
             this.storageType = 'localStorage';
             this.initializeLocalStorage();
         }
@@ -73,6 +64,14 @@ class StorageFactory {
 
     getStorageType() {
         return this.storageType;
+    }
+
+    // Convenience method to get initialized storage manager
+    async getStorageManager() {
+        if (!this.manager) {
+            await this.initialize();
+        }
+        return this.manager;
     }
 
     // Switch storage type dynamically
@@ -134,15 +133,6 @@ class StorageFactory {
                     backup: true,
                     scalable: true,
                     secure: true
-                };
-            case 'indexeddb':
-                return {
-                    persistent: true,
-                    offline: true,
-                    multiDevice: false,
-                    backup: false,
-                    scalable: true,
-                    secure: false
                 };
             case 'localStorage':
             default:

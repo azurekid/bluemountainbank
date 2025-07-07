@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Info Debug - Blue Mountain Bank</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .debug-panel { background: white; padding: 20px; border-radius: 8px; margin: 10px 0; }
+        .error { color: red; background: #ffebee; padding: 10px; border-radius: 4px; }
+        .success { color: green; background: #e8f5e9; padding: 10px; border-radius: 4px; }
+        .warning { color: orange; background: #fff3e0; padding: 10px; border-radius: 4px; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="debug-panel">
+        <h1>🔍 Personal Info Debug</h1>
+        <p>This page helps debug personal info loading and data generation issues.</p>
+        
+        <div id="sessionInfo">
+            <h3>Session Information:</h3>
+            <div id="sessionResults"></div>
+        </div>
+
+        <div id="userDataSection">
+            <h3>User Data Loading:</h3>
+            <button onclick="loadUserData()">Load User Data</button>
+            <div id="userDataResults"></div>
+        </div>
+
+        <div id="generatorSection">
+            <h3>Data Generator Test:</h3>
+            <button onclick="testGenerator()">Test Data Generator</button>
+            <div id="generatorResults"></div>
+        </div>
+
+        <div id="quickLogin">
+            <h3>Quick Login (for testing):</h3>
+            <button onclick="quickLoginAlice()">Login as Alice</button>
+            <button onclick="goToPersonalInfo()">Go to Personal Info</button>
+        </div>
+    </div>
+
+    <!-- Load necessary scripts -->
+    <script src="js/local-storage-manager.js"></script>
+    <script src="js/azure-storage-manager.js"></script>
+    <script src="js/storage-factory.js"></script>
+    <script src="js/sensitive-data-generator.js"></script>
+
+    <script>
+        function logMessage(message, type = 'info', containerId = 'sessionResults') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = `${new Date().toLocaleTimeString()}: ${message}`;
+            container.appendChild(div);
+            console.log(message);
+        }
+
+        // Check session information
+        function checkSession() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            const loginTime = sessionStorage.getItem('loginTime');
+            const storageType = sessionStorage.getItem('storageType');
+            
+            logMessage(`Current User: ${currentUser || 'Not set'}`);
+            logMessage(`Login Time: ${loginTime || 'Not set'}`);
+            logMessage(`Storage Type: ${storageType || 'Not set'}`);
+            
+            if (!currentUser) {
+                logMessage('⚠️ No user logged in. Personal info page will redirect to login.', 'warning');
+            }
+        }
+
+        async function loadUserData() {
+            const container = document.getElementById('userDataResults');
+            container.innerHTML = '<p>Loading user data...</p>';
+            
+            try {
+                const currentUserId = sessionStorage.getItem('currentUser');
+                if (!currentUserId) {
+                    logMessage('❌ No user ID in session', 'error', 'userDataResults');
+                    return;
+                }
+
+                logMessage(`Loading data for user: ${currentUserId}`, 'info', 'userDataResults');
+
+                const storageFactory = new StorageFactory();
+                const storageManager = await storageFactory.getStorageManager();
+                
+                logMessage(`Storage manager type: ${storageManager.constructor.name}`, 'info', 'userDataResults');
+
+                const userData = await storageManager.getUserData(currentUserId);
+                
+                if (userData) {
+                    logMessage('✅ User data loaded successfully', 'success', 'userDataResults');
+                    logMessage(`<pre>${JSON.stringify(userData, null, 2)}</pre>`, 'info', 'userDataResults');
+                    
+                    // Check personal info specifically
+                    if (userData.personalInfo) {
+                        logMessage('✅ Personal info found', 'success', 'userDataResults');
+                        logMessage(`Date of Birth: ${userData.personalInfo.dateOfBirth || 'Not set'}`, 'info', 'userDataResults');
+                        logMessage(`SSN: ${userData.personalInfo.ssn || 'Not set'}`, 'info', 'userDataResults');
+                        logMessage(`Mother's Maiden Name: ${userData.personalInfo.mothersMaidenName || 'Not set'}`, 'info', 'userDataResults');
+                    } else {
+                        logMessage('⚠️ No personal info found in user data', 'warning', 'userDataResults');
+                    }
+                } else {
+                    logMessage('❌ No user data found', 'error', 'userDataResults');
+                }
+            } catch (error) {
+                logMessage(`❌ Error loading user data: ${error.message}`, 'error', 'userDataResults');
+            }
+        }
+
+        function testGenerator() {
+            const container = document.getElementById('generatorResults');
+            container.innerHTML = '<p>Testing data generator...</p>';
+            
+            try {
+                const generator = new SensitiveDataGenerator();
+                logMessage('✅ SensitiveDataGenerator created', 'success', 'generatorResults');
+                
+                // Test date of birth generation
+                const dob = generator.generateRandomDateOfBirth();
+                logMessage(`Generated DOB: ${dob}`, 'info', 'generatorResults');
+                
+                // Test maiden name generation
+                const maiden = generator.generateRandomMaidenName();
+                logMessage(`Generated Maiden Name: ${maiden}`, 'info', 'generatorResults');
+                
+                // Test full sample generation
+                const sampleData = generator.generateSamplePersonalInfo();
+                logMessage(`Generated Sample Data: <pre>${JSON.stringify(sampleData, null, 2)}</pre>`, 'info', 'generatorResults');
+                
+            } catch (error) {
+                logMessage(`❌ Error testing generator: ${error.message}`, 'error', 'generatorResults');
+            }
+        }
+
+        function quickLoginAlice() {
+            // Simulate a login
+            sessionStorage.setItem('currentUser', 'alice_martinez');
+            sessionStorage.setItem('loginTime', new Date().toISOString());
+            sessionStorage.setItem('storageType', 'local');
+            logMessage('✅ Simulated login as alice_martinez', 'success');
+            checkSession();
+        }
+
+        function goToPersonalInfo() {
+            window.location.href = 'personal-info.html';
+        }
+
+        // Run initial checks
+        document.addEventListener('DOMContentLoaded', function() {
+            checkSession();
+        });
+    </script>
+</body>
+</html>

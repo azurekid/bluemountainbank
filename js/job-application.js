@@ -5,15 +5,33 @@
 
 class JobApplicationManager {
     constructor() {
-        this.azureStorage = new AzureBlobStorageManager();
-        this.applicationId = this.azureStorage.generateApplicationId();
-        this.uploadedFiles = [];
-        this.maxFileSize = 10 * 1024 * 1024; // 10MB
-        this.allowedFileTypes = ['.pdf', '.doc', '.docx'];
-        
-        this.initializeForm();
-        this.setupEventListeners();
-        this.loadJobInfo();
+        try {
+            console.log('Initializing JobApplicationManager...');
+            
+            // Initialize Azure storage with error handling
+            try {
+                this.azureStorage = new AzureBlobStorageManager();
+                this.applicationId = this.azureStorage.generateApplicationId();
+                console.log('Azure storage initialized successfully');
+            } catch (azureError) {
+                console.warn('Azure storage initialization failed:', azureError);
+                this.azureStorage = null;
+                this.applicationId = 'local_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+            }
+            
+            this.uploadedFiles = [];
+            this.maxFileSize = 10 * 1024 * 1024; // 10MB
+            this.allowedFileTypes = ['.pdf', '.doc', '.docx'];
+            
+            this.initializeForm();
+            this.setupEventListeners();
+            this.loadJobInfo();
+            
+            console.log('JobApplicationManager initialized successfully');
+        } catch (error) {
+            console.error('Critical error in JobApplicationManager constructor:', error);
+            throw error;
+        }
     }
 
     /**
@@ -30,6 +48,22 @@ class JobApplicationManager {
         this.progressText = document.getElementById('progressText');
         this.successMessage = document.getElementById('successMessage');
         this.errorMessage = document.getElementById('errorMessage');
+        
+        // Debug: Check if all elements are found
+        console.log('Form initialization results:');
+        console.log('- form:', !!this.form);
+        console.log('- submitBtn:', !!this.submitBtn);
+        console.log('- fileInput:', !!this.fileInput);
+        console.log('- fileUploadArea:', !!this.fileUploadArea);
+        console.log('- successMessage:', !!this.successMessage);
+        console.log('- errorMessage:', !!this.errorMessage);
+        
+        if (!this.form) {
+            console.error('Critical: jobApplicationForm element not found!');
+        }
+        if (!this.submitBtn) {
+            console.error('Critical: submitBtn element not found!');
+        }
     }
 
     /**
@@ -37,18 +71,32 @@ class JobApplicationManager {
      */
     setupEventListeners() {
         // Form submission
-        this.form.addEventListener('submit', (e) => this.handleFormSubmit(e));
+        if (this.form) {
+            this.form.addEventListener('submit', (e) => {
+                console.log('Form submit event triggered');
+                this.handleFormSubmit(e);
+            });
+            console.log('Form submit event listener added');
+        } else {
+            console.error('Form element not found - cannot set up submit listener');
+        }
 
         // File upload area click
-        this.fileUploadArea.addEventListener('click', () => this.fileInput.click());
+        if (this.fileUploadArea && this.fileInput) {
+            this.fileUploadArea.addEventListener('click', () => this.fileInput.click());
+        }
 
         // File input change
-        this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e.target.files));
+        if (this.fileInput) {
+            this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e.target.files));
+        }
 
         // Drag and drop events
-        this.fileUploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
-        this.fileUploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
-        this.fileUploadArea.addEventListener('drop', (e) => this.handleDrop(e));
+        if (this.fileUploadArea) {
+            this.fileUploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
+            this.fileUploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+            this.fileUploadArea.addEventListener('drop', (e) => this.handleDrop(e));
+        }
 
         // Prevent default drag behaviors on document
         document.addEventListener('dragover', (e) => e.preventDefault());
@@ -79,33 +127,41 @@ class JobApplicationManager {
      */
     async handleFormSubmit(event) {
         event.preventDefault();
+        console.log('Form submission started');
         
         if (!this.validateForm()) {
+            console.log('Form validation failed');
             return;
         }
 
+        console.log('Form validation passed, starting submission process');
         this.setLoading(true);
         this.hideMessages();
 
         try {
             // Collect form data
             const formData = this.collectFormData();
+            console.log('Form data collected:', formData);
             
             // Try to upload files if any
             let fileUploadResults = [];
             let uploadFailed = false;
             
             if (this.uploadedFiles.length > 0) {
+                console.log('Starting file uploads for', this.uploadedFiles.length, 'files');
                 this.showProgress();
                 try {
                     fileUploadResults = await this.uploadFiles();
                     // Check if any uploads failed
                     uploadFailed = fileUploadResults.some(result => !result.success);
+                    console.log('File upload results:', fileUploadResults);
                 } catch (uploadError) {
                     console.error('File upload failed:', uploadError);
                     uploadFailed = true;
                     // Continue with form submission even if uploads fail
                 }
+            } else {
+                console.log('No files to upload');
             }
 
             // Prepare application data
@@ -117,17 +173,30 @@ class JobApplicationManager {
                 uploadStatus: uploadFailed ? 'partial' : 'complete'
             };
 
+            console.log('Prepared application data:', applicationData);
+
             // Try to save application data to Azure
             let saveResult;
             try {
-                saveResult = await this.azureStorage.saveApplicationData(applicationData, this.applicationId);
+                if (this.azureStorage) {
+                    console.log('Attempting to save to Azure...');
+                    saveResult = await this.azureStorage.saveApplicationData(applicationData, this.applicationId);
+                    console.log('Azure save result:', saveResult);
+                } else {
+                    console.log('Azure storage not available, using local storage...');
+                    saveResult = this.saveApplicationLocally(applicationData);
+                    console.log('Local save result:', saveResult);
+                }
             } catch (saveError) {
                 console.error('Azure save failed:', saveError);
                 // Fall back to local storage
+                console.log('Falling back to local storage...');
                 saveResult = this.saveApplicationLocally(applicationData);
+                console.log('Local save result:', saveResult);
             }
             
             if (saveResult.success) {
+                console.log('Application saved successfully');
                 if (uploadFailed) {
                     this.showPartialSuccessMessage();
                 } else {
@@ -135,6 +204,7 @@ class JobApplicationManager {
                 }
                 this.resetForm();
             } else {
+                console.log('Save failed, showing fallback message');
                 // Last resort - show user a message with their application ID
                 this.showFallbackMessage(applicationData);
             }
@@ -145,6 +215,7 @@ class JobApplicationManager {
         } finally {
             this.setLoading(false);
             this.hideProgress();
+            console.log('Form submission process completed');
         }
     }
     
@@ -206,6 +277,12 @@ class JobApplicationManager {
 
         requiredFields.forEach(field => {
             const input = document.getElementById(field);
+            if (!input) {
+                console.error(`Required field element not found: ${field}`);
+                isValid = false;
+                return;
+            }
+            
             if (!input.value.trim()) {
                 this.showFieldError(input, 'This field is required');
                 isValid = false;
@@ -216,19 +293,24 @@ class JobApplicationManager {
 
         // Validate email format
         const emailInput = document.getElementById('email');
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (emailInput.value && !emailRegex.test(emailInput.value)) {
-            this.showFieldError(emailInput, 'Please enter a valid email address');
-            isValid = false;
+        if (emailInput) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailInput.value && !emailRegex.test(emailInput.value)) {
+                this.showFieldError(emailInput, 'Please enter a valid email address');
+                isValid = false;
+            }
         }
 
         // Validate phone number format
         const phoneInput = document.getElementById('phone');
-        if (phoneInput.value && !this.isValidPhone(phoneInput.value)) {
-            this.showFieldError(phoneInput, 'Please enter a valid phone number');
-            isValid = false;
+        if (phoneInput) {
+            if (phoneInput.value && !this.isValidPhone(phoneInput.value)) {
+                this.showFieldError(phoneInput, 'Please enter a valid phone number');
+                isValid = false;
+            }
         }
 
+        console.log('Form validation result:', isValid);
         return isValid;
     }
 
@@ -236,6 +318,11 @@ class JobApplicationManager {
      * Show field error
      */
     showFieldError(input, message) {
+        if (!input) {
+            console.error('Cannot show field error: input element is null');
+            return;
+        }
+        
         input.style.borderColor = 'rgba(239, 68, 68, 0.8)';
         input.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.3)';
         
@@ -259,6 +346,11 @@ class JobApplicationManager {
      * Clear field error
      */
     clearFieldError(input) {
+        if (!input) {
+            console.error('Cannot clear field error: input element is null');
+            return;
+        }
+        
         input.style.borderColor = '';
         input.style.boxShadow = '';
         
@@ -517,13 +609,16 @@ class JobApplicationManager {
      */
     async testAzureConnection() {
         try {
+            console.log('Testing Azure connection...');
             const result = await this.azureStorage.testConnection();
-            if (!result.success) {
+            if (result.success) {
+                console.log('Azure Blob Storage connection successful');
+            } else {
                 console.warn('Azure Blob Storage connection test failed:', result.message);
-                // You might want to show a warning to the user or fall back to local storage
+                console.log('Application form will still work - uploads will use proxy if needed');
             }
         } catch (error) {
-            console.error('Error testing Azure connection:', error);
+            console.warn('Error testing Azure connection - form will still work:', error.message);
         }
     }
 
@@ -649,10 +744,54 @@ class JobApplicationManager {
 
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.jobApplicationManager = new JobApplicationManager();
+    console.log('DOM loaded, initializing job application manager...');
     
-    // Test Azure connection
-    window.jobApplicationManager.testAzureConnection();
+    // First, check if the form exists
+    const form = document.getElementById('jobApplicationForm');
+    if (!form) {
+        console.error('CRITICAL: jobApplicationForm not found in DOM!');
+        return;
+    }
+    
+    // Add a simple test event listener first
+    form.addEventListener('submit', (e) => {
+        console.log('TEST: Form submit event fired - basic listener working');
+    });
+    
+    try {
+        window.jobApplicationManager = new JobApplicationManager();
+        console.log('Job application manager created successfully');
+        
+        // Test Azure connection (disabled for debugging)
+        // window.jobApplicationManager.testAzureConnection();
+        console.log('Azure connection test skipped for debugging');
+    } catch (error) {
+        console.error('Error creating job application manager:', error);
+        
+        // Fallback: Add basic form handling
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('FALLBACK: Using basic form handler');
+            
+            // Simple validation
+            const requiredFields = ['firstName', 'lastName', 'email', 'phone'];
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field || !field.value.trim()) {
+                    console.log(`Field missing or empty: ${fieldId}`);
+                    isValid = false;
+                }
+            });
+            
+            if (isValid) {
+                alert('Form would be submitted - basic validation passed');
+            } else {
+                alert('Please fill in all required fields');
+            }
+        });
+    }
 });
 
 // Helper function to set job info when navigating from careers page

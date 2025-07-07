@@ -296,7 +296,7 @@ class AzureBlobStorageManager {
      */
     async deleteFile(blobName) {
         try {
-            const deleteUrl = `${this.baseUrl}/${blobName}${this.sasToken}`;
+            const deleteUrl = `${this.baseUrl}/${blobName}?${this.sasToken}`;
             
             const response = await fetch(deleteUrl, {
                 method: 'DELETE'
@@ -355,8 +355,13 @@ class AzureBlobStorageManager {
      */
     async testConnection() {
         try {
-            const testUrl = `${this.baseUrl}${this.sasToken}&comp=list&maxresults=1`;
-            const response = await fetch(testUrl);
+            // Use a simple HEAD request to test connection instead of list operation
+            // This is more reliable and requires fewer permissions
+            const testUrl = `${this.baseUrl}?${this.sasToken}&restype=container`;
+            const response = await fetch(testUrl, {
+                method: 'HEAD',
+                mode: 'cors'
+            });
             
             return {
                 success: response.ok,
@@ -364,6 +369,7 @@ class AzureBlobStorageManager {
                 message: response.ok ? 'Connection successful' : `Connection failed: ${response.statusText}`
             };
         } catch (error) {
+            console.warn('Direct Azure connection failed, will use proxy for actual operations:', error.message);
             return {
                 success: false,
                 message: `Connection error: ${error.message}`
