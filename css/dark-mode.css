@@ -97,6 +97,96 @@
     color: #e0e0e0 !important;
 }
 
+/* Crypto Portfolio Dark Mode */
+.dark-mode .crypto-overview {
+    background: rgba(44, 62, 80, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .crypto-account-card {
+    background: linear-gradient(135deg, rgba(52, 73, 94, 0.95) 0%, rgba(44, 62, 80, 0.95) 100%) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .crypto-transaction-item {
+    background: rgba(52, 73, 94, 0.5) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .crypto-transaction-item:hover {
+    background: rgba(61, 86, 110, 0.7) !important;
+}
+
+.dark-mode .crypto-analytics-chart {
+    background: rgba(44, 62, 80, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Credit Card Transactions Dark Mode */
+.dark-mode .credit-card-grid {
+    background: rgba(44, 62, 80, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .credit-card-title {
+    color: #e0e0e0 !important;
+}
+
+.dark-mode .credit-card-transaction {
+    background: rgba(52, 73, 94, 0.5) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .credit-card-transaction:hover {
+    background: rgba(61, 86, 110, 0.7) !important;
+}
+
+.dark-mode .credit-card-filter-controls {
+    background: rgba(52, 73, 94, 0.5) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .filter-input, .dark-mode .filter-select {
+    background: rgba(44, 62, 80, 0.8) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.dark-mode .filter-input::placeholder {
+    color: #bdc3c7 !important;
+}
+
+/* Personal Info Dark Mode */
+.dark-mode .personal-info-card {
+    background: rgba(44, 62, 80, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .info-row {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .info-label {
+    color: #bdc3c7 !important;
+}
+
+.dark-mode .info-value {
+    color: #e0e0e0 !important;
+}
+
 /* Apply dark mode based on user preferences */
 body[data-theme="dark"] {
     background: linear-gradient(135deg, rgba(44, 62, 80, 0.9) 0%, rgba(52, 73, 94, 0.9) 100%);

@@ -254,6 +254,7 @@
                 const container = document.getElementById('accountsContainer');
                 container.innerHTML = '';
 
+                // Add traditional bank accounts only
                 Object.entries(this.currentUser.accounts).forEach(([accountType, accountData]) => {
                     const accountCard = this.createAccountCard(accountType, accountData);
                     container.appendChild(accountCard);
@@ -286,6 +287,37 @@
                     ${additionalInfo}
                     <div class="account-actions">
                         ${this.getAccountActions(accountType)}
+                    </div>
+                `;
+
+                return card;
+            }
+
+            createCryptoCard(cryptoType, cryptoData) {
+                const card = document.createElement('div');
+                card.className = 'account-card crypto-card';
+                
+                const formattedBalance = this.formatCrypto(cryptoData.balance, cryptoData.symbol);
+                const formattedValueUSD = this.formatCurrency(cryptoData.valueUSD);
+                const pricePerUnit = this.formatCurrency(cryptoData.pricePerUnit);
+
+                card.innerHTML = `
+                    <div class="account-header">
+                        <div class="account-type crypto-type">
+                            <i class="fab fa-bitcoin crypto-icon"></i>
+                            ${cryptoData.name}
+                        </div>
+                        <div class="crypto-symbol">${cryptoData.symbol}</div>
+                    </div>
+                    <div class="crypto-balance-section">
+                        <div class="crypto-balance">${formattedBalance}</div>
+                        <div class="crypto-value-usd">${formattedValueUSD}</div>
+                        <div class="crypto-price">@ ${pricePerUnit} per ${cryptoData.symbol}</div>
+                    </div>
+                    <div class="account-actions">
+                        <button class="account-btn crypto-btn">Buy ${cryptoData.symbol}</button>
+                        <button class="account-btn crypto-btn">Sell ${cryptoData.symbol}</button>
+                        <button class="account-btn crypto-btn">View Wallet</button>
                     </div>
                 `;
 
@@ -404,23 +436,23 @@
             getQuickActionsForUser() {
                 const profession = this.currentUser.profile.profession.toLowerCase();
                 
-                // Base actions for all users (including Personal Info)
+                // Base actions for all users (including Personal Info and Crypto)
                 const baseActions = [
                     { icon: 'fas fa-user-shield', title: 'Personal Info', href: 'personal-info.html' },
+                    { icon: 'fab fa-bitcoin', title: 'Crypto Portfolio', href: 'crypto-portfolio.html' },
                     { icon: 'fas fa-credit-card', title: 'Credit Card Transactions', href: 'credit-card-transactions.html' },
                     { icon: 'fas fa-exchange-alt', title: 'Transfer Money' },
                     { icon: 'fas fa-money-bill', title: 'Pay Bills' },
                     { icon: 'fas fa-cog', title: 'Settings', href: 'settings.html' }
                 ];
 
-                // Profession-specific actions
+                // Profession-specific actions (removed Investment and Mobile Deposit)
                 let specificActions = [];
                 
                 if (profession.includes('engineer') || profession.includes('software')) {
                     specificActions = [
-                        { icon: 'fas fa-mobile-alt', title: 'Mobile Deposit' },
-                        { icon: 'fas fa-chart-line', title: 'Investment' },
-                        { icon: 'fas fa-university', title: 'Loan Application' }
+                        { icon: 'fas fa-university', title: 'Loan Application' },
+                        { icon: 'fas fa-chart-bar', title: 'Reports' }
                     ];
                 } else if (profession.includes('business') || profession.includes('owner')) {
                     specificActions = [
@@ -431,7 +463,6 @@
                 } else if (profession.includes('student')) {
                     specificActions = [
                         { icon: 'fas fa-graduation-cap', title: 'Student Loans' },
-                        { icon: 'fas fa-mobile-alt', title: 'Mobile Deposit' },
                         { icon: 'fas fa-piggy-bank', title: 'Save for Goals' }
                     ];
                 } else if (profession.includes('retired')) {
@@ -442,7 +473,6 @@
                     ];
                 } else if (profession.includes('marketing') || profession.includes('manager')) {
                     specificActions = [
-                        { icon: 'fas fa-chart-line', title: 'Investment' },
                         { icon: 'fas fa-credit-card', title: 'Rewards Program' },
                         { icon: 'fas fa-spa', title: 'Premium Services' }
                     ];
@@ -454,9 +484,8 @@
                     ];
                 } else {
                     specificActions = [
-                        { icon: 'fas fa-mobile-alt', title: 'Mobile Deposit' },
-                        { icon: 'fas fa-chart-line', title: 'Investment' },
-                        { icon: 'fas fa-shield-alt', title: 'Insurance' }
+                        { icon: 'fas fa-shield-alt', title: 'Insurance' },
+                        { icon: 'fas fa-chart-bar', title: 'Reports' }
                     ];
                 }
 
@@ -606,6 +635,21 @@
                     style: 'currency',
                     currency: 'USD'
                 }).format(Math.abs(amount));
+            }
+
+            formatCrypto(amount, symbol) {
+                // For crypto, we want to show more decimal places and no currency symbol
+                const num = Number(amount);
+                if (num === 0) return `0 ${symbol}`;
+                
+                // Show 8 decimal places for most cryptos, but trim trailing zeros
+                let formatted = num.toFixed(8).replace(/\.?0+$/, '');
+                
+                // Add thousand separators for large amounts
+                const parts = formatted.split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                
+                return `${parts.join('.')} ${symbol}`;
             }
 
             capitalizeFirst(str) {

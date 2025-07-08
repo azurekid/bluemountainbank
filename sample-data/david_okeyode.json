@@ -1,0 +1,94 @@
+{
+  "credentials": {
+    "username": "david.okeyode",
+    "password": "7082e5be15d73caa2f7af76ed2c3f70a2fae2611cfb727b530997b2a75ff6994",
+    "email": "david.okeyode@bluemountainbank.nl"
+  },
+  "profile": {
+    "firstName": "David",
+    "lastName": "Okeyode",
+    "fullName": "David Okeyode",
+    "age": 47,
+    "profession": "Author",
+    "phone": "(555) 143-6426",
+    "address": "Beverlyhills Drive 1432",
+    "joinDate": "2025-07-01",
+    "avatar": "DO",
+    "accountNumber": "****-9423"
+  },
+  "accounts": {
+    "checking": {
+      "balance": 8750.43,
+      "accountNumber": "CHK-001-9423",
+      "type": "Premium Checking"
+    },
+		"savings": {
+      "balance": 17638,
+      "accountNumber": "CHK-007-9423",
+      "type": "Premium Checking"
+    }
+  },
+  "recentTransactions": [
+    {
+      "id": "tx_001_001",
+      "date": "2025-07-02",
+      "description": "Paycheck - Blue Mountain Bank",
+      "amount": 7600.12,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    }
+  ],
+  "preferences": {
+    "theme": "light",
+    "notifications": true,
+    "language": "en"
+  },
+  "crypto": {
+    "ethereum": {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "balance": 1.85000000,
+      "valueUSD": 6105.00,
+      "pricePerUnit": 3300.00,
+      "walletAddress": "0x123b4c5d6e7f890123456789012345678901234567",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_eth_buy_1748626217",
+          "date": "2025-05-30",
+          "description": "Ethereum Purchase via Binance",
+          "amount": 1.85000000,
+          "amountUSD": 6105.00,
+          "pricePerUnit": 3300.00,
+          "type": "buy",
+          "hash": "u12345678901234567890123456789012345901234",
+          "pending": false
+        }
+      ]
+    },
+    "cosmos": {
+      "symbol": "ATOM",
+      "name": "Cosmos",
+      "balance": 120.00000000,
+      "valueUSD": 1440.00,
+      "pricePerUnit": 12.00,
+      "walletAddress": "cosmos1xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_atom_buy_1749403817",
+          "date": "2025-06-08",
+          "description": "Cosmos Purchase via Kraken",
+          "amount": 120.00000000,
+          "amountUSD": 1440.00,
+          "pricePerUnit": 12.00,
+          "type": "buy",
+          "hash": "v23456789012345678901234567890123456012345",
+          "pending": false
+        }
+      ]
+    }
+  }
+}

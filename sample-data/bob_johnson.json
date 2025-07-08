@@ -1532,6 +1532,74 @@
       }
     }
   },
+  "crypto": {
+    "bitcoin": {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "balance": 0.08750000,
+      "valueUSD": 3889.38,
+      "pricePerUnit": 44450.00,
+      "walletAddress": "bc1qab2cdefghijklmnopqrstuvwxyz1234567890abc",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_btc_buy_1747776617",
+          "date": "2025-05-20",
+          "description": "Bitcoin Purchase via Kraken",
+          "amount": 0.08750000,
+          "amountUSD": 3889.38,
+          "pricePerUnit": 44450.00,
+          "type": "buy",
+          "hash": "f67890123456789012345678901234567890abcdef",
+          "pending": false
+        }
+      ]
+    },
+    "ethereum": {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "balance": 1.25000000,
+      "valueUSD": 4125.00,
+      "pricePerUnit": 3300.00,
+      "walletAddress": "0x123a4b5c6d7e8f9012345678901234567890abcd",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_eth_buy_1748626217",
+          "date": "2025-05-30",
+          "description": "Ethereum Purchase via Kraken",
+          "amount": 1.25000000,
+          "amountUSD": 4125.00,
+          "pricePerUnit": 3300.00,
+          "type": "buy",
+          "hash": "g78901234567890123456789012345678901bcdef0",
+          "pending": false
+        }
+      ]
+    },
+    "solana": {
+      "symbol": "SOL",
+      "name": "Solana",
+      "balance": 45.00000000,
+      "valueUSD": 5850.00,
+      "pricePerUnit": 130.00,
+      "walletAddress": "GJxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlhABC",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_sol_buy_1749576617",
+          "date": "2025-06-10",
+          "description": "Solana Purchase via FTX",
+          "amount": 45.00000000,
+          "amountUSD": 5850.00,
+          "pricePerUnit": 130.00,
+          "type": "buy",
+          "hash": "h89012345678901234567890123456789012cdef01",
+          "pending": false
+        }
+      ]
+    }
+  },
   "accounts": {
     "checking": {
       "balance": 15420.75,
@@ -1551,168 +1619,6 @@
     }
   },
   "recentTransactions": [
-    {
-      "id": "cc_payment_bank_1752599817",
-      "date": "2025-07-15",
-      "description": "Credit Card Payment",
-      "amount": -1142,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "payment",
-      "icon": "fas fa-credit-card"
-    },
-    {
-      "id": "bill_Phone_-_Verizon_1751822217",
-      "date": "2025-07-06",
-      "description": "Phone - Verizon",
-      "amount": -75,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "utilities",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "misc_Gym_Membership_-_24_Hour_Fitness_1751476617",
-      "date": "2025-07-02",
-      "description": "Gym Membership - 24 Hour Fitness",
-      "amount": -45,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "fitness",
-      "icon": "fas fa-exchange-alt"
-    },
-    {
-      "id": "salary_1751390217",
-      "date": "2025-07-01",
-      "description": "Salary Deposit - Small Business Owner",
-      "amount": 5000,
-      "type": "deposit",
-      "account": "checking",
-      "category": "income",
-      "icon": "fas fa-money-bill-wave"
-    },
-    {
-      "id": "bill_Electric_Bill_-_PG&E_1751044617",
-      "date": "2025-06-27",
-      "description": "Electric Bill - PG&E",
-      "amount": -111,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "utilities",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "misc_Netflix_1750871817",
-      "date": "2025-06-25",
-      "description": "Netflix",
-      "amount": -15.99,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "entertainment",
-      "icon": "fas fa-exchange-alt"
-    },
-    {
-      "id": "bill_Internet_-_Comcast_1750785417",
-      "date": "2025-06-24",
-      "description": "Internet - Comcast",
-      "amount": -89,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "utilities",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "bill_Health_Insurance_1750267017",
-      "date": "2025-06-18",
-      "description": "Health Insurance",
-      "amount": -287,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "insurance",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "cc_payment_bank_1750007817",
-      "date": "2025-06-15",
-      "description": "Credit Card Payment",
-      "amount": -913,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "payment",
-      "icon": "fas fa-credit-card"
-    },
-    {
-      "id": "bill_Car_Insurance_1749835017",
-      "date": "2025-06-13",
-      "description": "Car Insurance",
-      "amount": -177,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "insurance",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "bill_Rent_Payment_-_Bay_Area_Apartments_1749575817",
-      "date": "2025-06-10",
-      "description": "Rent Payment - Bay Area Apartments",
-      "amount": -1425,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "housing",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "bill_Health_Insurance_1748971017",
-      "date": "2025-06-03",
-      "description": "Health Insurance",
-      "amount": -287,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "insurance",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "misc_Transfer_to_Savings_1748971017",
-      "date": "2025-06-03",
-      "description": "Transfer to Savings",
-      "amount": -500,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "transfer",
-      "icon": "fas fa-exchange-alt"
-    },
-    {
-      "id": "salary_1748798217",
-      "date": "2025-06-01",
-      "description": "Salary Deposit - Small Business Owner",
-      "amount": 5000,
-      "type": "deposit",
-      "account": "checking",
-      "category": "income",
-      "icon": "fas fa-money-bill-wave"
-    },
-    {
-      "id": "bill_Internet_-_Comcast_1748798217",
-      "date": "2025-06-01",
-      "description": "Internet - Comcast",
-      "amount": -89,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "utilities",
-      "icon": "fas fa-file-invoice-dollar"
-    }
-  ],
-  "preferences": {
-    "theme": "light",
-    "darkMode": false,
-    "emailNotifications": false,
-    "transactionAlerts": true,
-    "twoFactor": true,
-    "sessionTimeout": "60",
-    "language": "en",
-    "currency": "USD"
-  },
-  "allTransactions": [
     {
       "id": "cc_payment_bank_1752599817",
       "date": "2025-07-15",
@@ -2052,6 +1958,69 @@
       "account": "checking",
       "category": "fitness",
       "icon": "fas fa-exchange-alt"
+    }
+  ],
+  "cryptoAccounts": [
+    {
+      "id": "crypto_btc_002",
+      "cryptoCurrency": "BTC",
+      "walletAddress": "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
+      "balance": 0.52178934,
+      "usdValue": 22756.89,
+      "currentPrice": 43634.22,
+      "dailyChange": 3.45,
+      "dailyChangePercent": 7.89
+    },
+    {
+      "id": "crypto_eth_002",
+      "cryptoCurrency": "ETH", 
+      "walletAddress": "0xa1e4380a3b1f749673e270229993ee55f35663b4",
+      "balance": 8.91247856,
+      "usdValue": 22913.67,
+      "currentPrice": 2571.85,
+      "dailyChange": -2.15,
+      "dailyChangePercent": -1.89
+    }
+  ],
+  "cryptoTransactions": [
+    {
+      "id": "crypto_tx_006",
+      "cryptoAccountId": "crypto_btc_002",
+      "transactionType": "buy",
+      "amount": 0.30000000,
+      "usdAmount": 13074.00,
+      "price": 43580.00,
+      "date": "2025-01-18",
+      "time": "10:15:00",
+      "description": "Bitcoin Purchase",
+      "fee": 25.50,
+      "status": "completed"
+    },
+    {
+      "id": "crypto_tx_007",
+      "cryptoAccountId": "crypto_eth_002",
+      "transactionType": "buy", 
+      "amount": 5.00000000,
+      "usdAmount": 12859.25,
+      "price": 2571.85,
+      "date": "2025-01-12",
+      "time": "14:30:00",
+      "description": "Ethereum Purchase",
+      "fee": 18.75,
+      "status": "completed"
+    },
+    {
+      "id": "crypto_tx_008",
+      "cryptoAccountId": "crypto_btc_002",
+      "transactionType": "buy",
+      "amount": 0.22178934,
+      "usdAmount": 9682.89,
+      "price": 43634.22,
+      "date": "2025-01-02",
+      "time": "16:45:00",
+      "description": "Bitcoin Purchase",
+      "fee": 19.35,
+      "status": "completed"
     }
   ]
 }

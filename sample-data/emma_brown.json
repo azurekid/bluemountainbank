@@ -2078,5 +2078,51 @@
       "category": "utilities",
       "icon": "fas fa-file-invoice-dollar"
     }
-  ]
+  ],
+  "crypto": {
+    "avalanche": {
+      "symbol": "AVAX",
+      "name": "Avalanche",
+      "balance": 85.00000000,
+      "valueUSD": 2890.00,
+      "pricePerUnit": 34.00,
+      "walletAddress": "X-avax1xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_avax_buy_1749403817",
+          "date": "2025-06-08",
+          "description": "Avalanche Purchase via Binance",
+          "amount": 85.00000000,
+          "amountUSD": 2890.00,
+          "pricePerUnit": 34.00,
+          "type": "buy",
+          "hash": "p67890123456789012345678901234567890456789",
+          "pending": false
+        }
+      ]
+    },
+    "polygon": {
+      "symbol": "MATIC",
+      "name": "Polygon",
+      "balance": 1200.00000000,
+      "valueUSD": 1080.00,
+      "pricePerUnit": 0.90,
+      "walletAddress": "0x456a7b8c9d0e1f2345678901234567890123456789",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_matic_buy_1750344617",
+          "date": "2025-06-19",
+          "description": "Polygon Purchase via Coinbase",
+          "amount": 1200.00000000,
+          "amountUSD": 1080.00,
+          "pricePerUnit": 0.90,
+          "type": "buy",
+          "hash": "q78901234567890123456789012345678901567890",
+          "pending": false
+        }
+      ]
+    }
+  }
 }

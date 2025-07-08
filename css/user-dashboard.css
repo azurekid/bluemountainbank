@@ -309,6 +309,88 @@
     transform: translateY(-1px);
 }
 
+/* Crypto Card Specific Styles */
+.crypto-card {
+    background: linear-gradient(135deg, 
+        rgba(251, 146, 60, 0.2) 0%,
+        rgba(245, 101, 101, 0.15) 50%,
+        rgba(139, 92, 246, 0.2) 100%);
+    border: 1px solid rgba(251, 146, 60, 0.3);
+}
+
+.crypto-card:hover {
+    border-color: rgba(251, 146, 60, 0.5);
+    box-shadow: 
+        0 12px 40px rgba(251, 146, 60, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.crypto-type {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.crypto-icon {
+    color: #f59e0b;
+    font-size: 1.2rem;
+    animation: cryptoGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes cryptoGlow {
+    from { text-shadow: 0 0 5px rgba(245, 158, 11, 0.5); }
+    to { text-shadow: 0 0 15px rgba(245, 158, 11, 0.8); }
+}
+
+.crypto-symbol {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.crypto-balance-section {
+    margin: 15px 0;
+}
+
+.crypto-balance {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f59e0b;
+    text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+    margin-bottom: 5px;
+}
+
+.crypto-value-usd {
+    font-size: 1.2rem;
+    color: #4ade80;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.crypto-price {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+.crypto-btn {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+    font-weight: 500;
+}
+
+.crypto-btn:hover {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.3));
+    border-color: rgba(245, 158, 11, 0.6);
+    color: #f59e0b;
+    transform: translateY(-2px);
+}
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -623,98 +705,178 @@
     color: #fca5a5;
 }
 
-@media (max-width: 768px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .accounts-overview {
-        grid-template-columns: 1fr;
-    }
-    
-    .header-content {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px 20px;
-    }
-    
-    .user-info {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .user-dashboard {
-        padding-top: 120px;
-    }
-    
-    .user-main {
-        padding: 140px 20px 40px;
-    }
-    
-    .welcome-content h2 {
-        font-size: 1.5rem;
-    }
-    
-    .account-balance {
-        font-size: 1.6rem;
-    }
-    
-    .quick-actions {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
-    }
-    
-    .personal-info-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .personal-info-value {
-        align-self: stretch;
-        text-align: center;
-    }
-    
-    .credit-card-summary {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-    }
+.crypto-overview {
+    margin-bottom: 30px;
 }
 
-@media (max-width: 480px) {
-    .account-card {
-        padding: 20px 15px;
+.crypto-portfolio-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.portfolio-stat {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f59e0b;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.crypto-empty {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.crypto-empty h3 {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.crypto-empty p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.crypto-accounts-section {
+    margin-bottom: 30px;
+}
+
+.crypto-accounts-section .section-title {
+    margin-bottom: 20px;
+}
+
+.crypto-transaction {
+    border-left: 3px solid #f59e0b;
+}
+
+.crypto-transaction-icon {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.crypto-transaction-icon i {
+    color: white;
+}
+
+.transaction-amounts {
+    text-align: right;
+}
+
+.crypto-amount {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f59e0b;
+    margin-bottom: 2px;
+}
+
+.usd-amount {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.portfolio-allocation {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.allocation-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.allocation-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.allocation-name {
+    font-weight: 600;
+    color: white;
+}
+
+.allocation-percentage {
+    font-weight: 700;
+    color: #f59e0b;
+}
+
+.allocation-bar {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    height: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.allocation-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.allocation-value {
+    text-align: right;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+/* Responsive adjustments for crypto features */
+@media (max-width: 768px) {
+    .crypto-portfolio-summary {
+        grid-template-columns: 1fr;
     }
     
-    .dashboard-section {
-        padding: 20px 15px;
-    }
-    
-    .transaction-item {
-        flex-direction: row;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 8px;
-    }
-    
-    .transaction-icon {
-        width: 35px;
-        height: 35px;
-    }
-    
-    .transaction-icon i {
-        font-size: 1rem;
-    }
-    
-    .transaction-amount {
-        font-size: 1rem;
-        flex-shrink: 0;
+    .stat-value {
+        font-size: 1.5rem;
     }
 }

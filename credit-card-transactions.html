@@ -9,8 +9,23 @@
         // Immediately check if user is logged in
         (function() {
             const currentUser = sessionStorage.getItem('currentUser');
-            if (!currentUser) {
+            const loginTime = sessionStorage.getItem('loginTime');
+            
+            if (!currentUser || !loginTime) {
+                console.log('User not logged in - redirecting to login page');
                 window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname));
+                return;
+            }
+            
+            // Optional: Check if session has expired (e.g., after 2 hours)
+            const sessionAge = new Date() - new Date(loginTime);
+            if (sessionAge > 7200000) { // 2 hours in milliseconds
+                console.log('User session expired');
+                sessionStorage.removeItem('currentUser');
+                sessionStorage.removeItem('loginTime');
+                sessionStorage.removeItem('userRole');
+                window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname) + 
+                    '&message=' + encodeURIComponent('Your session has expired. Please log in again.'));
                 return;
             }
         })();
@@ -19,142 +34,183 @@
     <script src="js/cdn-helper.js"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/user-dashboard.css">
+    <link rel="stylesheet" href="css/credit-card-transactions.css">
     <link rel="stylesheet" href="css/dark-mode.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="user-dashboard">
+        <header class="user-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="img/blue-mountain-bank.png" alt="Blue Mountain Bank Logo" class="header-logo">
+                    <h1>Blue Mountain Bank</h1>
+                </div>
+                <div class="user-info">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="userAvatar">--</div>
+                        <div class="user-details">
+                            <div class="user-name" id="userName">Loading...</div>
+                            <div class="user-account" id="userAccount">Account ****-****</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="user-main">
+            <div class="welcome-section">
+                <div class="welcome-content">
+                    <h2 id="welcomeMessage">Credit Card Transactions</h2>
+                    <p id="userInfo">View and manage your credit card activity</p>
+                    <a href="user-dashboard.html" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <div id="creditCardsContainer">
+                <!-- Credit cards will be dynamically loaded here as separate grids -->
+            </div>
+        </main>
+
+        <footer class="user-footer">
+            <div class="footer-content">
+                <p>&copy; 2024 Blue Mountain Bank. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="security.html" target="_blank">Security</a>
+                    <a href="rates.html" target="_blank">Rates</a>
+                    <a href="index.html" target="_blank">Home</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <img src="img/blue-mountain-bank.png" alt="Blue Mountain Bank" class="loading-logo">
+            <div class="loading-text">Loading Credit Cards</div>
+            <div class="loading-subtitle">Please wait...</div>
+        </div>
+    </div>
+
+    <script src="js/local-storage-manager.js?v=2.0"></script>
+    <script src="js/azure-storage-manager.js?v=2.0"></script>
+    <script src="js/storage-factory.js?v=2.0"></script>
+    <script src="js/script.js?v=2.0"></script>
     <style>
-        .credit-cards-page {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 0;
-            transition: all 0.3s ease;
+        /* Credit Card Specific Styles */
+        .credit-card-grid {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: var(--card-background, white);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow, 0 4px 20px rgba(0, 0, 0, 0.1));
         }
 
-        .dark-mode .credit-cards-page {
-            background: linear-gradient(135deg, rgba(44, 62, 80, 0.9) 0%, rgba(52, 73, 94, 0.9) 100%);
-        }
-
-        .credit-cards-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .page-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .dark-mode .page-header {
-            background: rgba(44, 62, 80, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e0e0e0;
-        }
-
-        .page-title {
-            color: #2c3e50;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            transition: color 0.3s ease;
-        }
-
-        .dark-mode .page-title {
-            color: #e0e0e0;
-        }
-
-        .page-subtitle {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            transition: color 0.3s ease;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #bdc3c7;
-        }
-
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-            border: none;
-            cursor: pointer;
-        }
-
-        .back-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
-        }
-
-        .credit-card-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .dark-mode .credit-card-section {
-            background: rgba(44, 62, 80, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e0e0e0;
-        }
-
-        .card-header {
+        .credit-card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(236, 240, 241, 0.5);
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color, rgba(236, 240, 241, 0.5));
         }
 
-        .dark-mode .card-header {
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #2c3e50;
+        .credit-card-title {
             display: flex;
             align-items: center;
-            gap: 10px;
-            transition: color 0.3s ease;
+            gap: 15px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color, #2c3e50);
         }
 
-        .dark-mode .card-title {
-            color: #e0e0e0;
+        .credit-card-icon {
+            font-size: 2rem;
+            color: var(--primary-color, #007bff);
+        }
+
+        .credit-card-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .card-number {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color, #2c3e50);
         }
 
         .card-balance {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: #e74c3c;
         }
 
         .card-balance.positive {
             color: #27ae60;
+        }
+
+        .card-balance.negative {
+            color: #e74c3c;
+        }
+
+        .card-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .card-status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .card-status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .transactions-section {
+            margin-top: 25px;
+        }
+
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .transactions-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color, #2c3e50);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .transaction-count {
+            background: var(--primary-color, #007bff);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         .transactions-filters {
@@ -164,85 +220,136 @@
             flex-wrap: wrap;
         }
 
-        .filter-select, .filter-input {
+        .filter-select, .filter-input, .filter-btn {
             padding: 10px 15px;
-            border: 1px solid rgba(189, 195, 199, 0.5);
+            border: 1px solid var(--border-color, #ddd);
             border-radius: 8px;
             font-size: 14px;
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--input-background, white);
+            color: var(--text-color, #333);
             transition: all 0.3s ease;
         }
 
-        .dark-mode .filter-select,
-        .dark-mode .filter-input {
-            background: rgba(52, 73, 94, 0.9);
-            color: #e0e0e0;
-            border-color: rgba(255, 255, 255, 0.2);
+        .filter-btn {
+            background: var(--primary-color, #007bff);
+            color: white;
+            border-color: var(--primary-color, #007bff);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .transactions-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 8px;
-            overflow: hidden;
+        .filter-btn:hover {
+            background: var(--primary-hover, #0056b3);
         }
 
-        .dark-mode .transactions-table {
-            background: rgba(52, 73, 94, 0.5);
+        .transactions-grid {
+            display: grid;
+            gap: 15px;
         }
 
-        .transactions-table th {
-            background: rgba(248, 249, 250, 0.9);
-            padding: 15px;
-            text-align: left;
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--transaction-background, rgba(248, 249, 250, 0.5));
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color, #007bff);
+            transition: all 0.3s ease;
+        }
+
+        .transaction-item:hover {
+            background: var(--transaction-hover, rgba(52, 152, 219, 0.1));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .transaction-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--icon-background, rgba(52, 152, 219, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--primary-color, #007bff);
+        }
+
+        .transaction-details {
+            flex: 1;
+        }
+
+        .transaction-description {
             font-weight: 600;
-            color: #2c3e50;
-            border-bottom: 2px solid rgba(236, 240, 241, 0.5);
+            color: var(--text-color, #2c3e50);
+            margin-bottom: 5px;
         }
 
-        .dark-mode .transactions-table th {
-            background: rgba(44, 62, 80, 0.9);
-            color: #e0e0e0;
-            border-bottom-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .transactions-table td {
-            padding: 15px;
-            border-bottom: 1px solid rgba(236, 240, 241, 0.3);
-            transition: background 0.3s ease;
-        }
-
-        .dark-mode .transactions-table td {
-            border-bottom-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .transactions-table tr:hover td {
-            background: rgba(52, 152, 219, 0.1);
-        }
-
-        .transaction-amount {
-            font-weight: 600;
-        }
-
-        .transaction-amount.positive {
-            color: #27ae60;
-        }
-
-        .transaction-amount.negative {
-            color: #e74c3c;
+        .transaction-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-secondary, #7f8c8d);
         }
 
         .transaction-category {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
             font-weight: 500;
             text-transform: uppercase;
         }
 
+        .transaction-amount {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .amount-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .amount-value.positive {
+            color: #27ae60;
+        }
+
+        .amount-value.negative {
+            color: #e74c3c;
+        }
+
+        .transaction-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary, #7f8c8d);
+        }
+
+        .no-transactions {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary, #7f8c8d);
+            font-style: italic;
+        }
+
+        .no-transactions i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Category Colors */
         .category-purchase { background: #3498db; color: white; }
         .category-payment { background: #27ae60; color: white; }
         .category-restaurants { background: #e67e22; color: white; }
@@ -252,67 +359,91 @@
         .category-hotels { background: #1abc9c; color: white; }
         .category-airlines { background: #34495e; color: white; }
         .category-entertainment { background: #8e44ad; color: white; }
+        .category-utilities { background: #16a085; color: white; }
 
-        .no-transactions {
-            text-align: center;
-            color: #7f8c8d;
-            font-style: italic;
-            padding: 40px;
-        }
-
-        .dark-mode .no-transactions {
-            color: #bdc3c7;
-        }
-
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .credit-cards-container {
-                padding: 10px;
+            .credit-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
 
-            .page-title {
-                font-size: 2rem;
+            .credit-card-details {
+                align-items: flex-start;
             }
 
             .transactions-filters {
                 flex-direction: column;
             }
 
-            .transactions-table {
-                font-size: 14px;
+            .transaction-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
 
-            .transactions-table th,
-            .transactions-table td {
-                padding: 10px 5px;
+            .transaction-amount {
+                align-items: flex-start;
             }
         }
     </style>
-</head>
-<body>
-    <div class="credit-cards-page">
-        <div class="credit-cards-container">
-            <div class="page-header">
-                <h1 class="page-title">
-                    <i class="fas fa-credit-card"></i>
-                    Credit Card Transactions
-                </h1>
-                <p class="page-subtitle">View and manage your credit card transaction history</p>
-                <a href="user-dashboard.html" class="back-button">
-                    <i class="fas fa-arrow-left"></i>
-                    Back to Dashboard
-                </a>
-            </div>
-
-            <div id="creditCardsContainer">
-                <!-- Credit card sections will be dynamically loaded here -->
-            </div>
-        </div>
-    </div>
-
-    <script src="js/local-storage-manager.js?v=2.0"></script>
-    <script src="js/azure-storage-manager.js?v=2.0"></script>
-    <script src="js/storage-factory.js?v=2.0"></script>
     <script>
+        // Initialize page header and user info
+        async function initializePageHeader() {
+            const currentUserId = sessionStorage.getItem('currentUser');
+            if (!currentUserId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Initialize storage
+                const storageFactory = new StorageFactory();
+                const storageManager = await storageFactory.getStorageManager();
+                
+                // Load user data
+                const userData = await storageManager.getUserData(currentUserId);
+                if (!userData) {
+                    throw new Error('User data not found');
+                }
+
+                // Update header
+                document.getElementById('userAvatar').textContent = userData.profile.avatar;
+                document.getElementById('userName').textContent = userData.profile.fullName;
+                document.getElementById('userAccount').textContent = `Account ${userData.profile.accountNumber}`;
+                
+                // Apply theme
+                const preferences = userData.preferences || {};
+                const theme = preferences.theme || 'light';
+                const darkMode = preferences.darkMode || false;
+
+                if (theme === 'dark' || darkMode) {
+                    document.body.classList.add('dark-mode');
+                    document.body.setAttribute('data-theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    document.body.setAttribute('data-theme', 'light');
+                }
+
+                // Hide loading screen
+                setTimeout(() => {
+                    const loadingScreen = document.getElementById('loadingScreen');
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('hidden');
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }
+                }, 800);
+
+            } catch (error) {
+                console.error('Error initializing header:', error);
+                alert('Failed to load user data. Please try logging in again.');
+                window.location.href = 'login.html';
+            }
+        }
+
         class CreditCardTransactions {
             constructor() {
                 this.currentUser = null;
@@ -339,7 +470,7 @@
                         return;
                     }
 
-                    this.loadCreditCards();
+                    this.loadCreditCardGrids();
                     this.applyUserTheme();
                 } catch (error) {
                     console.error('Error initializing credit card transactions:', error);
@@ -363,76 +494,113 @@
                 }
             }
 
-            loadCreditCards() {
+            loadCreditCardGrids() {
                 const container = document.getElementById('creditCardsContainer');
                 container.innerHTML = '';
 
                 const creditCards = this.currentUser.personalInfo?.creditCards || {};
                 
                 if (Object.keys(creditCards).length === 0) {
-                    container.innerHTML = '<div class="no-transactions">No credit cards found</div>';
+                    container.innerHTML = `
+                        <div class="no-transactions">
+                            <i class="fas fa-credit-card"></i>
+                            <div>No credit cards found</div>
+                        </div>
+                    `;
                     return;
                 }
 
+                // Create a separate grid for each credit card
                 Object.entries(creditCards).forEach(([cardId, cardData]) => {
-                    const cardSection = this.createCreditCardSection(cardId, cardData);
-                    container.appendChild(cardSection);
+                    const cardGrid = this.createCreditCardGrid(cardId, cardData);
+                    container.appendChild(cardGrid);
                 });
             }
 
-            createCreditCardSection(cardId, cardData) {
-                const section = document.createElement('div');
-                section.className = 'credit-card-section';
+            createCreditCardGrid(cardId, cardData) {
+                const gridDiv = document.createElement('div');
+                gridDiv.className = 'credit-card-grid';
+                gridDiv.id = `credit-card-${cardId}`;
                 
                 const maskedNumber = this.maskCreditCard(cardData.number);
                 const balance = cardData.balance || 0;
                 const transactions = cardData.transactions || [];
+                const isActive = cardData.isActive !== false;
                 
-                section.innerHTML = `
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-credit-card"></i>
-                            ${cardData.name} (${maskedNumber})
+                gridDiv.innerHTML = `
+                    <div class="credit-card-header">
+                        <div class="credit-card-title">
+                            <i class="fas fa-credit-card credit-card-icon"></i>
+                            <div>
+                                <div>${cardData.name || cardData.type || 'Credit Card'}</div>
+                                <div class="card-number">${maskedNumber}</div>
+                            </div>
                         </div>
-                        <div class="card-balance ${balance >= 0 ? 'positive' : 'negative'}">
-                            Balance: ${this.formatCurrency(balance)}
+                        <div class="credit-card-details">
+                            <div class="card-balance ${balance >= 0 ? 'positive' : 'negative'}">
+                                ${this.formatCurrency(Math.abs(balance))}
+                            </div>
+                            <div class="card-status ${isActive ? 'active' : 'inactive'}">
+                                ${isActive ? 'Active' : 'Inactive'}
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="transactions-filters">
-                        <select class="filter-select" id="categoryFilter_${cardId}">
-                            <option value="">All Categories</option>
-                            <option value="purchase">Purchases</option>
-                            <option value="payment">Payments</option>
-                            <option value="restaurants">Restaurants</option>
-                            <option value="gas">Gas</option>
-                            <option value="groceries">Groceries</option>
-                            <option value="shopping">Shopping</option>
-                            <option value="hotels">Hotels</option>
-                            <option value="airlines">Airlines</option>
-                            <option value="entertainment">Entertainment</option>
-                        </select>
+                    <div class="transactions-section">
+                        <div class="transactions-header">
+                            <div class="transactions-title">
+                                <i class="fas fa-list"></i>
+                                Transactions
+                                <span class="transaction-count">${transactions.length}</span>
+                            </div>
+                        </div>
                         
-                        <input type="date" class="filter-input" id="dateFilter_${cardId}" 
-                               placeholder="Filter by date">
+                        <div class="transactions-filters">
+                            <select class="filter-select" id="categoryFilter_${cardId}">
+                                <option value="">All Categories</option>
+                                <option value="purchase">Purchases</option>
+                                <option value="payment">Payments</option>
+                                <option value="restaurants">Restaurants</option>
+                                <option value="gas">Gas</option>
+                                <option value="groceries">Groceries</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="hotels">Hotels</option>
+                                <option value="airlines">Airlines</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="utilities">Utilities</option>
+                            </select>
+                            
+                            <input type="date" class="filter-input" id="dateFilter_${cardId}" 
+                                   placeholder="Filter by date">
+                            
+                            <button class="filter-btn" onclick="creditCardTransactions.filterTransactions('${cardId}')">
+                                <i class="fas fa-filter"></i>
+                                Apply Filters
+                            </button>
+                            
+                            <button class="filter-btn" onclick="creditCardTransactions.clearFilters('${cardId}')">
+                                <i class="fas fa-times"></i>
+                                Clear
+                            </button>
+                        </div>
                         
-                        <button class="back-button" onclick="creditCardTransactions.filterTransactions('${cardId}')">
-                            <i class="fas fa-filter"></i>
-                            Filter
-                        </button>
-                    </div>
-                    
-                    <div class="transactions-container" id="transactionsContainer_${cardId}">
-                        ${this.createTransactionsTable(transactions)}
+                        <div class="transactions-grid" id="transactionsGrid_${cardId}">
+                            ${this.createTransactionsGrid(transactions)}
+                        </div>
                     </div>
                 `;
                 
-                return section;
+                return gridDiv;
             }
 
-            createTransactionsTable(transactions) {
+            createTransactionsGrid(transactions) {
                 if (transactions.length === 0) {
-                    return '<div class="no-transactions">No transactions found</div>';
+                    return `
+                        <div class="no-transactions">
+                            <i class="fas fa-receipt"></i>
+                            <div>No transactions found</div>
+                        </div>
+                    `;
                 }
 
                 // Sort transactions by date (newest first)
@@ -440,19 +608,7 @@
                     new Date(b.date) - new Date(a.date)
                 );
 
-                let tableHTML = `
-                    <table class="transactions-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Amount</th>
-                                <th>Type</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
+                let gridHTML = '';
 
                 sortedTransactions.forEach(transaction => {
                     const date = new Date(transaction.date).toLocaleDateString('en-US', {
@@ -463,35 +619,70 @@
                     
                     const amount = transaction.amount;
                     const amountClass = amount >= 0 ? 'positive' : 'negative';
-                    const amountText = `${amount >= 0 ? '+' : ''}${this.formatCurrency(amount)}`;
+                    const amountText = `${amount >= 0 ? '+' : ''}${this.formatCurrency(Math.abs(amount))}`;
                     const transactionIcon = this.getTransactionIcon(transaction.category, transaction.type);
                     
-                    tableHTML += `
-                        <tr>
-                            <td>${date}</td>
-                            <td>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <i class="${transactionIcon}" style="color: #3498db; font-size: 16px;"></i>
-                                    ${transaction.description}
+                    gridHTML += `
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-icon">
+                                    <i class="${transactionIcon}"></i>
                                 </div>
-                            </td>
-                            <td>
-                                <span class="transaction-category category-${transaction.category}">
-                                    ${transaction.category}
-                                </span>
-                            </td>
-                            <td class="transaction-amount ${amountClass}">${amountText}</td>
-                            <td>${this.capitalizeFirst(transaction.type)}</td>
-                        </tr>
+                                <div class="transaction-details">
+                                    <div class="transaction-description">${transaction.description}</div>
+                                    <div class="transaction-meta">
+                                        <span class="transaction-category category-${transaction.category}">
+                                            ${transaction.category}
+                                        </span>
+                                        <span>${this.capitalizeFirst(transaction.type)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transaction-amount">
+                                <div class="amount-value ${amountClass}">${amountText}</div>
+                                <div class="transaction-date">${date}</div>
+                            </div>
+                        </div>
                     `;
                 });
 
-                tableHTML += `
-                        </tbody>
-                    </table>
-                `;
+                return gridHTML;
+            }
 
-                return tableHTML;
+            filterTransactions(cardId) {
+                const categoryFilter = document.getElementById(`categoryFilter_${cardId}`).value;
+                const dateFilter = document.getElementById(`dateFilter_${cardId}`).value;
+                
+                const cardData = this.currentUser.personalInfo.creditCards[cardId];
+                let filteredTransactions = [...(cardData.transactions || [])];
+
+                // Apply category filter
+                if (categoryFilter) {
+                    filteredTransactions = filteredTransactions.filter(t => 
+                        t.category === categoryFilter
+                    );
+                }
+
+                // Apply date filter
+                if (dateFilter) {
+                    filteredTransactions = filteredTransactions.filter(t => 
+                        t.date === dateFilter
+                    );
+                }
+
+                const container = document.getElementById(`transactionsGrid_${cardId}`);
+                container.innerHTML = this.createTransactionsGrid(filteredTransactions);
+            }
+
+            clearFilters(cardId) {
+                // Clear filter inputs
+                document.getElementById(`categoryFilter_${cardId}`).value = '';
+                document.getElementById(`dateFilter_${cardId}`).value = '';
+                
+                // Reset transactions display
+                const cardData = this.currentUser.personalInfo.creditCards[cardId];
+                const container = document.getElementById(`transactionsGrid_${cardId}`);
+                container.innerHTML = this.createTransactionsGrid(cardData.transactions || []);
             }
 
             getTransactionIcon(category, type) {
@@ -517,31 +708,6 @@
                 return categoryIcons[category.toLowerCase()] || 'fas fa-circle';
             }
 
-            filterTransactions(cardId) {
-                const categoryFilter = document.getElementById(`categoryFilter_${cardId}`).value;
-                const dateFilter = document.getElementById(`dateFilter_${cardId}`).value;
-                
-                const cardData = this.currentUser.personalInfo.creditCards[cardId];
-                let filteredTransactions = [...(cardData.transactions || [])];
-
-                // Apply category filter
-                if (categoryFilter) {
-                    filteredTransactions = filteredTransactions.filter(t => 
-                        t.category === categoryFilter
-                    );
-                }
-
-                // Apply date filter
-                if (dateFilter) {
-                    filteredTransactions = filteredTransactions.filter(t => 
-                        t.date === dateFilter
-                    );
-                }
-
-                const container = document.getElementById(`transactionsContainer_${cardId}`);
-                container.innerHTML = this.createTransactionsTable(filteredTransactions);
-            }
-
             maskCreditCard(cardNumber) {
                 if (!cardNumber) return '**** **** **** ****';
                 const clean = cardNumber.replace(/\D/g, '');
@@ -556,7 +722,7 @@
                 return new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: 'USD'
-                }).format(Math.abs(amount));
+                }).format(amount);
             }
 
             capitalizeFirst(str) {
@@ -565,9 +731,24 @@
         }
 
         // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize page header first
+            await initializePageHeader();
+            
+            // Then initialize credit card transactions
             window.creditCardTransactions = new CreditCardTransactions();
         });
+
+        // Logout function for consistency
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('currentUser');
+                sessionStorage.removeItem('loginTime');
+                sessionStorage.removeItem('storageType');
+                sessionStorage.removeItem('dataSource');
+                window.location.href = 'index.html';
+            }
+        }
     </script>
 </body>
 </html>

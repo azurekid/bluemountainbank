@@ -184,6 +184,196 @@
       "account": "checking",
       "category": "insurance",
       "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Transfer_to_Savings_1748020617",
+      "date": "2025-05-23",
+      "description": "Transfer to Savings",
+      "amount": -500,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "transfer",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Health_Insurance_1747761417",
+      "date": "2025-05-20",
+      "description": "Health Insurance",
+      "amount": -344,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Mobile_Deposit_1747675017",
+      "date": "2025-05-19",
+      "description": "Mobile Deposit",
+      "amount": 54,
+      "type": "deposit",
+      "account": "checking",
+      "category": "deposit",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Rent_Payment_-_Bay_Area_Apartments_1747588617",
+      "date": "2025-05-18",
+      "description": "Rent Payment - Bay Area Apartments",
+      "amount": -1424,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "housing",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Internet_-_Comcast_1747588617",
+      "date": "2025-05-18",
+      "description": "Internet - Comcast",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Gym_Membership_-_24_Hour_Fitness_1747502217",
+      "date": "2025-05-17",
+      "description": "Gym Membership - 24 Hour Fitness",
+      "amount": -45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "fitness",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "misc_Spotify_Premium_1747502217",
+      "date": "2025-05-17",
+      "description": "Spotify Premium",
+      "amount": -9.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "cc_payment_bank_1747415817",
+      "date": "2025-05-16",
+      "description": "Credit Card Payment",
+      "amount": -957,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "payment",
+      "icon": "fas fa-credit-card"
+    },
+    {
+      "id": "bill_Phone_-_Verizon_1747070217",
+      "date": "2025-05-12",
+      "description": "Phone - Verizon",
+      "amount": -75,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Electric_Bill_-_PG&E_1746897417",
+      "date": "2025-05-10",
+      "description": "Electric Bill - PG&E",
+      "amount": -135,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Spotify_Premium_1746724617",
+      "date": "2025-05-08",
+      "description": "Spotify Premium",
+      "amount": -9.99,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "entertainment",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Internet_-_Comcast_1746292617",
+      "date": "2025-05-03",
+      "description": "Internet - Comcast",
+      "amount": -89,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "salary_1746206217",
+      "date": "2025-05-02",
+      "description": "Salary Deposit - College Student",
+      "amount": 5000,
+      "type": "deposit",
+      "account": "checking",
+      "category": "income",
+      "icon": "fas fa-money-bill-wave"
+    },
+    {
+      "id": "bill_Health_Insurance_1746206217",
+      "date": "2025-05-02",
+      "description": "Health Insurance",
+      "amount": -344,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Rent_Payment_-_Bay_Area_Apartments_1745515017",
+      "date": "2025-04-24",
+      "description": "Rent Payment - Bay Area Apartments",
+      "amount": -1424,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "housing",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Electric_Bill_-_PG&E_1745515017",
+      "date": "2025-04-24",
+      "description": "Electric Bill - PG&E",
+      "amount": -135,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "misc_Gym_Membership_-_24_Hour_Fitness_1745428617",
+      "date": "2025-04-23",
+      "description": "Gym Membership - 24 Hour Fitness",
+      "amount": -45,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "fitness",
+      "icon": "fas fa-exchange-alt"
+    },
+    {
+      "id": "bill_Phone_-_Verizon_1744996617",
+      "date": "2025-04-18",
+      "description": "Phone - Verizon",
+      "amount": -75,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "utilities",
+      "icon": "fas fa-file-invoice-dollar"
+    },
+    {
+      "id": "bill_Car_Insurance_1744823817",
+      "date": "2025-04-16",
+      "description": "Car Insurance",
+      "amount": -187,
+      "type": "withdrawal",
+      "account": "checking",
+      "category": "insurance",
+      "icon": "fas fa-file-invoice-dollar"
     }
   ],
   "preferences": {
@@ -2048,5 +2238,62 @@
       "category": "insurance",
       "icon": "fas fa-file-invoice-dollar"
     }
-  ]
+  ],
+  "crypto": {
+    "bitcoin": {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "balance": 0.45000000,
+      "valueUSD": 20002.50,
+      "pricePerUnit": 44450.00,
+      "walletAddress": "bc1qdef2345678901234567890123456789012345",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_btc_buy_1746567017",
+          "date": "2025-05-06",
+          "description": "Bitcoin Purchase via Coinbase Pro",
+          "amount": 0.25000000,
+          "amountUSD": 11112.50,
+          "pricePerUnit": 44450.00,
+          "type": "buy",
+          "hash": "m34567890123456789012345678901234567123456",
+          "pending": false
+        },
+        {
+          "id": "crypto_btc_buy_1749576617",
+          "date": "2025-06-10",
+          "description": "Bitcoin Purchase via Coinbase Pro",
+          "amount": 0.20000000,
+          "amountUSD": 8890.00,
+          "pricePerUnit": 44450.00,
+          "type": "buy",
+          "hash": "n45678901234567890123456789012345678234567",
+          "pending": false
+        }
+      ]
+    },
+    "litecoin": {
+      "symbol": "LTC",
+      "name": "Litecoin",
+      "balance": 12.50000000,
+      "valueUSD": 1187.50,
+      "pricePerUnit": 95.00,
+      "walletAddress": "LTC1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_ltc_buy_1748626217",
+          "date": "2025-05-30",
+          "description": "Litecoin Purchase via Binance",
+          "amount": 12.50000000,
+          "amountUSD": 1187.50,
+          "pricePerUnit": 95.00,
+          "type": "buy",
+          "hash": "o56789012345678901234567890123456789345678",
+          "pending": false
+        }
+      ]
+    }
+  }
 }

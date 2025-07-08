@@ -2048,5 +2048,73 @@
       "category": "utilities",
       "icon": "fas fa-file-invoice-dollar"
     }
-  ]
+  ],
+  "crypto": {
+    "bitcoin": {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "balance": 0.02500000,
+      "valueUSD": 1111.25,
+      "pricePerUnit": 44450.00,
+      "walletAddress": "bc1qfgh3456789012345678901234567890123456",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_btc_buy_1751390217",
+          "date": "2025-07-01",
+          "description": "Bitcoin Purchase via Cash App",
+          "amount": 0.02500000,
+          "amountUSD": 1111.25,
+          "pricePerUnit": 44450.00,
+          "type": "buy",
+          "hash": "r89012345678901234567890123456789012678901",
+          "pending": false
+        }
+      ]
+    },
+    "dogecoin": {
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "balance": 2500.00000000,
+      "valueUSD": 625.00,
+      "pricePerUnit": 0.25,
+      "walletAddress": "DQxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_doge_buy_1750344617",
+          "date": "2025-06-19",
+          "description": "Dogecoin Purchase via Robinhood",
+          "amount": 2500.00000000,
+          "amountUSD": 625.00,
+          "pricePerUnit": 0.25,
+          "type": "buy",
+          "hash": "s90123456789012345678901234567890123789012",
+          "pending": false
+        }
+      ]
+    },
+    "shiba": {
+      "symbol": "SHIB",
+      "name": "Shiba Inu",
+      "balance": 50000000.00000000,
+      "valueUSD": 500.00,
+      "pricePerUnit": 0.00001000,
+      "walletAddress": "0x789d0e1f2a3b4c5d6e7f890123456789012345678",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_shib_buy_1751735817",
+          "date": "2025-07-05",
+          "description": "Shiba Inu Purchase via Coinbase",
+          "amount": 50000000.00000000,
+          "amountUSD": 500.00,
+          "pricePerUnit": 0.00001000,
+          "type": "buy",
+          "hash": "t01234567890123456789012345678901234890123",
+          "pending": false
+        }
+      ]
+    }
+  }
 }

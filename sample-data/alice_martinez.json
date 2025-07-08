@@ -1312,6 +1312,96 @@
       }
     }
   },
+  "crypto": {
+    "bitcoin": {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "balance": 0.15420000,
+      "valueUSD": 6854.23,
+      "pricePerUnit": 44450.00,
+      "walletAddress": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_btc_buy_1751735817",
+          "date": "2025-07-05",
+          "description": "Bitcoin Purchase via Coinbase",
+          "amount": 0.02240000,
+          "amountUSD": 995.68,
+          "pricePerUnit": 44450.00,
+          "type": "buy",
+          "hash": "a1b2c3d4e5f6789012345678901234567890abcdef",
+          "pending": false
+        },
+        {
+          "id": "crypto_btc_buy_1749576617",
+          "date": "2025-06-10",
+          "description": "Bitcoin Purchase via Coinbase",
+          "amount": 0.13180000,
+          "amountUSD": 5858.55,
+          "pricePerUnit": 44450.00,
+          "type": "buy",
+          "hash": "b2c3d4e5f67890123456789012345678901abcdef0",
+          "pending": false
+        }
+      ]
+    },
+    "ethereum": {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "balance": 2.45000000,
+      "valueUSD": 8085.50,
+      "pricePerUnit": 3300.00,
+      "walletAddress": "0x742e4A7E9D6C4A59C7b2f6a8C1b2d3e4f5g6h7i8j9",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_eth_buy_1750344617",
+          "date": "2025-06-19",
+          "description": "Ethereum Purchase via Coinbase",
+          "amount": 1.50000000,
+          "amountUSD": 4950.00,
+          "pricePerUnit": 3300.00,
+          "type": "buy",
+          "hash": "c3d4e5f678901234567890123456789012abcdef01",
+          "pending": false
+        },
+        {
+          "id": "crypto_eth_buy_1748626217",
+          "date": "2025-05-30",
+          "description": "Ethereum Purchase via Coinbase",
+          "amount": 0.95000000,
+          "amountUSD": 3135.50,
+          "pricePerUnit": 3300.00,
+          "type": "buy",
+          "hash": "d4e5f6789012345678901234567890123abcdef012",
+          "pending": false
+        }
+      ]
+    },
+    "cardano": {
+      "symbol": "ADA",
+      "name": "Cardano",
+      "balance": 850.00000000,
+      "valueUSD": 425.00,
+      "pricePerUnit": 0.50,
+      "walletAddress": "addr1q8xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+      "isActive": true,
+      "transactions": [
+        {
+          "id": "crypto_ada_buy_1749403817",
+          "date": "2025-06-08",
+          "description": "Cardano Purchase via Binance",
+          "amount": 850.00000000,
+          "amountUSD": 425.00,
+          "pricePerUnit": 0.50,
+          "type": "buy",
+          "hash": "e5f67890123456789012345678901234abcdef0123",
+          "pending": false
+        }
+      ]
+    }
+  },
   "accounts": {
     "checking": {
       "balance": 8750.43,
@@ -1331,168 +1421,6 @@
     }
   },
   "recentTransactions": [
-    {
-      "id": "cc_payment_bank_1752599817",
-      "date": "2025-07-15",
-      "description": "Credit Card Payment",
-      "amount": -915,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "payment",
-      "icon": "fas fa-credit-card"
-    },
-    {
-      "id": "bill_Rent_Payment_-_Bay_Area_Apartments_1751649417",
-      "date": "2025-07-04",
-      "description": "Rent Payment - Bay Area Apartments",
-      "amount": -2607,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "housing",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "salary_1751390217",
-      "date": "2025-07-01",
-      "description": "Salary Deposit - Software Engineer",
-      "amount": 8500,
-      "type": "deposit",
-      "account": "checking",
-      "category": "income",
-      "icon": "fas fa-money-bill-wave"
-    },
-    {
-      "id": "bill_Phone_-_Verizon_1751044617",
-      "date": "2025-06-27",
-      "description": "Phone - Verizon",
-      "amount": -75,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "utilities",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "bill_Health_Insurance_1750612617",
-      "date": "2025-06-22",
-      "description": "Health Insurance",
-      "amount": -263,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "insurance",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "bill_Electric_Bill_-_PG&E_1750094217",
-      "date": "2025-06-16",
-      "description": "Electric Bill - PG&E",
-      "amount": -85,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "utilities",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "cc_payment_bank_1750007817",
-      "date": "2025-06-15",
-      "description": "Credit Card Payment",
-      "amount": -1338,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "payment",
-      "icon": "fas fa-credit-card"
-    },
-    {
-      "id": "bill_Internet_-_Comcast_1749921417",
-      "date": "2025-06-14",
-      "description": "Internet - Comcast",
-      "amount": -89,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "utilities",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "bill_Car_Insurance_1749921417",
-      "date": "2025-06-14",
-      "description": "Car Insurance",
-      "amount": -158,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "insurance",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "misc_Spotify_Premium_1749316617",
-      "date": "2025-06-07",
-      "description": "Spotify Premium",
-      "amount": -9.99,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "entertainment",
-      "icon": "fas fa-exchange-alt"
-    },
-    {
-      "id": "salary_1748798217",
-      "date": "2025-06-01",
-      "description": "Salary Deposit - Software Engineer",
-      "amount": 8500,
-      "type": "deposit",
-      "account": "checking",
-      "category": "income",
-      "icon": "fas fa-money-bill-wave"
-    },
-    {
-      "id": "bill_Phone_-_Verizon_1748798217",
-      "date": "2025-06-01",
-      "description": "Phone - Verizon",
-      "amount": -75,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "utilities",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "bill_Health_Insurance_1748279817",
-      "date": "2025-05-26",
-      "description": "Health Insurance",
-      "amount": -263,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "insurance",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "bill_Car_Insurance_1747847817",
-      "date": "2025-05-21",
-      "description": "Car Insurance",
-      "amount": -158,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "insurance",
-      "icon": "fas fa-file-invoice-dollar"
-    },
-    {
-      "id": "bill_Electric_Bill_-_PG&E_1747761417",
-      "date": "2025-05-20",
-      "description": "Electric Bill - PG&E",
-      "amount": -85,
-      "type": "withdrawal",
-      "account": "checking",
-      "category": "utilities",
-      "icon": "fas fa-file-invoice-dollar"
-    }
-  ],
-  "preferences": {
-    "theme": "dark",
-    "darkMode": true,
-    "emailNotifications": true,
-    "transactionAlerts": true,
-    "twoFactor": false,
-    "sessionTimeout": "120",
-    "language": "en",
-    "currency": "USD"
-  },
-  "allTransactions": [
     {
       "id": "cc_payment_bank_1752599817",
       "date": "2025-07-15",
@@ -1862,6 +1790,105 @@
       "account": "checking",
       "category": "transfer",
       "icon": "fas fa-exchange-alt"
+    }
+  ],
+  "cryptoAccounts": [
+    {
+      "id": "crypto_btc_001",
+      "cryptoCurrency": "BTC",
+      "walletAddress": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+      "balance": 0.25843621,
+      "usdValue": 11250.75,
+      "currentPrice": 43578.00,
+      "dailyChange": 2.34,
+      "dailyChangePercent": 5.67
+    },
+    {
+      "id": "crypto_eth_001", 
+      "cryptoCurrency": "ETH",
+      "walletAddress": "0x742d35cc6688c02532aab59e1bfb23b3b5f9c5c3",
+      "balance": 3.47892156,
+      "usdValue": 8947.23,
+      "currentPrice": 2571.85,
+      "dailyChange": -1.89,
+      "dailyChangePercent": -2.11
+    },
+    {
+      "id": "crypto_ada_001",
+      "cryptoCurrency": "ADA", 
+      "walletAddress": "addr1q8x2jkl9n5m3p7r1s4t6u8v2w9x5y7z3a1b4c7d9e2f5g8h",
+      "balance": 1247.58934201,
+      "usdValue": 623.79,
+      "currentPrice": 0.4999,
+      "dailyChange": 0.0234,
+      "dailyChangePercent": 4.91
+    }
+  ],
+  "cryptoTransactions": [
+    {
+      "id": "crypto_tx_001",
+      "cryptoAccountId": "crypto_btc_001",
+      "transactionType": "buy",
+      "amount": 0.15000000,
+      "usdAmount": 6537.00,
+      "price": 43580.00,
+      "date": "2025-01-15",
+      "time": "14:32:00",
+      "description": "Bitcoin Purchase",
+      "fee": 12.75,
+      "status": "completed"
+    },
+    {
+      "id": "crypto_tx_002",
+      "cryptoAccountId": "crypto_eth_001", 
+      "transactionType": "buy",
+      "amount": 2.00000000,
+      "usdAmount": 5143.70,
+      "price": 2571.85,
+      "date": "2025-01-10",
+      "time": "09:15:00",
+      "description": "Ethereum Purchase",
+      "fee": 8.50,
+      "status": "completed"
+    },
+    {
+      "id": "crypto_tx_003",
+      "cryptoAccountId": "crypto_btc_001",
+      "transactionType": "buy", 
+      "amount": 0.10843621,
+      "usdAmount": 4723.45,
+      "price": 43555.00,
+      "date": "2025-01-05",
+      "time": "16:45:00",
+      "description": "Bitcoin Purchase",
+      "fee": 9.85,
+      "status": "completed"
+    },
+    {
+      "id": "crypto_tx_004",
+      "cryptoAccountId": "crypto_eth_001",
+      "transactionType": "buy",
+      "amount": 1.47892156,
+      "usdAmount": 3803.53,
+      "price": 2571.85,
+      "date": "2024-12-28",
+      "time": "11:20:00", 
+      "description": "Ethereum Purchase",
+      "fee": 6.75,
+      "status": "completed"
+    },
+    {
+      "id": "crypto_tx_005",
+      "cryptoAccountId": "crypto_ada_001",
+      "transactionType": "buy",
+      "amount": 1247.58934201,
+      "usdAmount": 623.79,
+      "price": 0.4999,
+      "date": "2024-12-20",
+      "time": "13:55:00",
+      "description": "Cardano Purchase", 
+      "fee": 1.25,
+      "status": "completed"
     }
   ]
 }

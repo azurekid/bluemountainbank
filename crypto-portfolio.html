@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Portfolio - Blue Mountain Bank</title>
+    <!-- User authentication check script -->
+    <script>
+        // Immediately check if user is logged in
+        (function() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            const loginTime = sessionStorage.getItem('loginTime');
+            
+            if (!currentUser || !loginTime) {
+                console.log('User not logged in - redirecting to login page');
+                window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname));
+                return;
+            }
+            
+            // Optional: Check if session has expired (e.g., after 2 hours)
+            const sessionAge = new Date() - new Date(loginTime);
+            if (sessionAge > 7200000) { // 2 hours in milliseconds
+                console.log('User session expired');
+                sessionStorage.removeItem('currentUser');
+                sessionStorage.removeItem('loginTime');
+                sessionStorage.removeItem('userRole');
+                window.location.replace('login.html?redirect=' + encodeURIComponent(window.location.pathname) + 
+                    '&message=' + encodeURIComponent('Your session has expired. Please log in again.'));
+                return;
+            }
+        })();
+    </script>
+    <!-- CDN Helper Script -->
+    <script src="js/cdn-helper.js"></script>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/user-dashboard.css">
+    <link rel="stylesheet" href="css/crypto-portfolio.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="user-dashboard">
+        <header class="user-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="img/blue-mountain-bank.png" alt="Blue Mountain Bank Logo" class="header-logo">
+                    <h1>Blue Mountain Bank</h1>
+                </div>
+                <div class="user-info">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="userAvatar">--</div>
+                        <div class="user-details">
+                            <div class="user-name" id="userName">Loading...</div>
+                            <div class="user-account" id="userAccount">Account ****-****</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="user-main">
+            <div class="welcome-section">
+                <div class="welcome-content">
+                    <h2 id="welcomeMessage">Crypto Portfolio</h2>
+                    <p id="userInfo">Manage your cryptocurrency investments</p>
+                    <a href="user-dashboard.html" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <div class="crypto-overview" id="cryptoOverview">
+                <!-- Crypto portfolio summary will be loaded here -->
+            </div>
+
+            <div class="accounts-overview crypto-accounts-grid" id="cryptoAccountsContainer">
+                <!-- Crypto accounts will be dynamically loaded here using same grid as bank accounts -->
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-section crypto-transactions-section">
+                    <h3 class="section-title">
+                        <i class="fab fa-bitcoin"></i>
+                        Crypto Transactions
+                    </h3>
+                    <div class="crypto-transactions-list" id="cryptoTransactionsList">
+                        <!-- Crypto transactions will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        Portfolio Analytics
+                    </h3>
+                    <div class="crypto-analytics" id="cryptoAnalytics">
+                        <!-- Portfolio analytics will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="user-footer">
+            <div class="footer-content">
+                <p>&copy; 2024 Blue Mountain Bank. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="security.html" target="_blank">Security</a>
+                    <a href="rates.html" target="_blank">Rates</a>
+                    <a href="index.html" target="_blank">Home</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <img src="img/blue-mountain-bank.png" alt="Blue Mountain Bank" class="loading-logo">
+            <div class="loading-text">Loading Crypto Portfolio</div>
+            <div class="loading-subtitle">Please wait...</div>
+        </div>
+    </div>
+
+    <script src="js/local-storage-manager.js?v=2.0"></script>
+    <script src="js/azure-storage-manager.js?v=2.0"></script>
+    <script src="js/storage-factory.js?v=2.0"></script>
+    <script src="js/script.js?v=2.0"></script>
+    <script>
+        // Crypto Portfolio management
+        class CryptoPortfolio {
+            constructor() {
+                this.currentUser = null;
+                this.storageManager = null;
+                this.init();
+            }
+
+            async init() {
+                // Check if user is logged in
+                const currentUserId = sessionStorage.getItem('currentUser');
+                if (!currentUserId) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                try {
+                    // Initialize storage using StorageFactory for consistency
+                    const storageFactory = new StorageFactory();
+                    this.storageManager = await storageFactory.getStorageManager();
+                    console.log('Storage manager initialized:', this.storageManager.constructor.name);
+                    
+                    // Load user data
+                    this.currentUser = await this.storageManager.getUserData(currentUserId);
+                    
+                    if (!this.currentUser) {
+                        alert('User data not found. Redirecting to login.');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    // Initialize crypto portfolio
+                    this.loadCryptoPortfolio();
+                } catch (error) {
+                    console.error('Crypto portfolio initialization error:', error);
+                    alert('Failed to load user data. Please try logging in again.');
+                    window.location.href = 'login.html';
+                }
+            }
+
+            loadCryptoPortfolio() {
+                // Update page title
+                document.title = `${this.currentUser.profile.fullName} - Crypto Portfolio - Blue Mountain Bank`;
+
+                // Apply user theme preferences
+                this.applyUserTheme();
+
+                // Show loading screen briefly for smooth transition
+                const loadingScreen = document.getElementById('loadingScreen');
+                loadingScreen.style.display = 'flex';
+
+                setTimeout(() => {
+                    this.populateUserInfo();
+                    this.populateCryptoOverview();
+                    this.populateCryptoAccounts();
+                    this.populateCryptoTransactions();
+                    this.populateAnalytics();
+                    
+                    // Hide loading screen
+                    loadingScreen.classList.add('hidden');
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }, 800);
+            }
+
+            applyUserTheme() {
+                const preferences = this.currentUser.preferences || {};
+                const theme = preferences.theme || 'light';
+                const darkMode = preferences.darkMode || false;
+
+                if (theme === 'dark' || darkMode) {
+                    document.body.classList.add('dark-mode');
+                    document.body.setAttribute('data-theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    document.body.setAttribute('data-theme', 'light');
+                }
+            }
+
+            populateUserInfo() {
+                const profile = this.currentUser.profile;
+                
+                // Update header info
+                document.getElementById('userAvatar').textContent = profile.avatar;
+                document.getElementById('userName').textContent = profile.fullName;
+                document.getElementById('userAccount').textContent = `Account ${profile.accountNumber}`;
+            }
+
+            populateCryptoOverview() {
+                const container = document.getElementById('cryptoOverview');
+                const crypto = this.currentUser.crypto || {};
+                
+                if (Object.keys(crypto).length === 0) {
+                    container.innerHTML = `
+                        <div class="crypto-empty">
+                            <i class="fab fa-bitcoin" style="font-size: 3rem; color: #f59e0b; margin-bottom: 1rem;"></i>
+                            <h3>No Crypto Holdings</h3>
+                            <p>Start your crypto journey today!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Calculate total portfolio value
+                let totalValue = 0;
+                const cryptoCount = Object.keys(crypto).length;
+                
+                Object.values(crypto).forEach(cryptoData => {
+                    totalValue += cryptoData.valueUSD || 0;
+                });
+
+                container.innerHTML = `
+                    <div class="crypto-portfolio-summary">
+                        <div class="portfolio-stat">
+                            <div class="stat-value">${this.formatCurrency(totalValue)}</div>
+                            <div class="stat-label">Total Portfolio Value</div>
+                        </div>
+                        <div class="portfolio-stat">
+                            <div class="stat-value">${cryptoCount}</div>
+                            <div class="stat-label">Cryptocurrencies</div>
+                        </div>
+                        <div class="portfolio-stat">
+                            <div class="stat-value">+12.5%</div>
+                            <div class="stat-label">24h Change</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            populateCryptoAccounts() {
+                const container = document.getElementById('cryptoAccountsContainer');
+                const crypto = this.currentUser.crypto || {};
+                
+                if (Object.keys(crypto).length === 0) {
+                    container.innerHTML = `
+                        <div class="crypto-empty">
+                            <i class="fab fa-bitcoin"></i>
+                            <h3>No Crypto Assets</h3>
+                            <p>Start building your crypto portfolio today</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '';
+                
+                Object.entries(crypto).forEach(([cryptoType, cryptoData]) => {
+                    const cryptoCard = this.createCryptoAccountCard(cryptoType, cryptoData);
+                    container.appendChild(cryptoCard);
+                });
+            }
+
+            createCryptoAccountCard(cryptoType, cryptoData) {
+                const card = document.createElement('div');
+                card.className = 'crypto-account-card';
+                
+                const formattedBalance = this.formatCrypto(cryptoData.balance, cryptoData.symbol);
+                const formattedValueUSD = this.formatCurrency(cryptoData.valueUSD);
+                const pricePerUnit = this.formatCurrency(cryptoData.pricePerUnit);
+
+                card.innerHTML = `
+                    <div class="crypto-account-header">
+                        <div class="crypto-account-type">
+                            <i class="fab fa-bitcoin crypto-icon"></i>
+                            ${cryptoData.name}
+                        </div>
+                        <div class="crypto-symbol">${cryptoData.symbol}</div>
+                    </div>
+                    <div class="crypto-balance-section">
+                        <div class="crypto-balance">${formattedBalance}</div>
+                        <div class="crypto-value-usd">${formattedValueUSD}</div>
+                        <div class="crypto-price">@ ${pricePerUnit} per ${cryptoData.symbol}</div>
+                    </div>
+                    <div class="crypto-actions">
+                        <button class="crypto-btn">Buy ${cryptoData.symbol}</button>
+                        <button class="crypto-btn">Sell ${cryptoData.symbol}</button>
+                        <button class="crypto-btn">View Wallet</button>
+                    </div>
+                `;
+
+                return card;
+            }
+
+            populateCryptoTransactions() {
+                const container = document.getElementById('cryptoTransactionsList');
+                const crypto = this.currentUser.crypto || {};
+                const allTransactions = [];
+
+                // Collect all crypto transactions
+                Object.entries(crypto).forEach(([cryptoType, cryptoData]) => {
+                    if (cryptoData.transactions) {
+                        cryptoData.transactions.forEach(transaction => {
+                            allTransactions.push({
+                                ...transaction,
+                                cryptoSymbol: cryptoData.symbol,
+                                cryptoName: cryptoData.name
+                            });
+                        });
+                    }
+                });
+
+                // Sort by date (newest first)
+                allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                if (allTransactions.length === 0) {
+                    container.innerHTML = '<div class="no-transactions">No crypto transactions</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                allTransactions.forEach(transaction => {
+                    const transactionItem = this.createCryptoTransactionItem(transaction);
+                    container.appendChild(transactionItem);
+                });
+            }
+
+            createCryptoTransactionItem(transaction) {
+                const item = document.createElement('div');
+                item.className = 'crypto-transaction-item';
+                
+                const formattedDate = new Date(transaction.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                const cryptoAmount = this.formatCrypto(transaction.amount, transaction.cryptoSymbol);
+                const usdAmount = this.formatCurrency(transaction.amountUSD);
+                const isPositive = transaction.amount > 0;
+                const amountClass = isPositive ? 'positive' : 'negative';
+
+                item.innerHTML = `
+                    <div class="crypto-transaction-icon">
+                        <i class="fab fa-bitcoin"></i>
+                    </div>
+                    <div class="crypto-transaction-info">
+                        <div class="crypto-transaction-description">${transaction.description}</div>
+                        <div class="crypto-transaction-date">${formattedDate}</div>
+                        <div class="crypto-transaction-category">${this.capitalizeFirst(transaction.type)} • ${transaction.cryptoName}</div>
+                    </div>
+                    <div class="crypto-transaction-amount ${amountClass}">
+                        ${cryptoAmount} (${usdAmount})
+                    </div>
+                `;
+
+                return item;
+            }
+
+            populateAnalytics() {
+                const container = document.getElementById('cryptoAnalytics');
+                const crypto = this.currentUser.crypto || {};
+
+                if (Object.keys(crypto).length === 0) {
+                    container.innerHTML = '<div class="no-data">No analytics available</div>';
+                    return;
+                }
+
+                // Create allocation chart
+                const allocations = Object.entries(crypto).map(([type, data]) => ({
+                    name: data.name,
+                    symbol: data.symbol,
+                    value: data.valueUSD,
+                    percentage: 0 // Will calculate below
+                }));
+
+                const totalValue = allocations.reduce((sum, item) => sum + item.value, 0);
+                allocations.forEach(item => {
+                    item.percentage = ((item.value / totalValue) * 100).toFixed(1);
+                });
+
+                let analyticsHTML = '<div class="portfolio-allocation">';
+                allocations.forEach(allocation => {
+                    analyticsHTML += `
+                        <div class="allocation-item">
+                            <div class="allocation-info">
+                                <span class="allocation-name">${allocation.name}</span>
+                                <span class="allocation-percentage">${allocation.percentage}%</span>
+                            </div>
+                            <div class="allocation-bar">
+                                <div class="allocation-fill" style="width: ${allocation.percentage}%"></div>
+                            </div>
+                            <div class="allocation-value">${this.formatCurrency(allocation.value)}</div>
+                        </div>
+                    `;
+                });
+                analyticsHTML += '</div>';
+
+                container.innerHTML = analyticsHTML;
+            }
+
+            formatCurrency(amount) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                }).format(Math.abs(amount));
+            }
+
+            formatCrypto(amount, symbol) {
+                const num = Number(amount);
+                if (num === 0) return `0 ${symbol}`;
+                
+                let formatted = num.toFixed(8).replace(/\.?0+$/, '');
+                const parts = formatted.split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                
+                return `${parts.join('.')} ${symbol}`;
+            }
+
+            capitalizeFirst(str) {
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+        }
+
+        // Initialize page header and user info
+        async function initializePageHeader() {
+            const currentUserId = sessionStorage.getItem('currentUser');
+            if (!currentUserId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Initialize storage
+                const storageFactory = new StorageFactory();
+                const storageManager = await storageFactory.getStorageManager();
+                
+                // Load user data
+                const userData = await storageManager.getUserData(currentUserId);
+                if (!userData) {
+                    throw new Error('User data not found');
+                }
+
+                // Update header
+                document.getElementById('userAvatar').textContent = userData.profile.avatar;
+                document.getElementById('userName').textContent = userData.profile.fullName;
+                document.getElementById('userAccount').textContent = `Account ${userData.profile.accountNumber}`;
+                
+                // Apply theme
+                const preferences = userData.preferences || {};
+                const theme = preferences.theme || 'light';
+                const darkMode = preferences.darkMode || false;
+
+                if (theme === 'dark' || darkMode) {
+                    document.body.classList.add('dark-mode');
+                    document.body.setAttribute('data-theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    document.body.setAttribute('data-theme', 'light');
+                }
+
+                // Hide loading screen
+                setTimeout(() => {
+                    const loadingScreen = document.getElementById('loadingScreen');
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('hidden');
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }
+                }, 800);
+
+            } catch (error) {
+                console.error('Error initializing header:', error);
+                alert('Failed to load user data. Please try logging in again.');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Initialize crypto portfolio when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize page header first
+            await initializePageHeader();
+            
+            // Then initialize crypto portfolio
+            new CryptoPortfolio();
+        });
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('currentUser');
+                sessionStorage.removeItem('loginTime');
+                sessionStorage.removeItem('storageType');
+                sessionStorage.removeItem('dataSource');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -30,8 +30,11 @@
             }
         })();
     </script>
+    <!-- CDN Helper Script -->
+    <script src="js/cdn-helper.js"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/user-dashboard.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -39,32 +42,35 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+        }
+
+        .welcome-section {
+            margin-bottom: 30px;
         }
 
         .breadcrumb {
             margin-bottom: 20px;
+            color: var(--text-color, #333);
         }
 
         .breadcrumb a {
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--primary-color, #007bff);
             text-decoration: none;
             margin-right: 10px;
         }
 
         .breadcrumb a:hover {
-            color: white;
             text-decoration: underline;
         }
 
         .info-header {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--card-background, white);
             padding: 30px;
             border-radius: 20px;
             margin-bottom: 30px;
-            color: white;
+            color: var(--text-color, #333);
             text-align: center;
+            box-shadow: var(--card-shadow, 0 4px 20px rgba(0, 0, 0, 0.1));
         }
 
         .info-grid {
@@ -75,14 +81,14 @@
         }
 
         .info-section {
-            background: white;
+            background: var(--card-background, white);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow, 0 4px 20px rgba(0, 0, 0, 0.1));
         }
 
         .info-section h3 {
-            color: #2c3e50;
+            color: var(--text-color, #2c3e50);
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -348,10 +354,41 @@
     </style>
 </head>
 <body>
-    <div class="personal-info-container">
-        <div class="breadcrumb">
-            <a href="user-dashboard.html"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-        </div>
+    <div class="user-dashboard">
+        <header class="user-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="img/blue-mountain-bank.png" alt="Blue Mountain Bank Logo" class="header-logo">
+                    <h1>Blue Mountain Bank</h1>
+                </div>
+                <div class="user-info">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="userAvatar">--</div>
+                        <div class="user-details">
+                            <div class="user-name" id="userName">Loading...</div>
+                            <div class="user-account" id="userAccount">Account ****-****</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="user-main">
+            <div class="welcome-section">
+                <div class="welcome-content">
+                    <h2>Personal Information</h2>
+                    <p>Manage your personal details and security settings</p>
+                </div>
+            </div>
+
+            <div class="personal-info-container">
+                <div class="breadcrumb">
+                    <a href="user-dashboard.html"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                </div>
 
         <div class="info-header">
             <h1><i class="fas fa-user-shield"></i> Personal Information Management</h1>
@@ -446,7 +483,7 @@
             </div>
             <div id="validationResults"></div>
         </div>
-    </div>
+            </div>
 
     <!-- Edit Modal -->
     <div id="editModal" class="modal">
@@ -470,6 +507,61 @@
     <script src="js/local-storage-manager.js?v=2.0"></script>
     <script src="js/storage-factory.js?v=2.0"></script>
     <script>
+        // Initialize page header and user info
+        async function initializePageHeader() {
+            const currentUserId = sessionStorage.getItem('currentUser');
+            if (!currentUserId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Initialize storage
+                const storageFactory = new StorageFactory();
+                const storageManager = await storageFactory.getStorageManager();
+                
+                // Load user data
+                const userData = await storageManager.getUserData(currentUserId);
+                if (!userData) {
+                    throw new Error('User data not found');
+                }
+
+                // Update header
+                document.getElementById('userAvatar').textContent = userData.profile.avatar;
+                document.getElementById('userName').textContent = userData.profile.fullName;
+                document.getElementById('userAccount').textContent = `Account ${userData.profile.accountNumber}`;
+                
+                // Apply theme
+                const preferences = userData.preferences || {};
+                const theme = preferences.theme || 'light';
+                const darkMode = preferences.darkMode || false;
+
+                if (theme === 'dark' || darkMode) {
+                    document.body.classList.add('dark-mode');
+                    document.body.setAttribute('data-theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    document.body.setAttribute('data-theme', 'light');
+                }
+
+                // Hide loading screen
+                setTimeout(() => {
+                    const loadingScreen = document.getElementById('loadingScreen');
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('hidden');
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }
+                }, 800);
+
+            } catch (error) {
+                console.error('Error initializing header:', error);
+                alert('Failed to load user data. Please try logging in again.');
+                window.location.href = 'login.html';
+            }
+        }
+
         class PersonalInfoManager {
             constructor() {
                 this.currentUser = null;
@@ -945,8 +1037,13 @@
 
         // Initialize when page loads
         let personalInfoManager;
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM loaded, initializing PersonalInfoManager...');
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('DOM loaded, initializing page...');
+            
+            // Initialize page header first
+            await initializePageHeader();
+            
+            // Then initialize PersonalInfoManager
             personalInfoManager = new PersonalInfoManager();
             
             // Handle form submission
@@ -999,6 +1096,44 @@
                 personalInfoManager.closeModal();
             }
         }
+
+        // Logout function for consistency
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('currentUser');
+                sessionStorage.removeItem('loginTime');
+                sessionStorage.removeItem('storageType');
+                sessionStorage.removeItem('dataSource');
+                window.location.href = 'index.html';
+            }
+        }
     </script>
+        </main>
+
+        <footer class="user-footer">
+            <div class="footer-content">
+                <p>&copy; 2024 Blue Mountain Bank. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="security.html" target="_blank">Security</a>
+                    <a href="rates.html" target="_blank">Rates</a>
+                    <a href="index.html" target="_blank">Home</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <img src="img/blue-mountain-bank.png" alt="Blue Mountain Bank" class="loading-logo">
+            <div class="loading-text">Loading Personal Information</div>
+            <div class="loading-subtitle">Please wait...</div>
+        </div>
+    </div>
+
+    <script src="js/local-storage-manager.js?v=2.0"></script>
+    <script src="js/azure-storage-manager.js?v=2.0"></script>
+    <script src="js/storage-factory.js?v=2.0"></script>
+    <script src="js/script.js?v=2.0"></script>
 </body>
 </html>

@@ -1,0 +1,534 @@
+/* Crypto Portfolio Specific Styles */
+/* This file extends user-dashboard.css with crypto-specific styling */
+
+/* Crypto Portfolio Overview */
+.crypto-overview {
+    margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.crypto-overview::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.08) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.crypto-overview:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.crypto-portfolio-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.crypto-stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.crypto-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.crypto-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.crypto-stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Crypto Accounts Grid - Same as Bank Accounts */
+.crypto-accounts-section {
+    margin-bottom: 30px;
+}
+
+.crypto-accounts-section .section-title {
+    color: white;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.crypto-accounts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+/* Crypto Account Cards - Based on Bank Account Cards */
+.crypto-account-card {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.crypto-account-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    transition: all 0.3s ease;
+}
+
+.crypto-account-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.crypto-account-card:hover::before {
+    top: -20%;
+    right: -20%;
+}
+
+.crypto-account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.crypto-account-type {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.crypto-icon {
+    font-size: 1.5rem;
+    animation: cryptoGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes cryptoGlow {
+    0% { color: #FFD700; }
+    100% { color: #FFA500; }
+}
+
+.crypto-symbol {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.crypto-balance-section {
+    margin-bottom: 20px;
+}
+
+.crypto-balance {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-family: 'Courier New', monospace;
+}
+
+.crypto-value-usd {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.crypto-price {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.crypto-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.crypto-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.crypto-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Crypto Transactions */
+.crypto-transactions-section {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.crypto-transactions-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.08) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.crypto-transactions-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.crypto-transaction-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 0 -10px;
+    padding: 15px 10px;
+}
+
+.crypto-transaction-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transform: translateX(5px);
+}
+
+.crypto-transaction-item:last-child {
+    border-bottom: none;
+}
+
+.crypto-transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.crypto-transaction-icon i {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+}
+
+.crypto-transaction-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.crypto-transaction-description {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.crypto-transaction-date {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+}
+
+.crypto-transaction-category {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.crypto-transaction-amount {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.crypto-transaction-amount.positive {
+    color: #4ade80;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
+}
+
+.crypto-transaction-amount.negative {
+    color: #f87171;
+    text-shadow: 0 0 10px rgba(248, 113, 113, 0.3);
+}
+
+.crypto-amount-usd {
+    font-size: 0.9rem;
+    color: var(--text-secondary, #7f8c8d);
+}
+
+.crypto-amount-crypto.positive {
+    color: #27ae60;
+}
+
+.crypto-amount-crypto.negative {
+    color: #e74c3c;
+}
+
+/* Portfolio Analytics */
+.crypto-analytics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.crypto-analytics-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.crypto-analytics-card:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.analytics-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.analytics-content {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Empty State */
+.crypto-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.crypto-empty i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.crypto-empty h3 {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.crypto-empty p {
+    font-style: italic;
+}
+
+/* Crypto Transactions List - Match Dashboard Style */
+.crypto-transactions-list {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-right: -10px;
+}
+
+/* Custom Scrollbar Styles for Crypto Transactions */
+.crypto-transactions-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.crypto-transactions-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.crypto-transactions-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.crypto-transactions-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox Scrollbar Support */
+.crypto-transactions-list {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .crypto-portfolio-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .crypto-accounts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .crypto-stat-card {
+        padding: 15px;
+    }
+    
+    .crypto-stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .crypto-account-card {
+        padding: 20px;
+    }
+    
+    .crypto-actions {
+        flex-direction: column;
+    }
+    
+    .crypto-btn {
+        text-align: center;
+    }
+    
+    .crypto-transaction-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .crypto-transaction-amount {
+        text-align: left;
+        width: 100%;
+    }
+    
+    .crypto-analytics {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .crypto-account-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+[data-theme="dark"] .crypto-stat-card {
+    background: linear-gradient(135deg, #434343 0%, #000000 100%);
+}
+
+[data-theme="dark"] .crypto-transaction-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Dark Mode Support for Transactions */
+[data-theme="dark"] .crypto-transactions-section {
+    background: rgba(52, 73, 94, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .crypto-overview {
+    background: rgba(52, 73, 94, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .crypto-analytics-card {
+    background: rgba(52, 73, 94, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .crypto-empty {
+    background: rgba(52, 73, 94, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
