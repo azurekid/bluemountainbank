@@ -75,8 +75,83 @@
                 </div>
             </div>
 
-            <div id="creditCardsContainer">
-                <!-- Credit cards will be dynamically loaded here as separate grids -->
+            <div class="dashboard-grid">
+                <div id="creditCardsContainer">
+                    <!-- Credit cards will be dynamically loaded here as separate grids -->
+                </div>
+                
+                <div class="quick-actions-sidebar">
+                    <div class="dashboard-section quick-actions-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-bolt"></i>
+                            Quick Actions
+                        </h3>
+                        
+                        <div class="quick-actions-grid">
+                            <button class="quick-action-btn payment-btn" onclick="creditCardTransactions.showPaymentModal()">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Make Payment</span>
+                            </button>
+                            
+                            <button class="quick-action-btn balance-btn" onclick="creditCardTransactions.showBalanceTransfer()">
+                                <i class="fas fa-exchange-alt"></i>
+                                <span>Balance Transfer</span>
+                            </button>
+                            
+                            <button class="quick-action-btn limit-btn" onclick="creditCardTransactions.showCreditLimitInfo()">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Credit Limit</span>
+                            </button>
+                            
+                            <button class="quick-action-btn freeze-btn" onclick="creditCardTransactions.showFreezeCard()">
+                                <i class="fas fa-lock"></i>
+                                <span>Freeze Card</span>
+                            </button>
+                            
+                            <button class="quick-action-btn statement-btn" onclick="creditCardTransactions.downloadStatement()">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Download Statement</span>
+                            </button>
+                            
+                            <button class="quick-action-btn autopay-btn" onclick="creditCardTransactions.showAutoPay()">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Auto Pay</span>
+                            </button>
+                            
+                            <button class="quick-action-btn rewards-btn" onclick="creditCardTransactions.showRewards()">
+                                <i class="fas fa-gift"></i>
+                                <span>Rewards</span>
+                            </button>
+                            
+                            <button class="quick-action-btn settings-btn" onclick="creditCardTransactions.showCardSettings()">
+                                <i class="fas fa-cog"></i>
+                                <span>Card Settings</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-section card-summary-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-chart-pie"></i>
+                            Card Summary
+                        </h3>
+                        
+                        <div id="cardSummaryStats" class="card-stats">
+                            <!-- Dynamic content will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-section recent-activity-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-history"></i>
+                            Recent Activity
+                        </h3>
+                        
+                        <div id="recentActivityList" class="recent-activity-list">
+                            <!-- Dynamic content will be loaded here -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -106,13 +181,272 @@
     <script src="js/storage-factory.js?v=2.0"></script>
     <script src="js/script.js?v=2.0"></script>
     <style>
-        /* Credit Card Specific Styles */
+        /* Credit Card Specific Styles - Following user-dashboard.css structure */
+        
+        /* Use dashboard-grid from user-dashboard.css */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* Credit Card Grid - Same styling as dashboard-section */
         .credit-card-grid {
-            margin-bottom: 40px;
-            padding: 25px;
-            background: var(--card-background, white);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border-radius: 20px;
-            box-shadow: var(--card-shadow, 0 4px 20px rgba(0, 0, 0, 0.1));
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0.08) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .credit-card-grid:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Quick Actions Sidebar */
+        .quick-actions-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Section titles use user-dashboard.css styling */
+        .section-title {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .quick-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .quick-action-btn i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .quick-action-btn span {
+            font-size: 0.8rem;
+            line-height: 1.2;
+        }
+
+        /* Button Color Variations */
+        .payment-btn:hover { background: rgba(34, 197, 94, 0.2); }
+        .balance-btn:hover { background: rgba(59, 130, 246, 0.2); }
+        .limit-btn:hover { background: rgba(168, 85, 247, 0.2); }
+        .freeze-btn:hover { background: rgba(239, 68, 68, 0.2); }
+        .statement-btn:hover { background: rgba(245, 158, 11, 0.2); }
+        .autopay-btn:hover { background: rgba(16, 185, 129, 0.2); }
+        .rewards-btn:hover { background: rgba(236, 72, 153, 0.2); }
+        .settings-btn:hover { background: rgba(107, 114, 128, 0.2); }
+
+        /* Card Summary Stats */
+        .card-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .stat-value.positive {
+            color: #4ade80;
+        }
+
+        .stat-value.negative {
+            color: #f87171;
+        }
+
+        /* Recent Activity List */
+        .recent-activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            flex-shrink: 0;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-description {
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .activity-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+        }
+
+        .activity-amount {
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .activity-amount.positive {
+            color: #4ade80;
+        }
+
+        .activity-amount.negative {
+            color: #f87171;
+        }
+
+        /* Back button styling from user-dashboard.css */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .credit-card-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0.08) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .credit-card-grid:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
         .credit-card-header {
@@ -121,7 +455,7 @@
             align-items: center;
             margin-bottom: 25px;
             padding-bottom: 20px;
-            border-bottom: 2px solid var(--border-color, rgba(236, 240, 241, 0.5));
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .credit-card-title {
@@ -130,12 +464,12 @@
             gap: 15px;
             font-size: 1.5rem;
             font-weight: 600;
-            color: var(--text-color, #2c3e50);
+            color: white;
         }
 
         .credit-card-icon {
             font-size: 2rem;
-            color: var(--primary-color, #007bff);
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .credit-card-details {
@@ -149,7 +483,7 @@
             font-family: 'Courier New', monospace;
             font-size: 1.1rem;
             font-weight: 600;
-            color: var(--text-color, #2c3e50);
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .card-balance {
@@ -186,6 +520,41 @@
 
         .transactions-section {
             margin-top: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .transactions-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0.08) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .transactions-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
         .transactions-header {
@@ -198,7 +567,7 @@
         .transactions-title {
             font-size: 1.2rem;
             font-weight: 600;
-            color: var(--text-color, #2c3e50);
+            color: white;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -222,18 +591,24 @@
 
         .filter-select, .filter-input, .filter-btn {
             padding: 10px 15px;
-            border: 1px solid var(--border-color, #ddd);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 8px;
             font-size: 14px;
-            background: var(--input-background, white);
-            color: var(--text-color, #333);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
             transition: all 0.3s ease;
         }
 
+        .filter-select::placeholder, .filter-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
         .filter-btn {
-            background: var(--primary-color, #007bff);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            border-color: var(--primary-color, #007bff);
+            border-color: rgba(255, 255, 255, 0.3);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -241,7 +616,9 @@
         }
 
         .filter-btn:hover {
-            background: var(--primary-hover, #0056b3);
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
         }
 
         .transactions-grid {
@@ -254,16 +631,41 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background: var(--transaction-background, rgba(248, 249, 250, 0.5));
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-left: 4px solid var(--primary-color, #007bff);
             transition: all 0.3s ease;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .transaction-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.05) 0%, 
+                rgba(255, 255, 255, 0.02) 50%,
+                rgba(255, 255, 255, 0.04) 100%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .transaction-item:hover {
-            background: var(--transaction-hover, rgba(52, 152, 219, 0.1));
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
         .transaction-info {
@@ -277,12 +679,16 @@
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            background: var(--icon-background, rgba(52, 152, 219, 0.1));
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
-            color: var(--primary-color, #007bff);
+            color: rgba(255, 255, 255, 0.9);
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .transaction-details {
@@ -291,7 +697,7 @@
 
         .transaction-description {
             font-weight: 600;
-            color: var(--text-color, #2c3e50);
+            color: white;
             margin-bottom: 5px;
         }
 
@@ -299,7 +705,7 @@
             display: flex;
             gap: 15px;
             font-size: 0.9rem;
-            color: var(--text-secondary, #7f8c8d);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .transaction-category {
@@ -333,13 +739,13 @@
 
         .transaction-date {
             font-size: 0.9rem;
-            color: var(--text-secondary, #7f8c8d);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .no-transactions {
             text-align: center;
             padding: 60px 20px;
-            color: var(--text-secondary, #7f8c8d);
+            color: rgba(255, 255, 255, 0.7);
             font-style: italic;
         }
 
@@ -361,8 +767,21 @@
         .category-entertainment { background: #8e44ad; color: white; }
         .category-utilities { background: #16a085; color: white; }
 
-        /* Responsive Design */
+        /* Responsive Design - Following user-dashboard.css patterns */
         @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .quick-actions-sidebar {
+                order: -1;
+            }
+            
+            .quick-actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
             .credit-card-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -381,10 +800,35 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
+                padding: 15px;
             }
 
             .transaction-amount {
                 align-items: flex-start;
+                width: 100%;
+                text-align: left;
+            }
+            
+            .credit-card-grid {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-main {
+                padding: 100px 15px 40px;
+            }
+            
+            .welcome-section {
+                padding: 20px;
+            }
+            
+            .credit-card-grid {
+                padding: 15px;
             }
         }
     </style>
@@ -468,10 +912,9 @@
                         alert('User data not found. Redirecting to login.');
                         window.location.href = 'login.html';
                         return;
-                    }
-
-                    this.loadCreditCardGrids();
-                    this.applyUserTheme();
+                    }                this.loadCreditCardGrids();
+                this.loadQuickActionsSidebar();
+                this.applyUserTheme();
                 } catch (error) {
                     console.error('Error initializing credit card transactions:', error);
                     alert('Failed to load credit card data. Please try again.');
@@ -515,6 +958,168 @@
                     const cardGrid = this.createCreditCardGrid(cardId, cardData);
                     container.appendChild(cardGrid);
                 });
+            }
+
+            loadQuickActionsSidebar() {
+                this.loadCardSummaryStats();
+                this.loadRecentActivity();
+            }
+
+            loadCardSummaryStats() {
+                const container = document.getElementById('cardSummaryStats');
+                const creditCards = this.currentUser.personalInfo?.creditCards || {};
+                
+                let totalBalance = 0;
+                let totalLimit = 0;
+                let totalTransactions = 0;
+                let activeCards = 0;
+                
+                Object.values(creditCards).forEach(card => {
+                    totalBalance += Math.abs(card.balance || 0);
+                    totalLimit += card.limit || 0;
+                    totalTransactions += (card.transactions || []).length;
+                    if (card.isActive !== false) activeCards++;
+                });
+                
+                const utilizationRate = totalLimit > 0 ? (totalBalance / totalLimit * 100).toFixed(1) : 0;
+                
+                container.innerHTML = `
+                    <div class="stat-item">
+                        <span class="stat-label">Total Balance</span>
+                        <span class="stat-value">${this.formatCurrency(totalBalance)}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Available Credit</span>
+                        <span class="stat-value positive">${this.formatCurrency(totalLimit - totalBalance)}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Credit Utilization</span>
+                        <span class="stat-value ${utilizationRate > 30 ? 'negative' : 'positive'}">${utilizationRate}%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Active Cards</span>
+                        <span class="stat-value">${activeCards}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Transactions</span>
+                        <span class="stat-value">${totalTransactions}</span>
+                    </div>
+                `;
+            }
+
+            loadRecentActivity() {
+                const container = document.getElementById('recentActivityList');
+                const creditCards = this.currentUser.personalInfo?.creditCards || {};
+                
+                // Collect all transactions from all cards
+                let allTransactions = [];
+                Object.entries(creditCards).forEach(([cardId, card]) => {
+                    if (card.transactions) {
+                        card.transactions.forEach(transaction => {
+                            allTransactions.push({
+                                ...transaction,
+                                cardId,
+                                cardName: card.name || card.type || 'Credit Card'
+                            });
+                        });
+                    }
+                });
+                
+                // Sort by date (newest first) and take top 5
+                const recentTransactions = allTransactions
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .slice(0, 5);
+                
+                if (recentTransactions.length === 0) {
+                    container.innerHTML = `
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-description">No recent activity</div>
+                                <div class="activity-time">--</div>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let activityHTML = '';
+                recentTransactions.forEach(transaction => {
+                    const timeAgo = this.getTimeAgo(transaction.date);
+                    const icon = this.getTransactionIcon(transaction.category, transaction.type);
+                    const amountClass = transaction.amount >= 0 ? 'positive' : 'negative';
+                    const amountText = `${transaction.amount >= 0 ? '+' : ''}${this.formatCurrency(Math.abs(transaction.amount))}`;
+                    
+                    activityHTML += `
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="${icon}"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-description">${transaction.description}</div>
+                                <div class="activity-time">${timeAgo}</div>
+                            </div>
+                            <div class="activity-amount ${amountClass}">${amountText}</div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = activityHTML;
+            }
+
+            getTimeAgo(dateString) {
+                const now = new Date();
+                const date = new Date(dateString);
+                const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+                
+                if (diffInHours < 1) return 'Just now';
+                if (diffInHours < 24) return `${diffInHours}h ago`;
+                
+                const diffInDays = Math.floor(diffInHours / 24);
+                if (diffInDays < 7) return `${diffInDays}d ago`;
+                
+                const diffInWeeks = Math.floor(diffInDays / 7);
+                if (diffInWeeks < 4) return `${diffInWeeks}w ago`;
+                
+                const diffInMonths = Math.floor(diffInDays / 30);
+                return `${diffInMonths}mo ago`;
+            }
+
+            // Quick Action Methods
+            showPaymentModal() {
+                alert('Payment feature would open here - redirect to payment page or show modal');
+            }
+
+            showBalanceTransfer() {
+                alert('Balance transfer feature would open here');
+            }
+
+            showCreditLimitInfo() {
+                alert('Credit limit information would be displayed here');
+            }
+
+            showFreezeCard() {
+                if (confirm('Are you sure you want to freeze your credit card?')) {
+                    alert('Card freeze feature would be implemented here');
+                }
+            }
+
+            downloadStatement() {
+                alert('Statement download would be implemented here');
+            }
+
+            showAutoPay() {
+                alert('Auto-pay setup would open here');
+            }
+
+            showRewards() {
+                alert('Rewards information would be displayed here');
+            }
+
+            showCardSettings() {
+                alert('Card settings would open here');
             }
 
             createCreditCardGrid(cardId, cardData) {
