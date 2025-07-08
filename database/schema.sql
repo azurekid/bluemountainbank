@@ -2,6 +2,8 @@
 -- This script creates all necessary tables for the banking application
 
 -- Drop tables if they exist (for development/testing)
+IF OBJECT_ID('CryptoTransactions', 'U') IS NOT NULL DROP TABLE CryptoTransactions;
+IF OBJECT_ID('CryptoAccounts', 'U') IS NOT NULL DROP TABLE CryptoAccounts;
 IF OBJECT_ID('CreditCardTransactions', 'U') IS NOT NULL DROP TABLE CreditCardTransactions;
 IF OBJECT_ID('BankTransactions', 'U') IS NOT NULL DROP TABLE BankTransactions;
 IF OBJECT_ID('CreditCards', 'U') IS NOT NULL DROP TABLE CreditCards;
@@ -121,6 +123,37 @@ CREATE TABLE CreditCardTransactions (
     CreatedAt DATETIME2 DEFAULT GETUTCDATE()
 );
 
+-- Crypto accounts (Bitcoin, Ethereum, and other cryptocurrencies)
+CREATE TABLE CryptoAccounts (
+    CryptoAccountId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    CryptoCurrency NVARCHAR(20) NOT NULL, -- 'BTC', 'ETH', 'ADA', 'DOT', 'SOL', etc.
+    CurrencyName NVARCHAR(50) NOT NULL, -- 'Bitcoin', 'Ethereum', 'Cardano', etc.
+    Balance DECIMAL(18,8) NOT NULL DEFAULT 0, -- High precision for crypto amounts
+    ValueUSD DECIMAL(15,2) NOT NULL DEFAULT 0, -- Current USD value
+    PricePerUnit DECIMAL(15,2) NOT NULL DEFAULT 0, -- Current price per unit in USD
+    WalletAddress NVARCHAR(100), -- Crypto wallet address (optional for demo)
+    IsActive BIT DEFAULT 1,
+    CreatedAt DATETIME2 DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 DEFAULT GETUTCDATE()
+);
+
+-- Crypto transactions (buy, sell, transfer, mining rewards, etc.)
+CREATE TABLE CryptoTransactions (
+    TransactionId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    CryptoAccountId UNIQUEIDENTIFIER NOT NULL,
+    TransactionDate DATE NOT NULL,
+    Description NVARCHAR(500) NOT NULL,
+    Amount DECIMAL(18,8) NOT NULL, -- Crypto amount (positive for buy/receive, negative for sell/send)
+    AmountUSD DECIMAL(15,2) NOT NULL, -- USD value at time of transaction
+    PricePerUnit DECIMAL(15,2) NOT NULL, -- Price per unit at time of transaction
+    TransactionType NVARCHAR(50) NOT NULL, -- 'buy', 'sell', 'transfer', 'mining', 'staking', 'reward'
+    TransactionHash NVARCHAR(100), -- Blockchain transaction hash (optional for demo)
+    IsPending BIT DEFAULT 0,
+    CreatedAt DATETIME2 DEFAULT GETUTCDATE()
+);
+
 -- Create indexes for better performance
 CREATE INDEX IX_Users_Username ON Users(Username);
 CREATE INDEX IX_Users_Email ON Users(Email);
@@ -135,6 +168,11 @@ CREATE INDEX IX_BankTransactions_Date ON BankTransactions(TransactionDate);
 CREATE INDEX IX_CreditCardTransactions_UserId ON CreditCardTransactions(UserId);
 CREATE INDEX IX_CreditCardTransactions_CardId ON CreditCardTransactions(CardId);
 CREATE INDEX IX_CreditCardTransactions_Date ON CreditCardTransactions(TransactionDate);
+CREATE INDEX IX_CryptoAccounts_UserId ON CryptoAccounts(UserId);
+CREATE INDEX IX_CryptoAccounts_Currency ON CryptoAccounts(CryptoCurrency);
+CREATE INDEX IX_CryptoTransactions_UserId ON CryptoTransactions(UserId);
+CREATE INDEX IX_CryptoTransactions_CryptoAccountId ON CryptoTransactions(CryptoAccountId);
+CREATE INDEX IX_CryptoTransactions_Date ON CryptoTransactions(TransactionDate);
 
 -- Add foreign key constraints after all tables are created
 ALTER TABLE UserProfiles
@@ -168,6 +206,18 @@ FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE NO ACTION;
 ALTER TABLE CreditCardTransactions
 ADD CONSTRAINT FK_CreditCardTransactions_CreditCards 
 FOREIGN KEY (CardId) REFERENCES CreditCards(CardId) ON DELETE CASCADE;
+
+ALTER TABLE CryptoAccounts
+ADD CONSTRAINT FK_CryptoAccounts_Users 
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE;
+
+ALTER TABLE CryptoTransactions
+ADD CONSTRAINT FK_CryptoTransactions_Users 
+FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE NO ACTION;
+
+ALTER TABLE CryptoTransactions
+ADD CONSTRAINT FK_CryptoTransactions_CryptoAccounts 
+FOREIGN KEY (CryptoAccountId) REFERENCES CryptoAccounts(CryptoAccountId) ON DELETE CASCADE;
 
 -- Add triggers for UpdatedAt timestamps
 CREATE TRIGGER tr_Users_UpdatedAt ON Users
@@ -208,6 +258,14 @@ BEGIN
     UPDATE CreditCards 
     SET UpdatedAt = GETUTCDATE() 
     WHERE CardId IN (SELECT CardId FROM inserted);
+END;
+
+CREATE TRIGGER tr_CryptoAccounts_UpdatedAt ON CryptoAccounts
+AFTER UPDATE AS
+BEGIN
+    UPDATE CryptoAccounts 
+    SET UpdatedAt = GETUTCDATE() 
+    WHERE CryptoAccountId IN (SELECT CryptoAccountId FROM inserted);
 END;
 
 PRINT 'Blue Mountain Bank database schema created successfully!';

@@ -1,0 +1,949 @@
+/* Credit Card Transactions Specific Styles */
+/* This file extends user-dashboard.css with credit card specific styling */
+
+/* Credit Card Overview */
+.credit-card-overview {
+    margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.credit-card-overview::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.08) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.credit-card-overview:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.credit-card-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.credit-card-stat-card {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.credit-card-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.credit-card-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.credit-card-stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Credit Card Accounts Grid */
+.credit-cards-section {
+    margin-bottom: 30px;
+}
+
+.credit-cards-section .section-title {
+    color: white;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.credit-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+/* Credit Card Cards - Enhanced styling */
+.credit-card-card {
+    background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.credit-card-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    transition: all 0.3s ease;
+}
+
+.credit-card-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.credit-card-card:hover::before {
+    top: -20%;
+    right: -20%;
+}
+
+.credit-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.credit-card-type {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.credit-card-icon {
+    font-size: 1.5rem;
+    animation: cardGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes cardGlow {
+    0% { color: #60a5fa; }
+    100% { color: #3b82f6; }
+}
+
+.credit-card-brand {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.credit-card-number {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+}
+
+.credit-card-balance-section {
+    margin-bottom: 20px;
+}
+
+.credit-card-balance {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.credit-card-available {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #4ade80;
+}
+
+.credit-card-limit {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.credit-card-utilization {
+    margin-bottom: 15px;
+}
+
+.utilization-bar {
+    background: rgba(255, 255, 255, 0.2);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.utilization-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4ade80, #22c55e);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.utilization-fill.medium {
+    background: linear-gradient(90deg, #fbbf24, #f59e0b);
+}
+
+.utilization-fill.high {
+    background: linear-gradient(90deg, #f87171, #ef4444);
+}
+
+.utilization-text {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.credit-card-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.credit-card-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.credit-card-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Credit Card Transactions */
+.credit-card-transactions-section {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.credit-card-transactions-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.08) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.credit-card-transactions-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.credit-card-transaction-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 0 -10px;
+    padding: 15px 10px;
+}
+
+.credit-card-transaction-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transform: translateX(5px);
+}
+
+.credit-card-transaction-item:last-child {
+    border-bottom: none;
+}
+
+.credit-card-transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.credit-card-transaction-icon i {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+}
+
+.credit-card-transaction-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.credit-card-transaction-description {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.credit-card-transaction-date {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+}
+
+.credit-card-transaction-category {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.credit-card-transaction-amount {
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: right;
+}
+
+.credit-card-transaction-amount.positive {
+    color: #4ade80;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
+}
+
+.credit-card-transaction-amount.negative {
+    color: #f87171;
+    text-shadow: 0 0 10px rgba(248, 113, 113, 0.3);
+}
+
+.credit-card-transaction-status {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-posted {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-declined {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Credit Card Analytics */
+.credit-card-analytics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.credit-card-analytics-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.credit-card-analytics-card:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.analytics-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.analytics-content {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Empty State */
+.credit-card-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.credit-card-empty i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.credit-card-empty h3 {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.credit-card-empty p {
+    font-style: italic;
+}
+
+/* Credit Card Transactions List - Match Dashboard Style */
+.credit-card-transactions-list {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-right: -10px;
+}
+
+/* Custom Scrollbar Styles for Credit Card Transactions */
+.credit-card-transactions-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.credit-card-transactions-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.credit-card-transactions-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.credit-card-transactions-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox Scrollbar Support */
+.credit-card-transactions-list {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+/* Transaction Category Styles */
+.category-purchase {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.category-payment {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.category-restaurants {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.category-gas {
+    background: rgba(168, 85, 247, 0.2);
+    color: #a78bfa;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.category-groceries {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.category-shopping {
+    background: rgba(236, 72, 153, 0.2);
+    color: #f472b6;
+    border: 1px solid rgba(236, 72, 153, 0.3);
+}
+
+.category-hotels {
+    background: rgba(139, 69, 19, 0.2);
+    color: #a16207;
+    border: 1px solid rgba(139, 69, 19, 0.3);
+}
+
+.category-airlines {
+    background: rgba(37, 99, 235, 0.2);
+    color: #60a5fa;
+    border: 1px solid rgba(37, 99, 235, 0.3);
+}
+
+.category-entertainment {
+    background: rgba(168, 85, 247, 0.2);
+    color: #a78bfa;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.category-utilities {
+    background: rgba(107, 114, 128, 0.2);
+    color: #9ca3af;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.category-cashback {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.category-fee {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.category-interest {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.category-default {
+    background: rgba(107, 114, 128, 0.2);
+    color: #9ca3af;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+/* Enhanced Transaction Icons based on Category */
+.category-restaurants .transaction-icon {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.3));
+}
+
+.category-gas .transaction-icon {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(126, 34, 206, 0.3));
+}
+
+.category-groceries .transaction-icon {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(21, 128, 61, 0.3));
+}
+
+.category-shopping .transaction-icon {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(190, 24, 93, 0.3));
+}
+
+.category-hotels .transaction-icon {
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(92, 35, 12, 0.3));
+}
+
+.category-airlines .transaction-icon {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(29, 78, 216, 0.3));
+}
+
+.category-entertainment .transaction-icon {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(126, 34, 206, 0.3));
+}
+
+.category-utilities .transaction-icon {
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.3), rgba(75, 85, 99, 0.3));
+}
+
+.category-payment .transaction-icon {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(21, 128, 61, 0.3));
+}
+
+.category-cashback .transaction-icon {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(21, 128, 61, 0.3));
+}
+
+.category-fee .transaction-icon {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.3));
+}
+
+.category-interest .transaction-icon {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.3));
+}
+
+/* Credit Card Grid Layout */
+.credit-card-grid {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.credit-card-grid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.08) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.credit-card-grid:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Transaction Items with Glassmorphism */
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.transaction-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.08) 0%, 
+        rgba(255, 255, 255, 0.03) 50%,
+        rgba(255, 255, 255, 0.06) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.transaction-item:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px) translateX(5px);
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.transaction-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-icon i {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+}
+
+.transaction-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.transaction-description {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.transaction-category {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.transaction-meta > span:not(.transaction-category) {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+}
+
+.transaction-amount {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.amount-value {
+    font-weight: 700;
+    font-size: 1rem;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.amount-value.positive {
+    color: #4ade80;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
+}
+
+.amount-value.negative {
+    color: #f87171;
+    text-shadow: 0 0 10px rgba(248, 113, 113, 0.3);
+}
+
+.transaction-date {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+/* No Transactions State */
+.no-transactions {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.no-transactions i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.no-transactions div {
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+/* Enhanced Hover Effects */
+.transaction-item:hover .transaction-icon {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.transaction-item:hover .transaction-description {
+    color: #ffffff;
+}
+
+.transaction-item:hover .amount-value.positive {
+    text-shadow: 0 0 15px rgba(74, 222, 128, 0.5);
+}
+
+.transaction-item:hover .amount-value.negative {
+    text-shadow: 0 0 15px rgba(248, 113, 113, 0.5);
+}
+
+/* Responsive Design for Transaction Items */
+@media (max-width: 768px) {
+    .credit-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .credit-card-details {
+        align-items: flex-start;
+    }
+    
+    .transactions-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-select,
+    .filter-input,
+    .filter-btn {
+        width: 100%;
+    }
+    
+    .transaction-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .transaction-amount {
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    .transaction-meta {
+        flex-wrap: wrap;
+    }
+}
+
+/* Dark Mode Support for Transaction Items */
+[data-theme="dark"] .credit-card-grid {
+    background: rgba(52, 73, 94, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .transaction-item {
+    background: rgba(52, 73, 94, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .transaction-item:hover {
+    background: rgba(52, 73, 94, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .filter-select,
+[data-theme="dark"] .filter-input,
+[data-theme="dark"] .filter-btn {
+    background: rgba(52, 73, 94, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .no-transactions {
+    background: rgba(52, 73, 94, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Print Styles */
+@media print {
+    .credit-card-grid {
+        background: white !important;
+        color: black !important;
+        border: 1px solid #ccc !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .transaction-item {
+        background: #f9f9f9 !important;
+        color: black !important;
+        border: 1px solid #ddd !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .transactions-filters {
+        display: none !important;
+    }
+}
