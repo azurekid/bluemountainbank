@@ -2,6 +2,26 @@
 
 This guide will help you set up a free tier Azure SQL Database and migrate your Blue Mountain Bank application data to a production-ready database.
 
+## 🆕 NEW: Crypto Account Support
+
+This updated version includes cryptocurrency account support with the following features:
+
+### Crypto Features Added:
+- **Crypto Accounts Table**: Stores Bitcoin, Ethereum, and other cryptocurrency holdings
+- **Crypto Transactions Table**: Tracks buy/sell transactions, transfers, and mining rewards
+- **Sample Data**: All users now have diverse crypto portfolios with real-world cryptocurrencies:
+  - **Common Cryptos**: Bitcoin (BTC), Ethereum (ETH), Litecoin (LTC)
+  - **Altcoins**: Cardano (ADA), Solana (SOL), Polkadot (DOT), Chainlink (LINK)
+  - **Newer Tokens**: Avalanche (AVAX), Polygon (MATIC), Cosmos (ATOM)
+  - **Meme Coins**: Dogecoin (DOGE), Shiba Inu (SHIB)
+- **User Dashboard**: Updated to display crypto portfolios with current values and balances
+- **High Precision**: Supports up to 8 decimal places for accurate crypto amounts
+
+### Database Schema Updates:
+- `CryptoAccounts` table with fields for symbol, name, balance, USD value, price per unit
+- `CryptoTransactions` table with blockchain transaction tracking
+- Updated SQL migration scripts and generators
+
 ## Prerequisites
 
 - Azure account (free tier available)
